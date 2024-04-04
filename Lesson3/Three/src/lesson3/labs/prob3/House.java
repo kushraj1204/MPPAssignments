@@ -9,6 +9,7 @@ public class House extends Property{
 		this.lotSize = lotSize;
 	}
 
+	@Override
 	public double computeRent(){
 		return 0.1 * lotSize;
 	}

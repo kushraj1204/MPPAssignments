@@ -8,6 +8,7 @@ public class Trailer extends Property {
 		super(address);
 	}
 
+	@Override
 	public double computeRent(){
 		return RENT;
 	}
