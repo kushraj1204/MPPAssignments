@@ -19,7 +19,10 @@ public class Person {
 		return isEqual;
 	}
 	public static void main(String[] args) {
-		
+		Person person=new Person("Ram");
+		PersonWithJob pwj=new PersonWithJob(20000,"Shyam");
+		System.out.println(pwj.equals(person));
+		System.out.println(person.equals(pwj));
 	}
 
 }

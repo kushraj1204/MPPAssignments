@@ -1,6 +1,5 @@
 package lesson3.labs.prob2;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,17 +9,22 @@ public class Building {
     private List<Apartment> apartments;
     private double maintenanceCosts;
 
-    public Building() {
-        apartments=new ArrayList<>();
+    public Building(List<Apartment> apartmentBuilding1) {
+        if (apartmentBuilding1.isEmpty()) {
+            apartmentBuilding1.add(new Apartment());
+        }
+        this.apartments = apartmentBuilding1;
     }
+
+    public Building(Apartment apartmentBuilding) {
+        this.apartments = List.of(apartmentBuilding);
+    }
+
 
     public List<Apartment> getApartments() {
         return apartments;
     }
 
-    public void setApartments(List<Apartment> apartments) {
-        this.apartments = apartments;
-    }
 
     public double getMaintenanceCosts() {
         return maintenanceCosts;
@@ -29,10 +33,8 @@ public class Building {
     public void setMaintenanceCosts(double maintenanceCosts) {
         this.maintenanceCosts = maintenanceCosts;
     }
+
     public void addApartments(List<Apartment> apartments) {
-        List<Apartment> apts=new ArrayList<>();
-        apts.addAll(apartments);
-        apts.addAll(this.getApartments());
-        this.setApartments(apts);
+        this.apartments.addAll(apartments);
     }
 }

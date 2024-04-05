@@ -8,7 +8,7 @@ public class PersonWithJob {
     private Person person;
 
     PersonWithJob(double salary,String name) {
-        salary = salary;
+        this.salary = salary;
         person=new Person(name);
     }
 

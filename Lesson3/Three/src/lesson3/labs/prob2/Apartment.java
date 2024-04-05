@@ -13,4 +13,6 @@ public class Apartment {
     public void setRent(double rent) {
         this.rent = rent;
     }
+
+
 }
