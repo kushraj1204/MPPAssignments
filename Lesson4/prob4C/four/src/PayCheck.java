@@ -46,7 +46,8 @@ public final class PayCheck {
     @Override
     public String toString() {
         return "PayCheck{" +
-                "grossPay=" + grossPay +
+                "netPay=" + getNetPay() +
+                ", grossPay=" + grossPay +
                 ", fica=" + fica +
                 ", state=" + state +
                 ", local=" + local +
@@ -55,11 +56,11 @@ public final class PayCheck {
                 '}';
     }
 
-    public void print(){
+    public void print() {
         System.out.println(toString());
     }
 
-    public double getNetPay(){
-        return getGrossPay()-getFica()-getState()-getLocal()-getMedicare()-getSocialSecurity();
+    public double getNetPay() {
+        return getGrossPay() - getFica() - getState() - getLocal() - getMedicare() - getSocialSecurity();
     }
 }

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ public class Commissioned extends Employee {
 
     private List<Order> orderList;
 
-    public Commissioned(String empId,double commission, double baseSalary, List<Order> orderList) {
+    public Commissioned(String empId, double commission, double baseSalary, List<Order> orderList) {
         super(empId);
         this.commission = commission;
         this.baseSalary = baseSalary;
@@ -28,19 +29,39 @@ public class Commissioned extends Employee {
             prevMonth = month - 1;
             yearOfPrevMonth = year;
         }
-        double orderAmtPrevMonth=getOrderAmt(prevMonth,yearOfPrevMonth);
-        return getBaseSalary()+(getCommission()/100)*orderAmtPrevMonth;
+        double orderAmtPrevMonth = getOrderAmt(prevMonth, yearOfPrevMonth);
+        double baseSalary = getBaseSalary();
+        double commissionAmt = getCommissionAmt(orderAmtPrevMonth);
+        return getGrossPay(baseSalary, commissionAmt);
+    }
+
+    private double getCommissionAmt(double orderAmtPrevMonth) {
+        return (getCommission() / 100) * orderAmtPrevMonth;
+    }
+
+    private double getGrossPay(double baseSalary, double commissionAmt) {
+        return baseSalary + commissionAmt;
     }
 
     private double getOrderAmt(int month, int year) {
-        double orderAmt=0.0;
-        List<Order> orders=getOrderList();
+        double orderAmt = 0.0;
+        List<Order> orders = getOrderList();
+        List<Order> payableOrders = getPayableOrders(orders, month, year);
+        for (Order order : payableOrders) {
+            orderAmt = orderAmt + order.getOrderAmount();
+
+        }
+        return orderAmt;
+    }
+
+    private List<Order> getPayableOrders(List<Order> orders, int month, int year) {
+        List<Order> payableOrders = new ArrayList<>();
         for (Order order : orders) {
             if (order.getOrderDate().getYear() == year && order.getOrderDate().getMonthValue() == month) {
-                orderAmt = orderAmt + order.getOrderAmount();
+                payableOrders.add(order);
             }
         }
-        return  orderAmt;
+        return payableOrders;
     }
 
     public double getCommission() {

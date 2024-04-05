@@ -26,6 +26,7 @@ public abstract class Employee {
                 LOCAL_TAX_RATE * payAmount,
                 MEDICARE_RATE * payAmount,
                 SOCIAL_SECURITY_RATE * payAmount);
+        payCheck.print();
         return payCheck;
     }
 
