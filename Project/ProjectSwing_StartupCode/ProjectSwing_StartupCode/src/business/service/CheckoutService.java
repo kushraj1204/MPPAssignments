@@ -15,9 +15,6 @@ public class CheckoutService {
     public static Response checkoutBook(String lmId, String isbns) {
         List<String> isbnList = List.of(isbns.split(","));
         List<String> isbn = new ArrayList<>(new HashSet<>(isbnList));
-
-        /*lmId = "4e491238-910c-4d0e-a04e-c47158cf467f";
-        isbn = List.of("28-12331,99-22223");*/
         LibraryMember lm = MemberService.memberById(lmId);
         if (lm == null) {
             return Response.getRsp("Library member with given id not found", false);
@@ -39,7 +36,7 @@ public class CheckoutService {
             LocalDate dueDate = LocalDate.now().plusDays(book.getMaxCheckoutLength());
             checkOutEntries.add(new CheckoutEntry(cr, dueDate, cp
             ));
-            checkoutMsg+= "Book " + book.getTitle() + " with copyNo. " + cp.getCopyNum()
+            checkoutMsg += "Book " + book.getTitle() + " with copyNo. " + cp.getCopyNum()
                     + " issued to " + lm.getFirstName() + ". Due date is " + dueDate + ".\n";
         }
         cr.addCheckoutEntries(checkOutEntries);
@@ -67,8 +64,6 @@ public class CheckoutService {
     }
 
     private static Response returnBook(String lmId, String isbn, int copyNo) {
-        lmId = "4e491238-910c-4d0e-a04e-c47158cf467f";
-        isbn = "99-22223";
         Response rsp = new Response();
         LibraryMember lm = MemberService.memberById(lmId);
         if (lm == null) {
@@ -108,7 +103,7 @@ public class CheckoutService {
                 if (en.getBookCopy().getCopyNum() == copyNo && en.getBookCopy().getBook().getIsbn().equals(b.getIsbn())) {
                     DataAccess da = new DataAccessFacade();
                     da.updateBookCopyAvailability(cr.getCheckoutEntries().get(i).getBookCopy(), true);
-                    da.updateCheckoutEntry(cr,b.getIsbn(),copyNo);
+                    da.updateCheckoutEntry(cr, b.getIsbn(), copyNo);
                 }
             }
             return true;
@@ -138,6 +133,43 @@ public class CheckoutService {
             }
         }
         return null;
+    }
+
+    private static Response findCheckOutRecordsByMember(String memberId) {
+        DataAccess da = new DataAccessFacade();
+        List<CheckoutRecord> cr = new ArrayList<>();
+        HashMap<String, CheckoutRecord> checkoutRecordsMap = da.readCheckoutRecordsMap();
+        for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
+            CheckoutRecord value = entry.getValue();
+            if (value.getLibraryMember().getMemberId().equals(memberId)) {
+                cr.add(value);
+            }
+        }
+        Response rsp = Response.getRsp("", true, cr);
+        return rsp;
+    }
+
+    private static Response findCheckOutRecordsByBook(String isbn) {
+        DataAccess da = new DataAccessFacade();
+        List<CheckoutRecord> cr = new ArrayList<>();
+        HashMap<String, CheckoutRecord> checkoutRecordsMap = da.readCheckoutRecordsMap();
+        for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
+            CheckoutRecord value = entry.getValue();
+            List<CheckoutEntry> ce = value.getCheckoutEntries();
+            boolean hasAny = false;
+            for (int i = 0; i < ce.size(); i++) {
+                if (ce.get(i).getBookCopy().getBook().getIsbn().equals(isbn)) {
+                    hasAny = true;
+                } else {
+                    ce.remove(ce.get(i));
+                }
+            }
+            if (hasAny) {
+                cr.add(value);
+            }
+        }
+        Response rsp = Response.getRsp("", true, cr);
+        return rsp;
     }
 
 

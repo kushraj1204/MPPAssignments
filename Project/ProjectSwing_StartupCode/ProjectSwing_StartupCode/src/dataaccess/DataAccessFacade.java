@@ -7,19 +7,17 @@ import java.io.Serializable;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import business.Book;
-import business.BookCopy;
-import business.LibraryMember;
-import dataaccess.DataAccessFacade.StorageType;
+import business.model.*;
 
 public class DataAccessFacade implements DataAccess {
 
 	enum StorageType {
-		BOOKS, MEMBERS, USERS;
+		BOOKS, MEMBERS, USERS,AUTHORS,CHECKOUTRECORD;
 	}
 	// Windows user can use
 
@@ -105,6 +103,88 @@ public class DataAccessFacade implements DataAccess {
 		memberList.forEach(member -> members.put(member.getMemberId(), member));
 		saveToStorage(StorageType.MEMBERS, members);
 	}
+
+
+	public void saveNewAuthor(Author author) {
+		HashMap<String, Author> authors = readAuthorMap();
+		String authorId = author.getBio();
+		authors.put(authorId, author);
+		saveToStorage(StorageType.AUTHORS, authors);
+	}
+
+	@Override
+	public void saveNewBook(Book book) {
+		HashMap<String, Book> books = readBooksMap();
+		String bookId = book.getIsbn();
+		books.put(bookId, book);
+		saveToStorage(StorageType.BOOKS, books);
+	}
+
+	@Override
+	public HashMap<String, Author> readAuthorMap() {
+		HashMap<String, Author> authors = (HashMap<String, Author>) readFromStorage(
+				StorageType.AUTHORS);
+		authors = authors == null ? new HashMap<String, Author>() : authors;
+		return authors;
+	}
+
+	@Override
+	public void checkoutBook(CheckoutRecord checkoutRecord) {
+		HashMap<String, CheckoutRecord> checkoutRecords = readCheckoutRecordsMap();
+		String checkoutRecordId = checkoutRecord.getId();
+		checkoutRecords.put(checkoutRecordId, checkoutRecord);
+		saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecords);
+	}
+
+	@Override
+	public void updateBookCopyAvailability(BookCopy bookCopy, boolean availability) {
+		HashMap<String, Book> books = readBooksMap();
+
+		saveToStorage(StorageType.BOOKS, books);
+	}
+
+	@Override
+	public void updateCheckoutEntry(CheckoutRecord cr, String isbn, int copyNo) {
+		HashMap<String, CheckoutRecord> checkoutRecordsMap = readCheckoutRecordsMap();//checkoutRecordsMap
+		for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
+			CheckoutRecord checkoutRecord = entry.getValue();
+			if(checkoutRecord.getId().equals(cr.getId())){
+				for (int j = 0; j < checkoutRecord.getCheckoutEntries().size(); j++) {
+					if(checkoutRecord.getCheckoutEntries().get(j).getBookCopy().getCopyNum()==copyNo){
+						CheckoutEntry e=checkoutRecord.getCheckoutEntries().get(j);
+						e.setReturnDate(LocalDate.now());
+						break;
+					}
+				}
+				break;
+			}
+		}
+		saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecordsMap);
+	}
+	@Override
+
+	@SuppressWarnings("unchecked")
+	public HashMap<String, CheckoutRecord> readCheckoutRecordsMap() {
+		HashMap<String, CheckoutRecord> checkoutRecords = (HashMap<String, CheckoutRecord>) readFromStorage(
+				StorageType.CHECKOUTRECORD);
+		checkoutRecords = checkoutRecords == null ? new HashMap<String, CheckoutRecord>() : checkoutRecords;
+		return checkoutRecords;
+	}
+
+
+	@Override
+	public void updateBook(Book book) {
+		HashMap<String, Book> books = readBooksMap();
+		String bookId = book.getIsbn();
+		for (Map.Entry<String, Book> entry : books.entrySet()) {
+			Book value = entry.getValue();
+			if(value.getIsbn().equals(bookId)){
+				books.put(bookId,book);
+			}
+		}
+		saveToStorage(StorageType.BOOKS, books);
+	}
+
 
 	static void saveToStorage(StorageType type, Object ob) {
 		ObjectOutputStream out = null;

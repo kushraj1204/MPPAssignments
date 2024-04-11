@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import business.Address;
-import business.Author;
-import business.Book;
-import business.LibraryMember;
+import business.model.Address;
+import business.model.Author;
+import business.model.Book;
+import business.model.LibraryMember;
 
 /**
  * This class loads data into the data repository and also

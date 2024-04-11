@@ -2,6 +2,8 @@ package business;
 
 import java.util.*;
 
+import business.model.Book;
+import business.model.LibraryMember;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 
