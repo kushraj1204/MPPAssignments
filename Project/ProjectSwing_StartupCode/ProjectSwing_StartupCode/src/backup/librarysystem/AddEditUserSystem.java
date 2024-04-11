@@ -16,14 +16,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import business.ControllerInterface;
-import business.SystemController;
 import dataaccess.Auth;
-import dataaccess.User;
+
 
 public class AddEditUserSystem extends JFrame {
 
@@ -36,7 +33,7 @@ public class AddEditUserSystem extends JFrame {
 	private JTextField idUserNameField;
 	private JComboBox AuthGroupField;
 	private JTextField NameField;
-	private JPasswordField PasswordField;
+	private JTextField PasswordField;
 
 	/** group is "Books", "Clothes" etc */
 	private String authGroup;
@@ -112,53 +109,33 @@ public class AddEditUserSystem extends JFrame {
 		gridPanel.setLayout(gl);
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
+		// add fields
+		String[] fldNames = DefaultData.FIELD_NAMES;
+
 		String labelName = "id User";
 		makeLabel(gridPanel, labelName);
 		idUserNameField = new JTextField(10);
 		idUserNameField.setText(fieldValues.getProperty(labelName));
 		gridPanel.add(idUserNameField);
-		idUserNameField.setEditable(true);
-
-		PasswordField = new JPasswordField(10);
-		if (fieldValues.getProperty("Auth") != null) {
-			ControllerInterface ci = new SystemController();
-			System.out.println(ci.getPassword(fieldValues.getProperty(labelName)));
-			PasswordField.setText(ci.getPassword(fieldValues.getProperty(labelName)));
-			idUserNameField.setEditable(false);
-		}
-		labelName = "Password";
-		makeLabel(gridPanel, labelName);
-		gridPanel.add(PasswordField);
 
 		// catalog group is different from the other fields
 		// because it plays a different role in MaintainCatalog
 		// so it is set differently
 		labelName = "Auth";
 		makeLabel(gridPanel, labelName);
-		System.out.println(fieldValues.getProperty("Auth"));
 		AuthGroupField = new JComboBox();
 		AuthGroupField.addItem(Auth.ADMIN);
 		AuthGroupField.addItem(Auth.BOTH);
 		AuthGroupField.addItem(Auth.LIBRARIAN);
 
-		if (fieldValues.getProperty("Auth") != null) {
-			switch (fieldValues.getProperty("Auth")) {
-			case "":
-				AuthGroupField.setSelectedIndex(0);
-				break;
-			case "ADMIN":
-				AuthGroupField.setSelectedIndex(0);
-				break;
-			case "BOTH":
-				AuthGroupField.setSelectedIndex(1);
-				break;
-			case "LIBRARIAN":
-				AuthGroupField.setSelectedIndex(2);
-				break;
-			// code block
-			}
-		}
+		AuthGroupField.setSelectedItem(authGroup);
 		gridPanel.add(AuthGroupField);
+
+		labelName = "Password";
+		makeLabel(gridPanel, labelName);
+		PasswordField = new JTextField(10);
+		PasswordField.setText(fieldValues.getProperty(labelName));
+		gridPanel.add(PasswordField);
 
 	}
 
@@ -194,18 +171,16 @@ public class AddEditUserSystem extends JFrame {
 	class SaveListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
+			// no field values need to be passed into AddEditProduct when adding a new
+			// product
+			// so we create an empty Properties instance
+			Properties emptyProductInfo = new Properties();
 
-			if (idUserNameField.getText().length() > 0 && PasswordField.getPassword().length > 0) {
-				ControllerInterface ci = new SystemController();
-				ci.saveUser(idUserNameField.getText(),new String(PasswordField.getPassword()),
-						(Auth) AuthGroupField.getSelectedItem());
-				dispose();
-				UserSystem.INSTANCE.refresh();
-				Util.centerFrameOnDesktop(UserSystem.INSTANCE);
-			} else {
-				JOptionPane.showMessageDialog(AddEditUserSystem.this, "Invalid field on form!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			AddEditUserSystem addProd = new AddEditUserSystem(GuiControl.ADD_NEW, emptyProductInfo);
+			setVisible(false);
+			// addProd.setParentWindow(MaintainProductCatalog.this);
+			addProd.setVisible(true);
+
 		}
 	}
 

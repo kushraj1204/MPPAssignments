@@ -18,20 +18,18 @@ import javax.swing.JPanel;
 import business.ControllerInterface;
 import business.SystemController;
 
-public class MajorWindow extends JFrame implements LibWindow {
+public class LibrarySystemWindow extends JFrame implements LibWindow {
 	ControllerInterface ci = new SystemController();
-	public final static MajorWindow INSTANCE = new MajorWindow();
+	public final static LibrarySystemWindow INSTANCE = new LibrarySystemWindow();
 	JPanel mainPanel;
 	JMenuBar menuBar;
-	JMenu admin, logout;
-	JMenuItem userSystems, librarymember, books, copy, logoutit;
+	JMenu options;
+	JMenuItem login, allBookIds, allMemberIds;
 	String pathToImage;
 	private boolean isInitialized = false;
 
 	private static LibWindow[] allWindows = { LibrarySystemWindow.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
-			AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE
-
-	};
+			AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE, UserSystem.INSTANCE, LibraryMemberWindow.INSTANCE };
 
 	public static void hideAllWindows() {
 		for (LibWindow frame : allWindows) {
@@ -39,7 +37,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 		}
 	}
 
-	private MajorWindow() {
+	private LibrarySystemWindow() {
 	}
 
 	public void init() {
@@ -77,63 +75,83 @@ public class MajorWindow extends JFrame implements LibWindow {
 	}
 
 	private void addMenuItems() {
-		admin = new JMenu("Admin");
-		menuBar.add(admin);
-		userSystems = new JMenuItem("User Systems");
-		userSystems.addActionListener(new userSystemListener());
-		// allBookIds = new JMenuItem("All Book Ids");
-		// allBookIds.addActionListener(new AllBookIdsListener());
-		// allMemberIds = new JMenuItem("All Member Ids");
-		// allMemberIds.addActionListener(new AllMemberIdsListener());
-		// options.add(login);
-		// options.add(allBookIds);
-		// options.add(allMemberIds);
-		librarymember = new JMenuItem("Library Member");
-		librarymember.addActionListener(new libraryMemberListener());
-		admin.add(librarymember);
-		admin.add(userSystems);
-		logout = new JMenu("Logout");
-		menuBar.add(logout);
-		logoutit = new JMenuItem("User Logout");
-		logoutit.addActionListener(new logoutUserListener());
-		logout.add(logoutit);
-
+		options = new JMenu("Options");
+		menuBar.add(options);
+		login = new JMenuItem("Login");
+		login.addActionListener(new LoginListener());
+		allBookIds = new JMenuItem("All Book Ids");
+		allBookIds.addActionListener(new AllBookIdsListener());
+		allMemberIds = new JMenuItem("All Member Ids");
+		allMemberIds.addActionListener(new AllMemberIdsListener());
+		options.add(login);
+		options.add(allBookIds);
+		options.add(allMemberIds);
 	}
 
-	class logoutUserListener implements ActionListener {
+	class LoginListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			LibrarySystemWindow.hideAllWindows();
 			LoginWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
 			LoginWindow.INSTANCE.setVisible(true);
-			SystemController.currentAuth = null;
+
 		}
+
 	}
-	class libraryMemberListener implements ActionListener {
+
+	class AllBookIdsListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			LibrarySystemWindow.hideAllWindows();
-			LibraryMemberWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
-			LibraryMemberWindow.INSTANCE.setVisible(true);
+			AllBookIdsWindow.INSTANCE.init();
+
+			List<String> ids = ci.allBookIds();
+			Collections.sort(ids);
+			StringBuilder sb = new StringBuilder();
+			for (String s : ids) {
+				sb.append(s + "\n");
+			}
+			System.out.println(sb.toString());
+			AllBookIdsWindow.INSTANCE.setData(sb.toString());
+			AllBookIdsWindow.INSTANCE.pack();
+			// AllBookIdsWindow.INSTANCE.setSize(660,500);
+			Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
+			AllBookIdsWindow.INSTANCE.setVisible(true);
+
 		}
+
 	}
-	
-	class userSystemListener implements ActionListener {
+
+	class AllMemberIdsListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LibrarySystemWindow.hideAllWindows();
+			AllMemberIdsWindow.INSTANCE.init();
+			AllMemberIdsWindow.INSTANCE.pack();
+			AllMemberIdsWindow.INSTANCE.setVisible(true);
 
 			LibrarySystemWindow.hideAllWindows();
-			UserSystem.INSTANCE.init();
-			Util.centerFrameOnDesktop(UserSystem.INSTANCE);
-			UserSystem.INSTANCE.setVisible(true);
+			AllBookIdsWindow.INSTANCE.init();
+
+			List<String> ids = ci.allMemberIds();
+			Collections.sort(ids);
+			StringBuilder sb = new StringBuilder();
+			for (String s : ids) {
+				sb.append(s + "\n");
+			}
+			System.out.println(sb.toString());
+			AllMemberIdsWindow.INSTANCE.setData(sb.toString());
+			AllMemberIdsWindow.INSTANCE.pack();
+			// AllMemberIdsWindow.INSTANCE.setSize(660,500);
+			Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
+			AllMemberIdsWindow.INSTANCE.setVisible(true);
+
 		}
+
 	}
 
 	@Override

@@ -182,8 +182,8 @@ public class LoginWindow extends JFrame implements LibWindow {
 
 	private void addBackButtonListener(JButton butn) {
 		butn.addActionListener(evt -> {
-			LibrarySystemWindow.hideAllWindows();
-			LibrarySystemWindow.INSTANCE.setVisible(true);
+			LibrarySystem.hideAllWindows();
+			LibrarySystem.INSTANCE.setVisible(true);
 		});
 	}
 
@@ -194,7 +194,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 				ci.login(username.getText(), password.getText());
 				if (SystemController.currentAuth != null) {
 					JOptionPane.showMessageDialog(LoginWindow.this, "OK!", "OK", JOptionPane.INFORMATION_MESSAGE);
-					LibrarySystemWindow.hideAllWindows();
+					LibrarySystem.hideAllWindows();
 					MajorWindow.INSTANCE.init();
 					Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
 					MajorWindow.INSTANCE.setVisible(true);

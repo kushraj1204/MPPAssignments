@@ -76,8 +76,8 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 	class BackToMainListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
-			LibrarySystem.hideAllWindows();
-			LibrarySystem.INSTANCE.setVisible(true);
+			LibrarySystemWindow.hideAllWindows();
+			LibrarySystemWindow.INSTANCE.setVisible(true);
     		
 		}
 	}

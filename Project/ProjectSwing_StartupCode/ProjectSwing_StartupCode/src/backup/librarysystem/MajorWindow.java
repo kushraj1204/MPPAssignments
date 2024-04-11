@@ -23,12 +23,12 @@ public class MajorWindow extends JFrame implements LibWindow {
 	public final static MajorWindow INSTANCE = new MajorWindow();
 	JPanel mainPanel;
 	JMenuBar menuBar;
-	JMenu admin, logout;
-	JMenuItem userSystems, librarymember, books, copy, logoutit;
+	JMenu admin;
+	JMenuItem libraryMembers, books, copy;
 	String pathToImage;
 	private boolean isInitialized = false;
 
-	private static LibWindow[] allWindows = { LibrarySystemWindow.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
+	private static LibWindow[] allWindows = { LibrarySystem.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
 			AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE
 
 	};
@@ -79,8 +79,8 @@ public class MajorWindow extends JFrame implements LibWindow {
 	private void addMenuItems() {
 		admin = new JMenu("Admin");
 		menuBar.add(admin);
-		userSystems = new JMenuItem("User Systems");
-		userSystems.addActionListener(new userSystemListener());
+		libraryMembers = new JMenuItem("Library Members");
+		libraryMembers.addActionListener(new LibraryMemberListener());
 		// allBookIds = new JMenuItem("All Book Ids");
 		// allBookIds.addActionListener(new AllBookIdsListener());
 		// allMemberIds = new JMenuItem("All Member Ids");
@@ -88,51 +88,28 @@ public class MajorWindow extends JFrame implements LibWindow {
 		// options.add(login);
 		// options.add(allBookIds);
 		// options.add(allMemberIds);
-		librarymember = new JMenuItem("Library Member");
-		librarymember.addActionListener(new libraryMemberListener());
-		admin.add(librarymember);
-		admin.add(userSystems);
-		logout = new JMenu("Logout");
-		menuBar.add(logout);
-		logoutit = new JMenuItem("User Logout");
-		logoutit.addActionListener(new logoutUserListener());
-		logout.add(logoutit);
-
+		admin.add(libraryMembers);
 	}
 
-	class logoutUserListener implements ActionListener {
+	class LibraryMemberListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			LibrarySystemWindow.hideAllWindows();
-			LoginWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
-			LoginWindow.INSTANCE.setVisible(true);
-			SystemController.currentAuth = null;
-		}
-	}
-	class libraryMemberListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			LibrarySystemWindow.hideAllWindows();
-			LibraryMemberWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
-			LibraryMemberWindow.INSTANCE.setVisible(true);
-		}
-	}
-	
-	class userSystemListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			LibrarySystemWindow.hideAllWindows();
+			LibrarySystem.hideAllWindows();
 			UserSystem.INSTANCE.init();
 			Util.centerFrameOnDesktop(UserSystem.INSTANCE);
 			UserSystem.INSTANCE.setVisible(true);
+//
+//			tt mct = new tt();
+//			mct.setVisible(true);
+//			// mct.setParentWindow(Start.this);
+//			setVisible(false);
+//			
+//			LibraryMember mct = new LibraryMember();
+//			mct.setVisible(true);
+//			// mct.setParentWindow(Start.this);
+//			setVisible(false);
 		}
 	}
 

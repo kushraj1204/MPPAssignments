@@ -21,14 +21,12 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import business.ControllerInterface;
 import business.SystemController;
-import dataaccess.Auth;
 
 public class UserSystem extends JFrame implements LibWindow {
 
@@ -89,10 +87,6 @@ public class UserSystem extends JFrame implements LibWindow {
 		isInitialized = true;
 	}
 
-	public void refresh() {
-		updateModel();
-	}
-
 	private void formatContentPane() {
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -122,11 +116,11 @@ public class UserSystem extends JFrame implements LibWindow {
 
 		// edit button
 		JButton editButton = new JButton(EDIT_BUTN);
-		editButton.addActionListener(new EditButtonListener());
+		// editButton.addActionListener(new EditButtonListener());
 
 		// delete button
 		JButton deleteButton = new JButton(DELETE_BUTN);
-		deleteButton.addActionListener(new DeleteButtonListener());
+		// deleteButton.addActionListener(new DeleteButtonListener());
 
 		// search button
 		JButton searchButton = new JButton(SEARCH_BUTN);
@@ -135,7 +129,7 @@ public class UserSystem extends JFrame implements LibWindow {
 
 		// exit button
 		JButton backToMainButton = new JButton(BACK_TO_MAIN);
-		backToMainButton.addActionListener(new BackToMainButtonListener());
+		// backToMainButton.addActionListener(new BackToMainButtonListener());
 
 		// create lower panel
 		JButton[] buttons = { addButton, editButton, deleteButton, searchButton, backToMainButton };
@@ -161,6 +155,9 @@ public class UserSystem extends JFrame implements LibWindow {
 		middle = new JPanel();
 		middle.setLayout(new BorderLayout());
 
+		// defineComboPanel();
+		// middle.add(comboPanel, BorderLayout.NORTH);
+
 		// table
 		createTableAndTablePane();
 		GuiControl.createCustomColumns(table, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
@@ -180,9 +177,6 @@ public class UserSystem extends JFrame implements LibWindow {
 	}
 
 	public void updateModel(List<String[]> list) {
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i)[0]);
-		}
 		model = new CustomTableModel();
 		model.setTableValues(list);
 	}
@@ -195,6 +189,7 @@ public class UserSystem extends JFrame implements LibWindow {
 	private void updateModel() {
 		ControllerInterface ci = new SystemController();
 		List<String[]> theData = ci.allUsers();
+
 		updateModel(theData);
 		updateTable();
 	}
@@ -203,6 +198,62 @@ public class UserSystem extends JFrame implements LibWindow {
 		table.setModel(model);
 		table.updateUI();
 		repaint();
+
+	}
+
+	private void setPathToImage() {
+		String currDirectory = System.getProperty("user.dir");
+		pathToImage = currDirectory + "\\src\\librarysystem\\library.jpg";
+	}
+
+	private void insertSplashImage() {
+		ImageIcon image = new ImageIcon(pathToImage);
+		mainPanel.add(new JLabel(image));
+	}
+
+	private void createMenus() {
+		menuBar = new JMenuBar();
+		menuBar.setBorder(BorderFactory.createRaisedBevelBorder());
+		addMenuItems();
+		setJMenuBar(menuBar);
+	}
+
+	private void addMenuItems() {
+		admin = new JMenu("Admin");
+		menuBar.add(admin);
+		libraryMembers = new JMenuItem("Library Members");
+		// libraryMembers.addActionListener(new LibraryMember());
+		// allBookIds = new JMenuItem("All Book Ids");
+		// allBookIds.addActionListener(new AllBookIdsListener());
+		// allMemberIds = new JMenuItem("All Member Ids");
+		// allMemberIds.addActionListener(new AllMemberIdsListener());
+		// options.add(login);
+		// options.add(allBookIds);
+		// options.add(allMemberIds);
+		admin.add(libraryMembers);
+	}
+
+	class LibraryMemberListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			class MaintainCatalogTypesActionListener implements ActionListener {
+
+				public void actionPerformed(ActionEvent e) {
+
+					UserSystem mct = new UserSystem();
+					mct.setVisible(true);
+					setVisible(false);
+
+				}
+			}
+//		    LibraryMember lm = new Li
+//			MajorWindow.hideAllWindows();
+//			LibraryMember.INSTANCE.init();
+//			Util.centerFrameOnDesktop(LibraryMember.INSTANCE);
+//			LibraryMember.INSTANCE.setVisible(true);
+
+		}
 
 	}
 
@@ -215,66 +266,9 @@ public class UserSystem extends JFrame implements LibWindow {
 			Properties emptyUserInfo = new Properties();
 
 			AddEditUserSystem addProd = new AddEditUserSystem(GuiControl.ADD_NEW, emptyUserInfo);
-			// setVisible(false);
+			setVisible(false);
 			// addProd.setParentWindow(UserSystem.this);
 			addProd.setVisible(true);
-
-		}
-
-	}
-
-	class EditButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-
-			int selectedRow = table.getSelectedRow();
-			if (selectedRow >= 0) {
-				String[] fldNames = { "id User" };
-
-				Properties UserInfo = new Properties();
-
-				// index for id User
-				UserInfo.setProperty("id User", (String) model.getValueAt(selectedRow, 0));
-
-				// index for Auth
-				UserInfo.setProperty("Auth", (String) model.getValueAt(selectedRow, 1));
-
-				AddEditUserSystem editProd = new AddEditUserSystem(GuiControl.EDIT, UserInfo);
-				editProd.setVisible(true);
-
-			} else {
-				JOptionPane.showMessageDialog(UserSystem.this, "Need to select a valid row!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-
-	}
-
-	class BackToMainButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-
-			LibrarySystemWindow.hideAllWindows();
-			MajorWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
-			MajorWindow.INSTANCE.setVisible(true);
-
-		}
-
-	}
-
-	class DeleteButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-
-			ControllerInterface ci = new SystemController();
-			int selectedRow = table.getSelectedRow();
-			if (selectedRow >= 0) {
-				// Students: code goes here.
-				ci.deleteUser(model.getValueAt(selectedRow, 0).toString());
-				updateModel();
-
-			} else {
-				JOptionPane.showMessageDialog(UserSystem.this, "Need to select a valid row!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
 
 		}
 

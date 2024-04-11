@@ -73,8 +73,8 @@ public class AllMemberIdsWindow extends JFrame implements LibWindow {
 	}
 	private void addBackButtonListener(JButton butn) {
 		butn.addActionListener(evt -> {
-		   LibrarySystemWindow.hideAllWindows();
-		   LibrarySystemWindow.INSTANCE.setVisible(true);
+		   LibrarySystem.hideAllWindows();
+		   LibrarySystem.INSTANCE.setVisible(true);
 	    });
 	}
 
