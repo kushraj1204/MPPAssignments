@@ -1,6 +1,6 @@
 package UI;
 
-package librarysystem;
+
 
 import java.awt.EventQueue;
 
@@ -20,6 +20,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JTable;
 import java.awt.Font;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+import javax.swing.JCheckBox;
 
 public class Book {
 
@@ -27,6 +30,12 @@ public class Book {
 	private JTextField txtISBN;
 	private JTable table;
 	private JTextField textField;
+	private JTable table_1;
+	private JTable table_2;
+	private JTable tblBook;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
 
 	/**
 	 * Launch the application.
@@ -56,20 +65,21 @@ public class Book {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 683, 528);
+		frame.setBounds(100, 100, 683, 714);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 		
 		JButton btnNewButton = new JButton("Test Button");
+		btnNewButton.setBounds(0, 0, 0, 0);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(btnNewButton);
 		
 		JPanel panel = new JPanel();
+		panel.setBounds(30, 11, 608, 243);
 		panel.setBackground(SystemColor.activeCaption);
-		panel.setBounds(30, 11, 598, 318);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -97,13 +107,44 @@ public class Book {
 		lblFirstName.setBounds(10, 58, 70, 14);
 		panel.add(lblFirstName);
 		
+		JLabel lblLastName = new JLabel("Last Name");
+		lblLastName.setBounds(10, 92, 70, 14);
+		panel.add(lblLastName);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(90, 88, 241, 23);
+		panel.add(textField_1);
+		
+		JLabel lblBookTitle = new JLabel("Book Title");
+		lblBookTitle.setBounds(10, 126, 70, 14);
+		panel.add(lblBookTitle);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(90, 122, 241, 23);
+		panel.add(textField_2);
+		
+		textField_3 = new JTextField();
+		textField_3.setColumns(10);
+		textField_3.setBounds(90, 157, 241, 23);
+		panel.add(textField_3);
+		
+		JLabel lblMaxCheckout = new JLabel("Max Checkout");
+		lblMaxCheckout.setBounds(10, 161, 70, 14);
+		panel.add(lblMaxCheckout);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Credentials");
+		chckbxNewCheckBox.setBounds(6, 187, 99, 23);
+		panel.add(chckbxNewCheckBox);
+		
 		table = new JTable();
 		table.setBounds(88, 441, 1, 1);
 		frame.getContentPane().add(table);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(30, 265, 608, 61);
 		panel_1.setBackground(new Color(0, 128, 128));
-		panel_1.setBounds(30, 361, 598, 61);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -152,6 +193,36 @@ public class Book {
 		btnReset.setBackground(new Color(192, 192, 192));
 		btnReset.setBounds(378, 11, 83, 35);
 		panel_1.add(btnReset);
+		
+		table_1 = new JTable();
+		table_1.setBounds(122, 441, 1, 1);
+		frame.getContentPane().add(table_1);
+		
+		table_2 = new JTable();
+		table_2.setBounds(122, 478, 1, 1);
+		frame.getContentPane().add(table_2);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(30, 337, 608, 331);
+		frame.getContentPane().add(scrollPane);
+		
+		tblBook = new JTable();
+		scrollPane.setViewportView(tblBook);
+	     tblBook.setModel(new DefaultTableModel(
+	             new Object[][] {
+	                 {"1234567890", "James", "Clear", "Yes", "Atomic habits", "30"},
+	                 {"0987654321", "Laxmi Prasad", "Devkota", "No", "Muna Madan", "15"}
+	             },
+	             new String[] {
+	                 "ISBN", "First Name", "Last Name", "Credentials", "Book Title", "Max Checkout Length"
+	             }
+	         ));
 	}
+	  private void addDummyData() {
+	        DefaultTableModel model = (DefaultTableModel) tblBook.getModel();
+	        // Add more rows of dummy data if needed
+	        model.addRow(new Object[]{"123", "John", "Doe", "Yes", "Some Book", "10"});
+	        model.addRow(new Object[]{"456", "Jane", "Smith", "No", "Another Book", "20"});
+	    }
 }
 
