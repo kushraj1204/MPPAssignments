@@ -48,18 +48,18 @@ public class BookWindow extends JFrame implements LibWindow {
 	JPanel upper, middle, comboPanel, lower;
 
 	// Columns
-	private final String ISBN = "isbn";
-	private final String TITLE = "title";
-	private final String AUTHORS = "authors";
-	private final String MAXCHECKOUT = "max check out";
-	private final String NCOPIES = "number of copies";
+	private final String ISBN = "ISBN";
+	private final String TITLE = "Title";
+	private final String AUTHORS = "Authors";
+	private final String MAXCHECKOUT = "Max Checkout";
+	private final String NCOPIES = "No Of Copies";
 
 	// Title
-	private final String MAIN_LABEL = "Maintain Books";
+	private final String MAIN_LABEL = "Manage Books";
 
 	// Buttons
 	private final String ADD_BUTN = "Add";
-	private final String ADD_COPY = "ADD COPY";
+	private final String ADD_COPY = "Add Copy";
 	private final String EDIT_BUTN = "Edit";
 	private final String DELETE_BUTN = "Delete";
 	private final String SEARCH_BUTN = "Search";

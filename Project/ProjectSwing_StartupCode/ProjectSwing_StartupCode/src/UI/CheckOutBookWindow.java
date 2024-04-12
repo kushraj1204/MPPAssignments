@@ -54,7 +54,7 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	private final String RETURNDATE = "Return Date";
 
 	// Title
-	private final String MAIN_LABEL = "Maintain CheckOut";
+	private final String MAIN_LABEL = "Manage CheckOut";
 
 	// Buttons
 	private final String ADD_BUTN = "Add";

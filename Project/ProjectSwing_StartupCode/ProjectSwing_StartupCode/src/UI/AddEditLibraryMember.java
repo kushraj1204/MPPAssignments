@@ -118,7 +118,7 @@ public class AddEditLibraryMember extends JFrame {
 		gridPanel.setLayout(gl);
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
-		String labelName = "id LibraryMember";
+		String labelName = "LibraryMember Id";
 		makeLabel(gridPanel, labelName);
 		idMemberField = new JTextField(15);
 		if (fieldValues.getProperty(labelName) != null)
@@ -152,25 +152,25 @@ public class AddEditLibraryMember extends JFrame {
 		street = new JTextField(20);
 		gridPanel.add(street);
 
-		labelName = "city";
+		labelName = "City";
 		makeLabel(gridPanel, labelName);
 		city = new JTextField(20);
 		gridPanel.add(city);
 
-		labelName = "state";
+		labelName = "State";
 		makeLabel(gridPanel, labelName);
 		state = new JTextField(15);
 		gridPanel.add(state);
 
-		labelName = "zip";
+		labelName = "Zip";
 		makeLabel(gridPanel, labelName);
 		zip = new JNumberTextField();
 		gridPanel.add(zip);
 
-		if (fieldValues.getProperty("id LibraryMember") != null) {
+		if (fieldValues.getProperty("LibraryMember Id") != null) {
 			idMemberField.setEditable(false);
 			ControllerInterface ci = new SystemController();
-			LibraryMember lm = ci.getLibraryMemberbyId(fieldValues.getProperty("id LibraryMember"));
+			LibraryMember lm = ci.getLibraryMemberbyId(fieldValues.getProperty("LibraryMember Id"));
 			firstName.setText(lm.getFirstName());
 			lastName.setText(lm.getLastName());
 			telephone.setText(lm.getTelephone());

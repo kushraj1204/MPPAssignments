@@ -45,14 +45,14 @@ public class AuthorWindow extends JFrame implements LibWindow {
 	JPanel upperauthors, middleauthors, comboPanelauthors, lowerauthors;
 
 	// Columns
-	private final String IDAUTHOR = "id author";
-	private final String FIRSTNAME = "first name";
-	private final String LASTNAME = "last name";
-	private final String BIO = "bio";
-	private final String TELEPHONE = "telephone";
+	private final String IDAUTHOR = "Author Id";
+	private final String FIRSTNAME = "First Name";
+	private final String LASTNAME = "Last Name";
+	private final String BIO = "Bio";
+	private final String TELEPHONE = "Telephone";
 
 	// Title
-	private final String MAIN_LABEL = "Maintain Authors";
+	private final String MAIN_LABEL = "Manage Authors";
 
 	// Buttons
 	private final String ADD_BUTN = "Add";

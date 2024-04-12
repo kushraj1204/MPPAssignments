@@ -28,7 +28,6 @@ import business.ControllerInterface;
 import business.LibraryMember;
 import business.Response;
 import business.SystemController;
-import dataaccess.Auth;
 import dataaccess.User;
 import librarysystem.GuiControl;
 
@@ -36,7 +35,7 @@ public class AddCopiesBook extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	/** final value of label will be set in the constructor */
-	private String mainLabela = " Add Copies Book";
+	private String mainLabela = " Add Book Copies";
 	private final String SAVE_BUTN = "Save";
 	private final String BACK_BUTN = "Close";
 
@@ -97,7 +96,7 @@ public class AddCopiesBook extends JFrame {
 	}
 
 	private String finalMainLabelName() {
-		return addOrEdit + " " + mainLabela;
+		return  mainLabela;
 	}
 
 	// table
@@ -114,14 +113,14 @@ public class AddCopiesBook extends JFrame {
 		gridPanel.setLayout(gl);
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
-		String labelName = "isbn";
+		String labelName = "ISBN";
 		makeLabel(gridPanel, labelName);
 		isbn = new JTextField(15);
 		gridPanel.add(isbn);
 		isbn.setEditable(false);
 		isbn.setText(fieldValues.getProperty(labelName));
 
-		labelName = "Ncopies";
+		labelName = "No Of Copies";
 		makeLabel(gridPanel, labelName);
 		Ncopies = new JNumberTextField();
 		gridPanel.add(Ncopies);
