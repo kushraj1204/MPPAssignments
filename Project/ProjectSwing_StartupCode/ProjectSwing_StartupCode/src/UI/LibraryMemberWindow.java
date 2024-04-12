@@ -34,7 +34,9 @@ import librarysystem.GuiControl;
 public class LibraryMemberWindow extends JFrame implements LibWindow {
 
 	ControllerInterface ci = new SystemController();
+	
 	public final static LibraryMemberWindow INSTANCE = new LibraryMemberWindow();
+	
 	JPanel mainPanellm;
 	JMenuBar menuBarlm;
 	JMenu adminlm;
@@ -43,6 +45,7 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 	JTable tablelm;
 	JScrollPane tablePanelm;
 	CustomTableModel modellm;
+	
 	// JPanels
 	JPanel upperlm, middlelm, comboPanellm, lowerlm;
 
@@ -70,15 +73,6 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 
 	// these numbers specify relative widths of the columns -- they must add up to 1
 	private final float[] COL_WIDTH_PROPORTIONS = { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f };
-
-	private static LibWindow[] allWindows = { LibraryMemberWindow.INSTANCE, LoginWindow.INSTANCE,
-			AllMemberIdsWindow.INSTANCE, AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE };
-
-	public static void hideAllWindows() {
-		for (LibWindow frame : allWindows) {
-			frame.setVisible(false);
-		}
-	}
 
 	public void init() {
 		initializeWindow();
@@ -233,12 +227,12 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 			System.out.println("Selected Row"+selectedRow);
 
 			if (selectedRow >= 0) {
-				String[] fldNames = { "id LibraryMember" };
+				
 
 				Properties LibraryMember = new Properties();
 
 				// index for id User
-				LibraryMember.setProperty("id LibraryMember", (String) modellm.getValueAt(selectedRow, 0));
+				LibraryMember.setProperty("LibraryMember Id", (String) modellm.getValueAt(selectedRow, 0));
 
 				AddEditLibraryMember editProd = new AddEditLibraryMember(GuiControl.EDIT, LibraryMember);
 				editProd.setVisible(true);

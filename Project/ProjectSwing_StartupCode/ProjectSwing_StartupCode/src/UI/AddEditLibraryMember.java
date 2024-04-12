@@ -230,7 +230,7 @@ public class AddEditLibraryMember extends JFrame {
 				if(resp.isStatus()) {
 					JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Info",
 							JOptionPane.INFORMATION_MESSAGE);
-					BookWindow.INSTANCE.refresh();
+					LibraryMemberWindow.INSTANCE.refresh();
 					dispose();
 					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
 				}

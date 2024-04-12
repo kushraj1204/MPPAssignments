@@ -21,7 +21,7 @@ public class Main {
 			ControllerInterface ci = new SystemController();
 
 			try {
-				ci.login("101", "xyz");
+				ci.login("FELIPE", "lipe");
 				// ci.login("100", "100");
 			} catch (LoginException e) {
 				// TODO Auto-generated catch block
