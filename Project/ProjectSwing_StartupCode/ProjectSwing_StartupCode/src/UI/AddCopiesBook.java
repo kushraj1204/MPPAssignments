@@ -41,7 +41,7 @@ public class AddCopiesBook extends JFrame {
 	private final String BACK_BUTN = "Close";
 
 	private JTextField isbn;
-	private JTextField Ncopies;
+	private JNumberTextField Ncopies;
 
 	/** value is "Add New" or "Edit" */
 	private String addOrEdit = GuiControl.ADD_NEW;
@@ -123,7 +123,7 @@ public class AddCopiesBook extends JFrame {
 
 		labelName = "Ncopies";
 		makeLabel(gridPanel, labelName);
-		Ncopies = new JTextField(15);
+		Ncopies = new JNumberTextField();
 		gridPanel.add(Ncopies);
 
 	}
@@ -166,20 +166,19 @@ public class AddCopiesBook extends JFrame {
 				ControllerInterface ci = new SystemController();
 
 				Response resp = ci.addBookCopies(isbn.getText(), Integer.parseInt(Ncopies.getText()));
-				
-				if(resp.isStatus()) {
+
+				if (resp.isStatus()) {
 					JOptionPane.showMessageDialog(AddCopiesBook.this, resp.getMessage(), "Info",
 							JOptionPane.INFORMATION_MESSAGE);
+					BookWindow.INSTANCE.refresh();
 					dispose();
-					CheckOutBookWindow.INSTANCE.refresh();
-					Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
+					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
 
-				}
-				else {
+				} else {
 					JOptionPane.showMessageDialog(AddCopiesBook.this, resp.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 			} else {
 				JOptionPane.showMessageDialog(AddCopiesBook.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);

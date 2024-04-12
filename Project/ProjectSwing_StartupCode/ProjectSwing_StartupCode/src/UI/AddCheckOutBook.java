@@ -165,15 +165,14 @@ public class AddCheckOutBook extends JFrame {
 				ControllerInterface ci = new SystemController();
 
 				Response resp = ci.checkoutBook(idlibraryMember.getText(), isbnBook.getText());
-				if(resp.isStatus()) {
+				if (resp.isStatus()) {
 					JOptionPane.showMessageDialog(AddCheckOutBook.this, resp.getMessage(), "Info",
 							JOptionPane.INFORMATION_MESSAGE);
-					dispose();
 					CheckOutBookWindow.INSTANCE.refresh();
+					dispose();
 					Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
 
-				}
-				else {
+				} else {
 					JOptionPane.showMessageDialog(AddCheckOutBook.this, resp.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
@@ -183,8 +182,6 @@ public class AddCheckOutBook extends JFrame {
 			}
 		}
 	}
-
-
 
 	class BackListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {

@@ -7,6 +7,16 @@ import javax.swing.JTextField;
 public class JNumberTextField extends JTextField {
 	private static final long serialVersionUID = 1L;
 
+	public JNumberTextField(int i) {
+		// TODO Auto-generated constructor stub
+		super(i);
+	}
+
+	public JNumberTextField() {
+		// TODO Auto-generated constructor stub
+		super();
+	}
+
 	@Override
 	public void processKeyEvent(KeyEvent ev) {
 

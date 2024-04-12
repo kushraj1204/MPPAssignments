@@ -50,8 +50,7 @@ public class AddEditBook extends JFrame {
 	private JTextField isbn;
 	private JTextField title;
 	private JTextField author;
-	private JTextField maxcheckout;
-	private JTextField numberofcopies;
+	private JNumberTextField numberofcopies;
 	private JComboBox maxcheckoutGroupField;
 
 	private String maxcheckoutGroup;
@@ -195,7 +194,7 @@ public class AddEditBook extends JFrame {
 
 		labelName = "nCopies";
 		makeLabel(gridPanel, labelName);
-		numberofcopies = new JTextField(15);
+		numberofcopies = new JNumberTextField(15);
 		gridPanel.add(numberofcopies);
 
 		if (fieldValues.getProperty("isbn") != null) {
@@ -204,7 +203,6 @@ public class AddEditBook extends JFrame {
 			Book lm = ci.getBookbyisbn(fieldValues.getProperty("isbn"));
 			isbn.setText(lm.getIsbn());
 			author.setText(lm.getAuthors().get(0).getFirstName());
-			maxcheckout.setText("" + lm.getMaxCheckoutLength());
 			numberofcopies.setText("" + lm.getNumCopies());
 
 		}
@@ -387,7 +385,9 @@ public class AddEditBook extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 
-			if (isbn.getText().length() > 0 || title.getText().length() > 0 || numberofcopies.getText().length() > 0) {
+			System.out.println("ROW COUNT" + modelauthorschoosed.getRowCount());
+			if (isbn.getText().length() > 0 && title.getText().length() > 0 && numberofcopies.getText().length() > 0
+					&& modelauthorschoosed.getRowCount() > 0) {
 
 				// Address a = new Address(street.getText(), city.getText(), state.getText(),
 				// zip.getText());
@@ -410,8 +410,8 @@ public class AddEditBook extends JFrame {
 				}
 				ControllerInterface ci = new SystemController();
 				ci.saveBook(c);
-				dispose();
 				BookWindow.INSTANCE.refresh();
+				dispose();
 				Util.centerFrameOnDesktop(BookWindow.INSTANCE);
 			} else {
 				JOptionPane.showMessageDialog(AddEditBook.this, "Invalid field on form!", "Error",
