@@ -14,6 +14,7 @@ import dataaccess.Auth;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 import dataaccess.User;
+import librarysystem.Util;
 
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
@@ -155,19 +156,15 @@ public class SystemController implements ControllerInterface {
 		List<String> retval = new ArrayList<>();
 		retval.addAll(da.readBooksMap().keySet());
 		return retval;
-	}
-
-//	@Override
-//	public void saveBook(Book b) {
-//		// TODO Auto-generated method stub
-//		DataAccess da = new DataAccessFacade();
-//		da.saveNewBook(b);
-//	}
-	
+	}	
 	@Override
 	public Response saveBook(Book b) {
 		// TODO Auto-generated method stub
 		try {
+		Response rs=validateBookFields(b);	
+		if(!rs.isStatus()) {
+			return rs;
+		}
 		DataAccess da = new DataAccessFacade();
 		Book book=getBookbyisbn(b.getIsbn());
 		if(book!=null) {
@@ -181,9 +178,37 @@ public class SystemController implements ControllerInterface {
 		}
 	}
 
+	private Response validateBookFields(Book b) {
+	// TODO Auto-generated method stub
+		Response rs=Response.getRsp("", true);
+		if(!Util.isValidISBN(b.getIsbn())) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("isbn","Invalid ISBN Number");
+		}
+		if(b.getTitle().toString().length()>20) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("title","The Title Of Book Is Too Long");
+		}
+		if(b.getAuthors()==null) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("authors","Author Is Required While Creating Book");
+		}
+		if(b.getAuthors().size()<0) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("authors","Author Is Required While Creating Book");
+		}
+		
+		
+	return rs;
+}
+
 	@Override
 	public Response saveAuthor(Author b) {
 		// TODO Auto-generated method stub
+		Response rs=validateAuthorFields(b);
+		if(!rs.isStatus()) {
+			return rs;
+		}
 		DataAccess da = new DataAccessFacade();
 		Author auth=findAuthorByPhone(b.getTelephone());
 		if(auth!=null) {
@@ -197,6 +222,50 @@ public class SystemController implements ControllerInterface {
 			return Response.getRsp("Unable to add author", false);
 		}
 	}
+	
+
+	private Response validateAuthorFields(Author b) {
+	// TODO Auto-generated method stub
+		Response rs=Response.getRsp("", true);
+		
+		if(b.getFirstName().toString().length()==0) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("firstName","Author Is Required Field");
+		}
+		if(b.getFirstName().toString().length()>50) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("firstName","The Length Of Author First Name Has Been Exceeded");
+		}
+		if(b.getLastName().toString().length()>50) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("lastName","The Length Of Author Last Name Has Been Exceeded");
+		}
+		if(!Util.isValidPhoneNumber(b.getTelephone())) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("telephone","The Phone Number format is invalid");
+		}
+		if(b.getBio().toString().length()>500) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("bio","Bio Too Long");
+		}
+		if(b.getAddress()==null) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("address","Address cannot be null");
+		}
+		Address a=b.getAddress();
+		if(!Util.isValidZipCode(a.getZip())) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("title","Invalid zip code format");
+		}
+		if(!Util.isValidState(a.getState())) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("state","Invalid State. Please use a 2 letter state representation");
+		}
+		if(!rs.isStatus()) {
+			rs.setMessage("Validation failed");
+		}
+	return rs;
+}
 
 	private Author findAuthorByPhone(String telephone) {
 		// TODO Auto-generated method stub
@@ -230,6 +299,10 @@ public class SystemController implements ControllerInterface {
 	public Response saveLibraryMember(LibraryMember lm) {
 		// TODO Auto-generated method stub
 		DataAccess da = new DataAccessFacade();
+		Response rs=validateMemberFields(lm);
+		if(!rs.isStatus()) {
+			return rs;
+		}
 		LibraryMember lMem=findLibraryMemberByPhone(lm.getTelephone());
 		if(lMem!=null) {
 			return Response.getRsp("Member with given phone already exists.", false);
@@ -299,6 +372,45 @@ public class SystemController implements ControllerInterface {
 		// TODO Auto-generated method stub
 		DataAccess da = new DataAccessFacade();
 		// da.deleteBook(idbook);
+	}
+	
+	private Response validateMemberFields(LibraryMember b) {
+		// TODO Auto-generated method stub
+			Response rs=Response.getRsp("", true);
+			
+			if(b.getFirstName().toString().length()==0) {
+				rs.setStatus(false);
+				rs.addFormFieldMessages("firstName","First Name Is Required Field");
+			}
+			if(b.getFirstName().toString().length()>50) {
+				rs.setStatus(false);
+				rs.addFormFieldMessages("firstName","The Length Of First Name Has Been Exceeded");
+			}
+			if(b.getLastName().toString().length()>50) {
+				rs.setStatus(false);
+				rs.addFormFieldMessages("lastName","The Length Of Last Name Has Been Exceeded");
+			}
+			if(!Util.isValidPhoneNumber(b.getTelephone())) {
+				rs.setStatus(false);
+				rs.addFormFieldMessages("telephone","The Phone Number format is invalid");
+			}
+			if(b.getAddress()==null) {
+				rs.setStatus(false);
+				rs.addFormFieldMessages("address","Address cannot be null");
+			}
+			Address a=b.getAddress();
+			if(!Util.isValidZipCode(a.getZip())) {
+				rs.setStatus(false);
+				rs.addFormFieldMessages("title","Invalid zip code format");
+			}
+			if(!Util.isValidState(a.getState())) {
+				rs.setStatus(false);
+				rs.addFormFieldMessages("state","Invalid State. Please use a 2 letter state representation");
+			}
+			if(!rs.isStatus()) {
+				rs.setMessage("Validation failed");
+			}
+		return rs;
 	}
 
 	@Override

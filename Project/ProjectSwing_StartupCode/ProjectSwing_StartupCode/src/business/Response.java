@@ -46,11 +46,16 @@ public class Response {
     public void setRsp(Object rsp) {
         this.rsp = rsp;
     }
+    
+    public void addFormFieldMessages(String fieldId,String message) {
+        this.formFieldMessages.put(fieldId,message);
+    }
 
     public static Response getRsp(String msg, boolean status) {
         Response rsp = new Response();
         rsp.setMessage(msg);
         rsp.setStatus(status);
+        rsp.setFormFieldMessages(new HashMap<String,String>());
         return rsp;
     }
 
@@ -59,6 +64,7 @@ public class Response {
         rsp.setMessage(msg);
         rsp.setStatus(status);
         rsp.setRsp(obj);
+        rsp.setFormFieldMessages(new HashMap<String,String>());
         return rsp;
     }
 }

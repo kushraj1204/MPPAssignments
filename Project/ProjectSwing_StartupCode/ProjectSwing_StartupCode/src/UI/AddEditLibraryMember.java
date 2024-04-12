@@ -29,6 +29,7 @@ import business.SystemController;
 import dataaccess.Auth;
 import dataaccess.User;
 import librarysystem.GuiControl;
+import librarysystem.Util;
 
 public class AddEditLibraryMember extends JFrame {
 
@@ -235,8 +236,15 @@ public class AddEditLibraryMember extends JFrame {
 					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
 				}
 				else {
-					JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
+					if(!resp.getFormFieldMessages().isEmpty()) {
+						String message=Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
+						JOptionPane.showMessageDialog(AddEditLibraryMember.this, message, resp.getMessage(), 
+								JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				
 			} else {

@@ -6,7 +6,10 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
 
@@ -71,4 +74,96 @@ public class Util {
 		int frameWidth = f.getSize().width;
 		f.setLocation(((width - frameWidth) / 2), (height - frameHeight) / 3);
 	}
+	
+	 public static boolean isValidISBN10(String isbn) {
+	        if (isbn == null || isbn.length() != 10) {
+	            return false;
+	        }
+	        
+	        int sum = 0;
+	        for (int i = 0; i < 9; i++) {
+	            char digit = isbn.charAt(i);
+	            if (!Character.isDigit(digit)) {
+	                return false;
+	            }
+	            sum += (10 - i) * Character.getNumericValue(digit);
+	        }
+	        
+	        char lastChar = isbn.charAt(9);
+	        if (lastChar == 'X') {
+	            sum += 10;
+	        } else if (!Character.isDigit(lastChar)) {
+	            return false;
+	        } else {
+	            sum += Character.getNumericValue(lastChar);
+	        }
+	        
+	        return sum % 11 == 0;
+	    }
+	    
+	    public static boolean isValidISBN13(String isbn) {
+	        if (isbn == null || isbn.length() != 13) {
+	            return false;
+	        }
+	        
+	        Pattern pattern = Pattern.compile("^\\d{13}$");
+	        Matcher matcher = pattern.matcher(isbn);
+	        if (!matcher.matches()) {
+	            return false;
+	        }
+	        
+	        int sum = 0;
+	        for (int i = 0; i < 12; i++) {
+	            int digit = Character.getNumericValue(isbn.charAt(i));
+	            sum += (i % 2 == 0) ? digit : digit * 3;
+	        }
+	        
+	        int checksum = 10 - (sum % 10);
+	        if (checksum == 10) {
+	            checksum = 0;
+	        }
+	        
+	        return checksum == Character.getNumericValue(isbn.charAt(12));
+	    }
+	    
+	    public static boolean isValidISBN(String s) {
+	    	return isValidISBN10(s) || isValidISBN13(s);
+	    }
+	    public static boolean isValidPhoneNumber(String phoneNumber) {
+	        // Regular expression for a basic telephone number
+	        String regex = "^(\\+\\d{1,3}[- ]?)?\\(?\\d{3}\\)?[- ]?\\d{3}[- ]?\\d{4}$";
+	        
+	        Pattern pattern = Pattern.compile(regex);
+	        Matcher matcher = pattern.matcher(phoneNumber);
+	        
+	        return matcher.matches();
+	    }
+	    
+	    public static boolean isValidZipCode(String zipCode) {
+	        // Regular expression for US zip codes (5-digit or 5-digit followed by optional 4-digit extension)
+	        String regex = "^\\d{5}(?:[-\\s]\\d{4})?$";
+	        
+	        Pattern pattern = Pattern.compile(regex);
+	        Matcher matcher = pattern.matcher(zipCode);
+	        
+	        return matcher.matches();
+	    }
+	    public static boolean isValidState(String state) {
+	        // Regular expression for US state names or their abbreviations
+	        String regex = "^(?i)AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY$";
+	        
+	        Pattern pattern = Pattern.compile(regex);
+	        Matcher matcher = pattern.matcher(state);
+	        
+	        return matcher.matches();
+	    }
+	    
+	    public static String getConcatnatedFieldMessages(HashMap<String, String> map) {
+	        StringBuilder concatenatedValues = new StringBuilder();
+	        for (String value : map.values()) {
+	            concatenatedValues.append(value).append("\n");
+	        }
+	        System.out.println(concatenatedValues.toString());
+	        return concatenatedValues.toString();
+	    }
 }

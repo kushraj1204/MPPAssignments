@@ -32,6 +32,7 @@ import business.SystemController;
 import dataaccess.Auth;
 import dataaccess.User;
 import librarysystem.GuiControl;
+import librarysystem.Util;
 
 public class AddEditAuthor extends JFrame {
 
@@ -212,6 +213,7 @@ public class AddEditAuthor extends JFrame {
 				ControllerInterface ci = new SystemController();
 				Response resp=ci.saveAuthor(b);
 				if(resp.isStatus()) {
+				
 					JOptionPane.showMessageDialog(AddEditAuthor.this, resp.getMessage(), "Info",
 							JOptionPane.INFORMATION_MESSAGE);
 					BookWindow.INSTANCE.refresh();
@@ -219,8 +221,16 @@ public class AddEditAuthor extends JFrame {
 					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
 				}
 				else {
+				if(!resp.getFormFieldMessages().isEmpty()) {
+					String message=Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
+					JOptionPane.showMessageDialog(AddEditAuthor.this, message, resp.getMessage(), 
+							JOptionPane.ERROR_MESSAGE);
+				}
+				else {
 					JOptionPane.showMessageDialog(AddEditAuthor.this, resp.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
+				}
+					
 				}
 				
 			} else {
