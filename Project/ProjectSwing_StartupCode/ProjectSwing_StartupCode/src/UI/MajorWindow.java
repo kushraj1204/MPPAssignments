@@ -24,7 +24,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 	JPanel mainPanel;
 	JMenuBar menuBar;
 	JMenu admin, logout, book;
-	JMenuItem userSystems, librarymember, books, copy, logoutit, author;
+	JMenuItem userSystems, librarymember, books, checkout, copy, logoutit, author;
 	String pathToImage;
 	private boolean isInitialized = false;
 
