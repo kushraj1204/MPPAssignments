@@ -196,7 +196,7 @@ public class AddEditBook extends JFrame {
 		createTableAndTablePane();
 		GuiControl.createCustomColumns(tableauthor, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
 		GuiControl.createCustomColumns(tableauthorchoosed, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
-	
+
 		middle.add(GuiControl.createStandardTablePanePanel(tableauthor, tablePaneauthors), BorderLayout.CENTER);
 		// back to cart button
 //		JButton backButton = new JButton("Author -->>");
@@ -235,17 +235,34 @@ public class AddEditBook extends JFrame {
 //
 //				return Arrays.asList(authors);
 				// index for id User
-				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 0));
+//				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 0));
+//				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 1));
+//				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 2));
+//				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 3));
+
 				String[][] author = new String[1][4];
 				author[0][3] = (String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 3);
 				author[0][2] = (String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 2);
 				author[0][1] = (String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 1);
 				author[0][0] = (String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 0);
+
+				List<String[]> dataBooksChoosedtmp2 = new ArrayList<String[]>();
+				dataBooksChoosedtmp2 = Arrays.asList(author);
+
+				System.out.println(dataBooksChoosedtmp2.containsAll(dataBooksChoosed));
+				System.out.println("PRINT databooks CHOOSED!!");
+				boolean exist = false;
+				for (int i = 0; i < dataBooksChoosed.size(); i++) {
+					if (author[0][0].equals(dataBooksChoosed.get(i)[0])) {
+						exist = true;
+					}
+				}
+
 				// dataBooksChoosed = dataBooksChoosed.add();
 				// dataBooksChoosed.add(0, (String[])
 				// modelauthors.getValueAt(tableauthor.getSelectedRow(), 0));
 				// UserInfo.setProperty("id User", (String) modelus.getValueAt(selectedRow, 0));
-				if (!dataBooksChoosed.contains(author)) {
+				if (!exist) {
 					List<String[]> dataBooksChoosedtmp = new ArrayList<String[]>();
 					dataBooksChoosedtmp = Arrays.asList(author);
 					dataBooksChoosed.addAll(dataBooksChoosedtmp);
@@ -271,7 +288,7 @@ public class AddEditBook extends JFrame {
 
 	public void updateModel(List<String[]> list) {
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i)[0]);
+			// System.out.println(list.get(i)[0]);
 		}
 		modelauthors = new CustomTableModel();
 		modelauthors.setTableValues(list);
@@ -279,7 +296,7 @@ public class AddEditBook extends JFrame {
 
 	public void updateModelTableChoosed(List<String[]> list) {
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i)[0]);
+			// System.out.println(list.get(i)[0]);
 		}
 		modelauthorschoosed = new CustomTableModel();
 		modelauthorschoosed.setTableValues(list);
