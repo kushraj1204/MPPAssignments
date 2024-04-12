@@ -29,17 +29,6 @@ public class MajorWindow extends JFrame implements LibWindow {
 	String pathToImage;
 	private boolean isInitialized = false;
 
-	private static LibWindow[] allWindows = { LibrarySystemWindow.INSTANCE, LoginWindow.INSTANCE,
-			AllMemberIdsWindow.INSTANCE, AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE
-
-	};
-
-	public static void hideAllWindows() {
-		for (LibWindow frame : allWindows) {
-			frame.setVisible(false);
-		}
-	}
-
 	private MajorWindow() {
 	}
 
@@ -112,11 +101,11 @@ public class MajorWindow extends JFrame implements LibWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
+			SystemController.currentAuth = null;
 			LibrarySystemWindow.hideAllWindows();
-			LoginWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
 			LoginWindow.INSTANCE.setVisible(true);
-			SystemController.currentAuth = null;
+			
 		}
 	}
 
@@ -140,7 +129,6 @@ public class MajorWindow extends JFrame implements LibWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!SystemController.currentAuth.toString().equals("LIBRARIAN")) {
-
 				LibrarySystemWindow.hideAllWindows();
 				LibraryMemberWindow.INSTANCE.init();
 				Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);

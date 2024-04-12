@@ -41,6 +41,7 @@ public class UserSystem extends JFrame implements LibWindow {
 	JTable tableus;
 	JScrollPane tablePaneus;
 	CustomTableModel modelus;
+
 	// JPanels
 	JPanel upperus, middleus, comboPanelus, lowerus;
 
@@ -66,23 +67,9 @@ public class UserSystem extends JFrame implements LibWindow {
 	// these numbers specify relative widths of the columns -- they must add up to 1
 	private final float[] COL_WIDTH_PROPORTIONS = { 0.4f, 0.2f };
 
-	private static LibWindow[] allWindows = { UserSystem.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
-			AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE };
-
-	public static void hideAllWindows() {
-		for (LibWindow frame : allWindows) {
-			frame.setVisible(false);
-		}
-	}
-
 	public void init() {
 		initializeWindow();
 		formatContentPane();
-		// setPathToImage();
-		// insertSplashImage();
-		// defineMainPanel();
-		// createMenus();
-		// pack();
 		setSize(700, 700);
 		isInitialized = true;
 	}
@@ -114,6 +101,7 @@ public class UserSystem extends JFrame implements LibWindow {
 
 	// buttons
 	public void defineLowerPanel() {
+
 		// add button
 		JButton addButton = new JButton(ADD_BUTN);
 		addButton.addActionListener(new AddButtonListener());
@@ -142,6 +130,7 @@ public class UserSystem extends JFrame implements LibWindow {
 
 	// label
 	public void defineUpperPanel() {
+
 		upperus = new JPanel();
 		upperus.setBackground(GuiControl.FILLER_COLOR);
 		upperus.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -151,6 +140,7 @@ public class UserSystem extends JFrame implements LibWindow {
 		f = GuiControl.makeBoldFont(f);
 		mainLabel.setFont(f);
 		upperus.add(mainLabel);
+
 	}
 
 	// middle -- table and combo box
@@ -168,8 +158,8 @@ public class UserSystem extends JFrame implements LibWindow {
 	}
 
 	private void createTableAndTablePane() {
-		tableus = new JTable(modelus);
 
+		tableus = new JTable(modelus);
 		updateModel();
 		tablePaneus = new JScrollPane();
 		tablePaneus.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
@@ -178,9 +168,6 @@ public class UserSystem extends JFrame implements LibWindow {
 	}
 
 	public void updateModel(List<String[]> list) {
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i)[0]);
-		}
 		modelus = new CustomTableModel();
 		modelus.setTableValues(list);
 	}
@@ -201,20 +188,13 @@ public class UserSystem extends JFrame implements LibWindow {
 		tableus.setModel(modelus);
 		tableus.updateUI();
 		repaint();
-
 	}
 
 	class AddButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
-			// no field values need to be passed into AddEditProduct when adding a new
-			// product
-			// so we create an empty Properties instance
 			Properties emptyUserInfo = new Properties();
-
 			AddEditUserSystem addProd = new AddEditUserSystem(GuiControl.ADD_NEW, emptyUserInfo);
-			// setVisible(false);
-			// addProd.setParentWindow(UserSystem.this);
 			addProd.setVisible(true);
 
 		}
@@ -225,19 +205,16 @@ public class UserSystem extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent evt) {
 
 			int selectedRow = tableus.getSelectedRow();
-			System.out.println("Selected Row"+selectedRow);
+			System.out.println("Selected Row" + selectedRow);
 
 			if (selectedRow >= 0) {
+
 				String[] fldNames = { "id User" };
-
 				Properties UserInfo = new Properties();
-
 				// index for id User
 				UserInfo.setProperty("id User", (String) modelus.getValueAt(selectedRow, 0));
-
 				// index for Auth
 				UserInfo.setProperty("Auth", (String) modelus.getValueAt(selectedRow, 1));
-
 				AddEditUserSystem editProd = new AddEditUserSystem(GuiControl.EDIT, UserInfo);
 				editProd.setVisible(true);
 
@@ -266,19 +243,15 @@ public class UserSystem extends JFrame implements LibWindow {
 
 			ControllerInterface ci = new SystemController();
 			int selectedRow = tableus.getSelectedRow();
-			System.out.println("Selected Row"+selectedRow);
+			System.out.println("Selected Row" + selectedRow);
 			if (selectedRow >= 0) {
-				// Students: code goes here.
 				ci.deleteUser(modelus.getValueAt(selectedRow, 0).toString());
 				updateModel();
-
 			} else {
 				JOptionPane.showMessageDialog(UserSystem.this, "Need to select a valid row!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
-
 		}
-
 	}
 
 	@Override

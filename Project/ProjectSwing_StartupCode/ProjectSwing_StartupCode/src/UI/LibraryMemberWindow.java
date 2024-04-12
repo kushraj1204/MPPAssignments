@@ -34,18 +34,18 @@ import librarysystem.GuiControl;
 public class LibraryMemberWindow extends JFrame implements LibWindow {
 
 	ControllerInterface ci = new SystemController();
-	
+
 	public final static LibraryMemberWindow INSTANCE = new LibraryMemberWindow();
-	
+
 	JPanel mainPanellm;
 	JMenuBar menuBarlm;
 	JMenu adminlm;
-	
+
 	private boolean isInitialized = false;
 	JTable tablelm;
 	JScrollPane tablePanelm;
 	CustomTableModel modellm;
-	
+
 	// JPanels
 	JPanel upperlm, middlelm, comboPanellm, lowerlm;
 
@@ -66,7 +66,7 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 	private final String SEARCH_BUTN = "Search";
 	private final String BACK_TO_MAIN = "Back to Main";
 
-	// table config
+	// Table Config
 	private final String[] DEFAULT_COLUMN_HEADERS = { ID, FIRSTNAME, LASTNAME, TELEPHONE, ADDRESS };
 	private final int TABLE_WIDTH = GuiControl.SCREEN_WIDTH;
 	private final int DEFAULT_TABLE_HEIGHT = Math.round(0.75f * GuiControl.SCREEN_HEIGHT);
@@ -75,15 +75,12 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 	private final float[] COL_WIDTH_PROPORTIONS = { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f };
 
 	public void init() {
+
 		initializeWindow();
 		formatContentPane();
-		// setPathToImage();
-		// insertSplashImage();
-		// defineMainPanel();
-		// createMenus();
-		// pack();
 		setSize(700, 700);
 		isInitialized = true;
+
 	}
 
 	public void refresh() {
@@ -206,15 +203,15 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 	class AddButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
-			// no field values need to be passed into AddEditProduct when adding a new
-			// product
+			// no field values need to be passed into AddEditLibraryMember when adding a new
+			// LibraryMember
 			// so we create an empty Properties instance
 			Properties emptyLibraryMember = new Properties();
 
-			AddEditLibraryMember addProd = new AddEditLibraryMember(GuiControl.ADD_NEW, emptyLibraryMember);
+			AddEditLibraryMember addLibraryMember = new AddEditLibraryMember(GuiControl.ADD_NEW, emptyLibraryMember);
 			// setVisible(false);
 			// addProd.setParentWindow(UserSystem.this);
-			addProd.setVisible(true);
+			addLibraryMember.setVisible(true);
 
 		}
 
@@ -224,14 +221,12 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent evt) {
 
 			int selectedRow = tablelm.getSelectedRow();
-			System.out.println("Selected Row"+selectedRow);
 
 			if (selectedRow >= 0) {
-				
 
 				Properties LibraryMember = new Properties();
 
-				// index for id User
+				// index for id Library Member
 				LibraryMember.setProperty("LibraryMember Id", (String) modellm.getValueAt(selectedRow, 0));
 
 				AddEditLibraryMember editProd = new AddEditLibraryMember(GuiControl.EDIT, LibraryMember);
@@ -262,20 +257,15 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 
 			ControllerInterface ci = new SystemController();
 			int selectedRow = tablelm.getSelectedRow();
-			System.out.println("Selected Row"+selectedRow);
 
 			if (selectedRow >= 0) {
-				// Students: code goes here.
 				ci.deleteLibraryMember(modellm.getValueAt(selectedRow, 0).toString());
 				updateModel();
-
 			} else {
 				JOptionPane.showMessageDialog(LibraryMemberWindow.this, "Need to select a valid row!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
-
 		}
-
 	}
 
 	@Override

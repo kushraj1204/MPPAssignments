@@ -98,33 +98,25 @@ public class LoginWindow extends JFrame implements LibWindow {
 		jLabel4 = new javax.swing.JLabel();
 		username = new javax.swing.JTextField();
 		password = new javax.swing.JPasswordField(10);
+
 		final String CURR_DIR = System.getProperty("user.dir");
 		final String SPLASH_IMAGE = CURR_DIR + "/src/librarysystem/logo.jpg";
-		System.out.println("splash" + SPLASH_IMAGE);
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/librarysystem/book.png"))); // NOI18N
 		jLabel1.setText("Library Management System");
-
 		jLabel2.setText("Username");
-
 		jLabel3.setText("Password");
-
 		username.setText("");
-		username.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                jTextField1ActionPerformed(evt);
-			}
-		});
-
 		jButton1.setText("Login");
+
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				ControllerInterface ci = new SystemController();
 				try {
-					System.out.println(username.getText());
-					System.out.println(password.getText());
 					ci.login(username.getText(), password.getText());
 					if (SystemController.currentAuth != null) {
+						username.setText("");
+						password.setText("");
 						LibrarySystemWindow.hideAllWindows();
 						MajorWindow.INSTANCE.init();
 						Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
@@ -142,13 +134,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 		jLabel4.setText("Login");
 		jLabel4.setName("");
 		jLabel4.setRequestFocusEnabled(false);
-
 		password.setText("");
-		password.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-
-			}
-		});
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -245,9 +231,6 @@ public class LoginWindow extends JFrame implements LibWindow {
 
 	private void defineLowerPanel() {
 		lowerPanel = new JPanel();
-//		loginButton = new JButton("Login");
-//		addLoginButtonListener(loginButton);
-//		lowerPanel.add(loginButton);
 	}
 
 	private void defineLeftTextPanel() {

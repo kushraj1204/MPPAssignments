@@ -134,9 +134,6 @@ public class AddEditLibraryMember extends JFrame {
 		firstName = new JTextField(20);
 		gridPanel.add(firstName);
 
-		// catalog group is different from the other fields
-		// because it plays a different role in MaintainCatalog
-		// so it is set differently
 		labelName = "Last Name";
 		makeLabel(gridPanel, labelName);
 		lastName = new JTextField(20);
@@ -183,6 +180,7 @@ public class AddEditLibraryMember extends JFrame {
 
 	// buttons
 	public void defineLowerPanel() {
+
 		// proceed button
 		JButton saveButton = new JButton(SAVE_BUTN);
 		saveButton.addActionListener(new SaveListener());
@@ -225,20 +223,18 @@ public class AddEditLibraryMember extends JFrame {
 						telephone.getText(), a);
 
 				ControllerInterface ci = new SystemController();
-				
-				Response resp=ci.saveLibraryMember(lm);
-				if(resp.isStatus()) {
+
+				Response resp = ci.saveLibraryMember(lm);
+				if (resp.isStatus()) {
 					JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Info",
 							JOptionPane.INFORMATION_MESSAGE);
 					LibraryMemberWindow.INSTANCE.refresh();
 					dispose();
 					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
-				}
-				else {
+				} else {
 					JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				
 			} else {
 				JOptionPane.showMessageDialog(AddEditLibraryMember.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);
@@ -248,9 +244,7 @@ public class AddEditLibraryMember extends JFrame {
 
 	class BackListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
-
 			dispose();
-
 		}
 	}
 
