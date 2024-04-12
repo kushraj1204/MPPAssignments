@@ -52,6 +52,9 @@ public class AddEditBook extends JFrame {
 	private JTextField author;
 	private JTextField maxcheckout;
 	private JTextField numberofcopies;
+	private JComboBox maxcheckoutGroupField;
+
+	private String maxcheckoutGroup;
 
 	/** value is "Add New" or "Edit" */
 	private String addOrEdit = GuiControl.ADD_NEW;
@@ -163,18 +166,31 @@ public class AddEditBook extends JFrame {
 		title = new JTextField(15);
 		gridPanel.add(title);
 
-		labelName = "Authors";
-		makeLabel(gridPanel, labelName);
-		author = new JTextField(15);
-		gridPanel.add(author);
-
 		// catalog group is different from the other fields
 		// because it plays a different role in MaintainCatalog
 		// so it is set differently
-		labelName = "Max Check Out";
+		labelName = "Max Days";
 		makeLabel(gridPanel, labelName);
-		maxcheckout = new JTextField(15);
-		gridPanel.add(maxcheckout);
+		// System.out.println(fieldValues.getProperty("Auth"));
+		maxcheckoutGroupField = new JComboBox();
+		maxcheckoutGroupField.addItem("7");
+		maxcheckoutGroupField.addItem("21");
+
+		if (fieldValues.getProperty("MaxDays") != null) {
+			switch (fieldValues.getProperty("MaxDays")) {
+			case "":
+				maxcheckoutGroupField.setSelectedIndex(0);
+				break;
+			case "7":
+				maxcheckoutGroupField.setSelectedIndex(0);
+				break;
+			case "21":
+				maxcheckoutGroupField.setSelectedIndex(1);
+				break;
+			// code block
+			}
+		}
+		gridPanel.add(maxcheckoutGroupField);
 
 		labelName = "nCopies";
 		makeLabel(gridPanel, labelName);
@@ -369,8 +385,7 @@ public class AddEditBook extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 
-			if (isbn.getText().length() > 0 && title.getText().length() > 0 && author.getText().length() > 0
-					&& maxcheckout.getText().length() > 0 && numberofcopies.getText().length() > 0) {
+			if (isbn.getText().length() > 0 || title.getText().length() > 0 || numberofcopies.getText().length() > 0) {
 
 				// Address a = new Address(street.getText(), city.getText(), state.getText(),
 				// zip.getText());
@@ -386,7 +401,8 @@ public class AddEditBook extends JFrame {
 					// System.out.println(dataBooksChoosed.get(i)[0]);
 					authors.add(tmp);
 				}
-				Book c = new Book(isbn.getText(), author.getText(), Integer.parseInt(maxcheckout.getText()), authors);
+				Book c = new Book(isbn.getText(), title.getText(),
+						Integer.parseInt(maxcheckoutGroupField.getSelectedItem().toString()), authors);
 				for (int i = 0; i < Integer.parseInt(numberofcopies.getText()) - 1; i++) {
 					c.addCopy();
 				}

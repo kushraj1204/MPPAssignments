@@ -64,7 +64,7 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	private final String BACK_TO_MAIN = "Back to Main";
 
 	// table config
-	private final String[] DEFAULT_COLUMN_HEADERS = { ID, LIBRARYMEMBER, BOOK, DUEDATE, RETURNDATE};
+	private final String[] DEFAULT_COLUMN_HEADERS = { ID, LIBRARYMEMBER, BOOK, DUEDATE, RETURNDATE };
 	private final int TABLE_WIDTH = GuiControl.SCREEN_WIDTH;
 	private final int DEFAULT_TABLE_HEIGHT = Math.round(0.75f * GuiControl.SCREEN_HEIGHT);
 
@@ -125,12 +125,13 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 
 		// edit button
 		JButton editButton = new JButton(EDIT_BUTN);
-		editButton.addActionListener(new EditButtonListener());
+		// editButton.addActionListener(new EditButtonListener());
+		editButton.setEnabled(false);
 
 		// delete button
 		JButton deleteButton = new JButton(DELETE_BUTN);
-		deleteButton.addActionListener(new DeleteButtonListener());
-
+		// deleteButton.addActionListener(new DeleteButtonListener());
+		deleteButton.setEnabled(false);
 		// search button
 		JButton searchButton = new JButton(SEARCH_BUTN);
 		// searchButton.addActionListener(new SearchButtonListener());
@@ -218,36 +219,11 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 			// so we create an empty Properties instance
 			Properties emptyLibraryMember = new Properties();
 
-			AddEditLibraryMember addProd = new AddEditLibraryMember(GuiControl.ADD_NEW, emptyLibraryMember);
+			AddCheckOutBook addProd = new AddCheckOutBook(GuiControl.ADD_NEW, emptyLibraryMember);
 			// setVisible(false);
 			// addProd.setParentWindow(UserSystem.this);
 			addProd.setVisible(true);
 
-		}
-
-	}
-
-	class EditButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-
-			int selectedRow = tablecow.getSelectedRow();
-			System.out.println("Selected Row" + selectedRow);
-
-			if (selectedRow >= 0) {
-				String[] fldNames = { "id LibraryMember" };
-
-				Properties LibraryMember = new Properties();
-
-				// index for id User
-				LibraryMember.setProperty("id LibraryMember", (String) modelcow.getValueAt(selectedRow, 0));
-
-				AddEditLibraryMember editProd = new AddEditLibraryMember(GuiControl.EDIT, LibraryMember);
-				editProd.setVisible(true);
-
-			} else {
-				JOptionPane.showMessageDialog(CheckOutBookWindow.this, "Need to select a valid row!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
 		}
 
 	}
@@ -259,27 +235,6 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 			MajorWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
 			MajorWindow.INSTANCE.setVisible(true);
-
-		}
-
-	}
-
-	class DeleteButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-
-			ControllerInterface ci = new SystemController();
-			int selectedRow = tablecow.getSelectedRow();
-			System.out.println("Selected Row" + selectedRow);
-
-			if (selectedRow >= 0) {
-				// Students: code goes here.
-				ci.deleteLibraryMember(modelcow.getValueAt(selectedRow, 0).toString());
-				updateModel();
-
-			} else {
-				JOptionPane.showMessageDialog(CheckOutBookWindow.this, "Need to select a valid row!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
 
 		}
 

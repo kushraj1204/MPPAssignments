@@ -93,10 +93,10 @@ public class MajorWindow extends JFrame implements LibWindow {
 		books = new JMenuItem("Maintain Book");
 		books.addActionListener(new maintainBooksListener());
 		book.add(books);
-		author = new JMenuItem("Author");
+		author = new JMenuItem("Author Book");
 		author.addActionListener(new maintainAuthorListener());
 		book.add(author);
-		checkout = new JMenuItem("Checkout");
+		checkout = new JMenuItem("Checkout Book");
 		checkout.addActionListener(new maintainCheckOutBookListener());
 		book.add(checkout);
 
@@ -124,6 +124,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 			SystemController.currentAuth = null;
 		}
 	}
+
 	class maintainCheckOutBookListener implements ActionListener {
 
 		@Override

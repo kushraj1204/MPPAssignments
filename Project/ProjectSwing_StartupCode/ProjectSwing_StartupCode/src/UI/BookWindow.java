@@ -59,6 +59,7 @@ public class BookWindow extends JFrame implements LibWindow {
 
 	// Buttons
 	private final String ADD_BUTN = "Add";
+	private final String ADD_COPY = "ADD COPY";
 	private final String EDIT_BUTN = "Edit";
 	private final String DELETE_BUTN = "Delete";
 	private final String SEARCH_BUTN = "Search";
@@ -124,15 +125,19 @@ public class BookWindow extends JFrame implements LibWindow {
 		JButton addButton = new JButton(ADD_BUTN);
 		addButton.addActionListener(new AddButtonListener());
 
+		// add copies
+		JButton addcopiesButton = new JButton(ADD_COPY);
+		addcopiesButton.addActionListener(new AddCopyListener());
+
 		// edit button
 		JButton editButton = new JButton(EDIT_BUTN);
 		editButton.setEnabled(false);
-		//editButton.addActionListener(new EditButtonListener());
+		// editButton.addActionListener(new EditButtonListener());
 
 		// delete button
 		JButton deleteButton = new JButton(DELETE_BUTN);
 		deleteButton.setEnabled(false);
-		//deleteButton.addActionListener(new DeleteButtonListener());
+		// deleteButton.addActionListener(new DeleteButtonListener());
 
 		// search button
 		JButton searchButton = new JButton(SEARCH_BUTN);
@@ -144,7 +149,7 @@ public class BookWindow extends JFrame implements LibWindow {
 		backToMainButton.addActionListener(new BackToMainButtonListener());
 
 		// create lower panel
-		JButton[] buttons = { addButton, editButton, deleteButton, searchButton, backToMainButton };
+		JButton[] buttons = { addButton, addcopiesButton, editButton, deleteButton, searchButton, backToMainButton };
 		lower = GuiControl.createStandardButtonPanel(buttons);
 	}
 
@@ -210,6 +215,36 @@ public class BookWindow extends JFrame implements LibWindow {
 		tablebooks.updateUI();
 		repaint();
 
+	}
+
+	class AddCopyListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent evt) {
+			int selectedRow = tablebooks.getSelectedRow();
+			System.out.println("Selected Row" + selectedRow);
+
+			if (selectedRow >= 0) {
+				String[] fldNames = { "isbn" };
+
+				Properties UserInfo = new Properties();
+
+				// index for isbn
+				UserInfo.setProperty("isbn", (String) modelbooks.getValueAt(selectedRow, 0));
+
+
+
+				AddCopiesBook editProd = new AddCopiesBook(GuiControl.EDIT, UserInfo);
+				editProd.setVisible(true);
+
+			} else {
+				JOptionPane.showMessageDialog(BookWindow.this, "Need to select a valid row!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+//			dispose();
+//			CheckOutBookWindow.INSTANCE.refresh();
+//			Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
+
+		}
 	}
 
 	class AddButtonListener implements ActionListener {

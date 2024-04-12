@@ -81,12 +81,15 @@ public class SystemController implements ControllerInterface {
 			for (int i = 0; i < entry.getValue().getCheckoutEntries().size(); i++) {
 				System.out.println(
 						"entry.getValue().getCheckoutEntries().size()" + entry.getValue().getCheckoutEntries().size());
-				// checkouts[cont][4] =
-				// entry.getValue().getCheckoutEntries().get(i).getReturnDate().toString();
-				checkouts[cont][4] = "today";
-				checkouts[cont][3] = "yesterday";
-				// checkouts[cont][3] =
-				// entry.getValue().getCheckoutEntries().get(i).getDueDate().toString();
+				if (entry.getValue().getCheckoutEntries().get(i).getReturnDate() != null)
+					checkouts[cont][4] = "" + entry.getValue().getCheckoutEntries().get(i).getReturnDate();
+				else
+					checkouts[cont][4] = "";
+				// System.out.println("return
+				// date"+entry.getValue().getCheckoutEntries().get(i).getDueDate());
+				// checkouts[cont][4] = "today";
+				// checkouts[cont][3] = "yesterday";
+				checkouts[cont][3] = "" + entry.getValue().getCheckoutEntries().get(i).getDueDate();
 				System.out.print("entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle();"
 						+ entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle());
 				checkouts[cont][2] = entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle();
@@ -141,7 +144,7 @@ public class SystemController implements ControllerInterface {
 			books[cont][3] = "" + entry.getValue().getMaxCheckoutLength();
 			tmpname = "";
 			for (int i = 0; i < entry.getValue().getAuthors().size(); i++) {
-				tmpname += "Author " + i + 1 + ": " + entry.getValue().getAuthors().get(i).getFirstName();
+				tmpname += "Author " + (i + 1) + ": " + entry.getValue().getAuthors().get(i).getFirstName()+" ";
 			}
 			// books[cont][2] = entry.getValue().getAuthors().get(0).getFirstName();
 			books[cont][2] = tmpname;
