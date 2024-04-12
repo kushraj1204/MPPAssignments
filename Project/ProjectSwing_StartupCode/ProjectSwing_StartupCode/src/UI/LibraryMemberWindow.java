@@ -47,11 +47,11 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 	JPanel upperlm, middlelm, comboPanellm, lowerlm;
 
 	// Columns
-	private final String ID = "id";
-	private final String FIRSTNAME = "first name";
-	private final String LASTNAME = "last name";
-	private final String TELEPHONE = "telephone";
-	private final String ADDRESS = "address";
+	private final String ID = "Id";
+	private final String FIRSTNAME = "First name";
+	private final String LASTNAME = "Last name";
+	private final String TELEPHONE = "Telephone";
+	private final String ADDRESS = "Address";
 
 	// Title
 	private final String MAIN_LABEL = "Maintain Members";

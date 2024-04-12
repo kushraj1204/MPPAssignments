@@ -106,6 +106,7 @@ public class AddCheckOutBook extends JFrame {
 		middlecob.setBackground(GuiControl.FILLER_COLOR);
 		middlecob.setLayout(new FlowLayout(FlowLayout.CENTER));
 		JPanel gridPanel = new JPanel();
+
 		gridPanel.setBackground(GuiControl.SCREEN_BACKGROUND);
 		middlecob.add(gridPanel);
 		GridLayout gl = new GridLayout(8, 4);
@@ -114,12 +115,12 @@ public class AddCheckOutBook extends JFrame {
 		gridPanel.setLayout(gl);
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
-		String labelName = "id Library Member";
+		String labelName = "Library Member Id";
 		makeLabel(gridPanel, labelName);
 		idlibraryMember = new JTextField(15);
 		gridPanel.add(idlibraryMember);
 
-		labelName = "isbn Book";
+		labelName = "Book ISBN";
 		makeLabel(gridPanel, labelName);
 		isbnBook = new JTextField(15);
 		gridPanel.add(isbnBook);

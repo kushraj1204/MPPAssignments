@@ -47,11 +47,11 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	JPanel uppercow, middlecow, comboPanelcow, lowercow;
 
 	// Columns
-	private final String ID = "id";
-	private final String LIBRARYMEMBER = "library member";
-	private final String BOOK = "book(s)";
-	private final String DUEDATE = "due Date";
-	private final String RETURNDATE = "return Date";
+	private final String ID = "Id";
+	private final String LIBRARYMEMBER = "Library member";
+	private final String BOOK = "Book(s)";
+	private final String DUEDATE = "Due Date";
+	private final String RETURNDATE = "Return Date";
 
 	// Title
 	private final String MAIN_LABEL = "Maintain CheckOut";
