@@ -309,7 +309,7 @@ public class AddEditBook extends JFrame {
 	 */
 	private void updateModel() {
 		ControllerInterface ci = new SystemController();
-		List<String[]> theData = ci.allAuhtorTable();
+		List<String[]> theData = ci.allAuthorTable();
 		updateModel(theData);
 		updateTable();
 	}

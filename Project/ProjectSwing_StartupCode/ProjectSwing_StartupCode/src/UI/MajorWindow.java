@@ -96,6 +96,9 @@ public class MajorWindow extends JFrame implements LibWindow {
 		author = new JMenuItem("Author");
 		author.addActionListener(new maintainAuthorListener());
 		book.add(author);
+		checkout = new JMenuItem("Checkout");
+		checkout.addActionListener(new maintainCheckOutBookListener());
+		book.add(checkout);
 
 		librarymember = new JMenuItem("Library Member");
 		librarymember.addActionListener(new libraryMemberListener());
@@ -119,6 +122,17 @@ public class MajorWindow extends JFrame implements LibWindow {
 			Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
 			LoginWindow.INSTANCE.setVisible(true);
 			SystemController.currentAuth = null;
+		}
+	}
+	class maintainCheckOutBookListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			LibrarySystemWindow.hideAllWindows();
+			CheckOutBookWindow.INSTANCE.init();
+			Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
+			CheckOutBookWindow.INSTANCE.setVisible(true);
 		}
 	}
 

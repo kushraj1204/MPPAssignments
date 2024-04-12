@@ -31,31 +31,30 @@ import business.SystemController;
 import dataaccess.Auth;
 import librarysystem.GuiControl;
 
-public class BookWindow extends JFrame implements LibWindow {
+public class CheckOutBookWindow extends JFrame implements LibWindow {
 
 	ControllerInterface ci = new SystemController();
-	public final static BookWindow INSTANCE = new BookWindow();
-	JPanel mainPanel;
-	JMenuBar menuBar;
-	JMenu admin;
-	JMenuItem libraryMembers, books, copy;
-	String pathToImage;
+	public final static CheckOutBookWindow INSTANCE = new CheckOutBookWindow();
+	JPanel mainPanelcow;
+	JMenuBar menuBarcow;
+	JMenu admincow;
+
 	private boolean isInitialized = false;
-	JTable tablebooks;
-	JScrollPane tablePanebooks;
-	CustomTableModel modelbooks;
+	JTable tablecow;
+	JScrollPane tablePanecow;
+	CustomTableModel modelcow;
 	// JPanels
-	JPanel upper, middle, comboPanel, lower;
+	JPanel uppercow, middlecow, comboPanelcow, lowercow;
 
 	// Columns
-	private final String ISBN = "isbn";
-	private final String TITLE = "title";
-	private final String AUTHORS = "authors";
-	private final String MAXCHECKOUT = "max check out";
-	private final String NCOPIES = "number of copies";
+	private final String ID = "id";
+	private final String LIBRARYMEMBER = "library member";
+	private final String BOOK = "book(s)";
+	private final String DUEDATE = "due Date";
+	private final String RETURNDATE = "return Date";
 
 	// Title
-	private final String MAIN_LABEL = "Maintain Books";
+	private final String MAIN_LABEL = "Maintain CheckOut";
 
 	// Buttons
 	private final String ADD_BUTN = "Add";
@@ -65,15 +64,15 @@ public class BookWindow extends JFrame implements LibWindow {
 	private final String BACK_TO_MAIN = "Back to Main";
 
 	// table config
-	private final String[] DEFAULT_COLUMN_HEADERS = { ISBN, TITLE, AUTHORS, MAXCHECKOUT, NCOPIES };
+	private final String[] DEFAULT_COLUMN_HEADERS = { ID, LIBRARYMEMBER, BOOK, DUEDATE, RETURNDATE};
 	private final int TABLE_WIDTH = GuiControl.SCREEN_WIDTH;
 	private final int DEFAULT_TABLE_HEIGHT = Math.round(0.75f * GuiControl.SCREEN_HEIGHT);
 
 	// these numbers specify relative widths of the columns -- they must add up to 1
 	private final float[] COL_WIDTH_PROPORTIONS = { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f };
 
-	private static LibWindow[] allWindows = { BookWindow.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
-			AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE };
+	private static LibWindow[] allWindows = { CheckOutBookWindow.INSTANCE, LoginWindow.INSTANCE,
+			AllMemberIdsWindow.INSTANCE, AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE };
 
 	public static void hideAllWindows() {
 		for (LibWindow frame : allWindows) {
@@ -98,17 +97,17 @@ public class BookWindow extends JFrame implements LibWindow {
 	}
 
 	private void formatContentPane() {
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.setBackground(GuiControl.FILLER_COLOR);
-		mainPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
+		mainPanelcow = new JPanel();
+		mainPanelcow.setLayout(new BorderLayout());
+		mainPanelcow.setBackground(GuiControl.FILLER_COLOR);
+		mainPanelcow.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 		defineUpperPanel();
 		defineMiddlePanel();
 		defineLowerPanel();
-		mainPanel.add(upper, BorderLayout.NORTH);
-		mainPanel.add(middle, BorderLayout.CENTER);
-		mainPanel.add(lower, BorderLayout.SOUTH);
-		getContentPane().add(mainPanel);
+		mainPanelcow.add(uppercow, BorderLayout.NORTH);
+		mainPanelcow.add(middlecow, BorderLayout.CENTER);
+		mainPanelcow.add(lowercow, BorderLayout.SOUTH);
+		getContentPane().add(mainPanelcow);
 	}
 
 	private void initializeWindow() {
@@ -126,13 +125,11 @@ public class BookWindow extends JFrame implements LibWindow {
 
 		// edit button
 		JButton editButton = new JButton(EDIT_BUTN);
-		editButton.setEnabled(false);
-		//editButton.addActionListener(new EditButtonListener());
+		editButton.addActionListener(new EditButtonListener());
 
 		// delete button
 		JButton deleteButton = new JButton(DELETE_BUTN);
-		deleteButton.setEnabled(false);
-		//deleteButton.addActionListener(new DeleteButtonListener());
+		deleteButton.addActionListener(new DeleteButtonListener());
 
 		// search button
 		JButton searchButton = new JButton(SEARCH_BUTN);
@@ -145,52 +142,53 @@ public class BookWindow extends JFrame implements LibWindow {
 
 		// create lower panel
 		JButton[] buttons = { addButton, editButton, deleteButton, searchButton, backToMainButton };
-		lower = GuiControl.createStandardButtonPanel(buttons);
+		lowercow = GuiControl.createStandardButtonPanel(buttons);
 	}
 
 	// label
 	public void defineUpperPanel() {
-		upper = new JPanel();
-		upper.setBackground(GuiControl.FILLER_COLOR);
-		upper.setLayout(new FlowLayout(FlowLayout.CENTER));
+		uppercow = new JPanel();
+		uppercow.setBackground(GuiControl.FILLER_COLOR);
+		uppercow.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		JLabel mainLabel = new JLabel(MAIN_LABEL);
 		Font f = GuiControl.makeVeryLargeFont(mainLabel.getFont());
 		f = GuiControl.makeBoldFont(f);
 		mainLabel.setFont(f);
-		upper.add(mainLabel);
+		uppercow.add(mainLabel);
 	}
 
 	// middle -- table and combo box
 	public void defineMiddlePanel() {
 
-		middle = new JPanel();
-		middle.setLayout(new BorderLayout());
+		middlecow = new JPanel();
+		middlecow.setLayout(new BorderLayout());
 
 		// table
 		createTableAndTablePane();
-		GuiControl.createCustomColumns(tablebooks, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
+		GuiControl.createCustomColumns(tablecow, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
 
-		middle.add(GuiControl.createStandardTablePanePanel(tablebooks, tablePanebooks), BorderLayout.CENTER);
+		middlecow.add(GuiControl.createStandardTablePanePanel(tablecow, tablePanecow), BorderLayout.CENTER);
 
 	}
 
 	private void createTableAndTablePane() {
-		tablebooks = new JTable(modelbooks);
+		tablecow = new JTable(modelcow);
 
 		updateModel();
-		tablePanebooks = new JScrollPane();
-		tablePanebooks.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
-		tablePanebooks.getViewport().add(tablebooks);
+		tablePanecow = new JScrollPane();
+		tablePanecow.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
+		tablePanecow.getViewport().add(tablecow);
 
 	}
 
 	public void updateModel(List<String[]> list) {
+		System.out.println("updatemodel");
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i)[0]);
 		}
-		modelbooks = new CustomTableModel();
-		modelbooks.setTableValues(list);
+		modelcow = new CustomTableModel();
+		modelcow.setTableValues(list);
 	}
 
 	/**
@@ -200,14 +198,14 @@ public class BookWindow extends JFrame implements LibWindow {
 	 */
 	private void updateModel() {
 		ControllerInterface ci = new SystemController();
-		List<String[]> theData = ci.allBooksIdsTable();
+		List<String[]> theData = ci.allCheckOutTable();
 		updateModel(theData);
 		updateTable();
 	}
 
 	private void updateTable() {
-		tablebooks.setModel(modelbooks);
-		tablebooks.updateUI();
+		tablecow.setModel(modelcow);
+		tablecow.updateUI();
 		repaint();
 
 	}
@@ -218,9 +216,9 @@ public class BookWindow extends JFrame implements LibWindow {
 			// no field values need to be passed into AddEditProduct when adding a new
 			// product
 			// so we create an empty Properties instance
-			Properties emptyBook = new Properties();
+			Properties emptyLibraryMember = new Properties();
 
-			AddEditBook addProd = new AddEditBook(GuiControl.ADD_NEW, emptyBook);
+			AddEditLibraryMember addProd = new AddEditLibraryMember(GuiControl.ADD_NEW, emptyLibraryMember);
 			// setVisible(false);
 			// addProd.setParentWindow(UserSystem.this);
 			addProd.setVisible(true);
@@ -232,21 +230,22 @@ public class BookWindow extends JFrame implements LibWindow {
 	class EditButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
-			int selectedRow = tablebooks.getSelectedRow();
-			if (selectedRow >= 0) {
-				String[] fldNames = { "isbn" };
+			int selectedRow = tablecow.getSelectedRow();
+			System.out.println("Selected Row" + selectedRow);
 
-				Properties BookMember = new Properties();
+			if (selectedRow >= 0) {
+				String[] fldNames = { "id LibraryMember" };
+
+				Properties LibraryMember = new Properties();
 
 				// index for id User
-				BookMember.setProperty("isbn", (String) modelbooks.getValueAt(selectedRow, 0));
+				LibraryMember.setProperty("id LibraryMember", (String) modelcow.getValueAt(selectedRow, 0));
 
-				// AddEditLibraryMember editProd = new AddEditLibraryMember(GuiControl.EDIT,
-				// LibraryMember);
-				// editProd.setVisible(true);
+				AddEditLibraryMember editProd = new AddEditLibraryMember(GuiControl.EDIT, LibraryMember);
+				editProd.setVisible(true);
 
 			} else {
-				JOptionPane.showMessageDialog(BookWindow.this, "Need to select a valid row!", "Error",
+				JOptionPane.showMessageDialog(CheckOutBookWindow.this, "Need to select a valid row!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -269,14 +268,16 @@ public class BookWindow extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent evt) {
 
 			ControllerInterface ci = new SystemController();
-			int selectedRow = tablebooks.getSelectedRow();
+			int selectedRow = tablecow.getSelectedRow();
+			System.out.println("Selected Row" + selectedRow);
+
 			if (selectedRow >= 0) {
 				// Students: code goes here.
-				ci.deleteBook(modelbooks.getValueAt(selectedRow, 0).toString());
+				ci.deleteLibraryMember(modelcow.getValueAt(selectedRow, 0).toString());
 				updateModel();
 
 			} else {
-				JOptionPane.showMessageDialog(BookWindow.this, "Need to select a valid row!", "Error",
+				JOptionPane.showMessageDialog(CheckOutBookWindow.this, "Need to select a valid row!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 
@@ -296,7 +297,7 @@ public class BookWindow extends JFrame implements LibWindow {
 	}
 
 	public static void main(String[] args) {
-		(new BookWindow()).setVisible(true);
+		(new CheckOutBookWindow()).setVisible(true);
 	}
 
 }

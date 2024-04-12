@@ -26,7 +26,9 @@ public interface ControllerInterface {
 
 	public List<String[]> allBooksIdsTable();
 	
-	public List<String[]> allAuhtorTable();
+	public List<String[]> allAuthorTable();
+	
+	public List<String[]> allCheckOutTable();
 
 	public void saveLibraryMember(LibraryMember lm);
 

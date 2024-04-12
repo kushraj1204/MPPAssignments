@@ -196,7 +196,7 @@ public class AuthorWindow extends JFrame implements LibWindow {
 	 */
 	private void updateModel() {
 		ControllerInterface ci = new SystemController();
-		List<String[]> theData = ci.allAuhtorTable();
+		List<String[]> theData = ci.allAuthorTable();
 		updateModel(theData);
 		updateTable();
 	}

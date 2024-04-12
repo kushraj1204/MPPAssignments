@@ -30,7 +30,7 @@ public class LibrarySystemWindow extends JFrame implements LibWindow {
 
 	private static LibWindow[] allWindows = { LibrarySystemWindow.INSTANCE, LoginWindow.INSTANCE,
 			AllMemberIdsWindow.INSTANCE, AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE, UserSystem.INSTANCE,
-			LibraryMemberWindow.INSTANCE, BookWindow.INSTANCE, AuthorWindow.INSTANCE };
+			LibraryMemberWindow.INSTANCE, BookWindow.INSTANCE, AuthorWindow.INSTANCE, CheckOutBookWindow.INSTANCE };
 
 	public static void hideAllWindows() {
 		for (LibWindow frame : allWindows) {

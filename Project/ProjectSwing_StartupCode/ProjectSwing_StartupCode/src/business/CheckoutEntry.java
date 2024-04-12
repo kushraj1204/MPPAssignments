@@ -20,7 +20,10 @@ public class CheckoutEntry implements Serializable {
         this.dueReturnDate = returnDate;
         this.bookCopy = bookCopy;
     }
-
+    public CheckoutEntry( LocalDate returnDate, BookCopy bookCopy) {
+        this.dueReturnDate = returnDate;
+        this.bookCopy = bookCopy;
+    }
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
@@ -33,6 +36,9 @@ public class CheckoutEntry implements Serializable {
         return returnDate;
     }
 
+    public LocalDate getDueDate() {
+        return dueReturnDate;
+    }
     public BookCopy getBookCopy() {
         return bookCopy;
     }

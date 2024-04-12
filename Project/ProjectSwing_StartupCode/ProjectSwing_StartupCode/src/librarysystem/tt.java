@@ -22,7 +22,12 @@ import javax.swing.JWindow;
 
 import business.Address;
 import business.Author;
+import business.Book;
+import business.BookCopy;
+import business.CheckoutEntry;
+import business.CheckoutRecord;
 import business.ControllerInterface;
+import business.LibraryMember;
 import business.SystemController;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
@@ -62,15 +67,29 @@ import dataaccess.DataAccessFacade;
 public class tt {
 
 	public static void main(String args[]) {
-	
+
 		DataAccess da = new DataAccessFacade();
 		Address a = new Address("A", "b", "c", "d");
 		// LibraryMember lm = new LibraryMember(idMemberField.getText(),
 		// firstName.getText(), lastName.getText(),
 		// telephone.getText(), a);
 		Author b = new Author("a", "b", "c", a, "d");
-		da.saveNewAuthor(b);
-		
+		LibraryMember lm = new LibraryMember("aa", "aa", "aa", "ntel", a);
+		List<Author> auth = new ArrayList<Author>();
+		auth.add(b);
+		List<CheckoutEntry> ce = new ArrayList<CheckoutEntry>();
+
+		BookCopy bc = new business.BookCopy(new Book("a", "a", 1, auth), 2);
+		BookCopy bc1 = new business.BookCopy(new Book("b", "b", 1, auth), 3);
+		BookCopy bc2 = new business.BookCopy(new Book("c", "c", 1, auth), 2);
+
+		ce.add(new CheckoutEntry(null, bc));
+		ce.add(new CheckoutEntry(null, bc1));
+		ce.add(new CheckoutEntry(null, bc2));
+		CheckoutRecord cr = new CheckoutRecord("a", lm, ce);
+		da.checkoutBook(cr);
+
+		System.out.println();
 	}
 
 	private static final long serialVersionUID = 3257569511937880631L;

@@ -66,7 +66,53 @@ public class SystemController implements ControllerInterface {
 	}
 
 	@Override
-	public List<String[]> allAuhtorTable() {
+	public List<String[]> allCheckOutTable() {
+		// TODO Auto-generated method stub
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, CheckoutRecord> map = da.readCheckoutRecordsMap();
+		int cont = 0;
+		for (Map.Entry<String, CheckoutRecord> entry : map.entrySet()) {
+			cont += entry.getValue().getCheckoutEntries().size();
+		}
+		System.out.println("contco" + cont);
+		String[][] checkouts = new String[cont][5];
+		cont = 0;
+		for (Map.Entry<String, CheckoutRecord> entry : map.entrySet()) {
+			for (int i = 0; i < entry.getValue().getCheckoutEntries().size(); i++) {
+				System.out.println(
+						"entry.getValue().getCheckoutEntries().size()" + entry.getValue().getCheckoutEntries().size());
+				// checkouts[cont][4] =
+				// entry.getValue().getCheckoutEntries().get(i).getReturnDate().toString();
+				checkouts[cont][4] = "today";
+				checkouts[cont][3] = "yesterday";
+				// checkouts[cont][3] =
+				// entry.getValue().getCheckoutEntries().get(i).getDueDate().toString();
+				System.out.print("entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle();"
+						+ entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle());
+				checkouts[cont][2] = entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle();
+				checkouts[cont][1] = entry.getValue().getLibraryMember().getFirstName();
+				checkouts[cont][0] = entry.getValue().getId();
+				cont++;
+			}
+			System.out.println("contco" + cont);
+
+		}
+//		DataAccess da = new DataAccessFacade();
+//		HashMap<String, CheckoutRecord> map = da.readCheckoutRecordsMap();
+//		String[][] cos = new String[map.size()][2];
+//		int cont = 0;
+//		for (Map.Entry<String, CheckoutRecord> entry : map.entrySet()) {
+//			cos[cont][1] = entry.getValue().getLibraryMember().getFirstName();
+//			cos[cont][0] = entry.getValue().getId();
+//			cont++;
+//		}
+//
+		return Arrays.asList(checkouts);
+//		return Arrays.asList(cos);
+	}
+
+	@Override
+	public List<String[]> allAuthorTable() {
 		// TODO Auto-generated method stub
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, Author> map = da.readAuthorMap();
@@ -191,19 +237,19 @@ public class SystemController implements ControllerInterface {
 		HashMap<String, Book> map = da.readBooksMap();
 		return map.get(isbnBook);
 	}
-	
+
 	@Override
 	public List<Book> getBookbyisbns(List<String> isbnBooks) {
 		// TODO Auto-generated method stub
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, Book> map = da.readBooksMap();
-		List<Book> bookList=new ArrayList<>();
-		
-        for (Map.Entry<String, Book> entry : map.entrySet()) {
-        	if(isbnBooks.contains(entry.getValue().getIsbn()))
-        	bookList.add(entry.getValue());
-        }
-        
+		List<Book> bookList = new ArrayList<>();
+
+		for (Map.Entry<String, Book> entry : map.entrySet()) {
+			if (isbnBooks.contains(entry.getValue().getIsbn()))
+				bookList.add(entry.getValue());
+		}
+
 		return bookList;
 	}
 
@@ -213,195 +259,196 @@ public class SystemController implements ControllerInterface {
 		DataAccess da = new DataAccessFacade();
 		// da.deleteBook(idbook);
 	}
-	
-	@Override	
+
+	@Override
 	public Response checkoutBook(String lmId, String isbns) {
-        List<String> isbnList = List.of(isbns.split(","));
-        List<String> isbn = new ArrayList<>(new HashSet<>(isbnList));
-        LibraryMember lm = getLibraryMemberbyId(lmId);
-        if (lm == null) {
-            return Response.getRsp("Library member with given id not found", false);
-        }
-        List<Book> b = getBookbyisbns(isbn);
-        List<Book> availableBooks = getAvailableBooksFromList(b);
-        if (b.isEmpty()) {
-            return Response.getRsp("Books with given isbns not found", false);
-        }
-        if (availableBooks.isEmpty()) {
-            return Response.getRsp("Selected Books is not available currently", false);
-        }
-        CheckoutRecord cr = new CheckoutRecord(UUID.randomUUID().toString(), lm, new ArrayList<>());
-        List<CheckoutEntry> checkOutEntries = new ArrayList<>();
-        String checkoutMsg = "";
-        for (int i = 0; i < availableBooks.size(); i++) {
-            Book book = availableBooks.get(i);
-            BookCopy cp = book.getNextAvailableCopy();
-            LocalDate dueDate = LocalDate.now().plusDays(book.getMaxCheckoutLength());
-            checkOutEntries.add(new CheckoutEntry(cr, dueDate, cp
-            ));
-            checkoutMsg += "Book " + book.getTitle() + " with copyNo. " + cp.getCopyNum()
-                    + " issued to " + lm.getFirstName() + ". Due date is " + dueDate + ".\n";
-        }
-        cr.addCheckoutEntries(checkOutEntries);
-        boolean checkoutStatus = checkoutBook(cr);
-        if (!checkoutStatus) {
-            return Response.getRsp("Failed to checkout book.Try again later", false);
-        } else {
-            return Response.getRsp(checkoutMsg, true, cr);
-        }
-    }
+		List<String> isbnList = List.of(isbns.split(","));
+		List<String> isbn = new ArrayList<>(new HashSet<>(isbnList));
+		LibraryMember lm = getLibraryMemberbyId(lmId);
+		if (lm == null) {
+			return Response.getRsp("Library member with given id not found", false);
+		}
+		List<Book> b = getBookbyisbns(isbn);
+		List<Book> availableBooks = getAvailableBooksFromList(b);
+		if (b.isEmpty()) {
+			return Response.getRsp("Books with given isbns not found", false);
+		}
+		if (availableBooks.isEmpty()) {
+			return Response.getRsp("Selected Books is not available currently", false);
+		}
+		CheckoutRecord cr = new CheckoutRecord(UUID.randomUUID().toString(), lm, new ArrayList<>());
+		List<CheckoutEntry> checkOutEntries = new ArrayList<>();
+		String checkoutMsg = "";
+		for (int i = 0; i < availableBooks.size(); i++) {
+			Book book = availableBooks.get(i);
+			BookCopy cp = book.getNextAvailableCopy();
+			LocalDate dueDate = LocalDate.now().plusDays(book.getMaxCheckoutLength());
+			checkOutEntries.add(new CheckoutEntry(cr, dueDate, cp));
+			checkoutMsg += "Book " + book.getTitle() + " with copyNo. " + cp.getCopyNum() + " issued to "
+					+ lm.getFirstName() + ". Due date is " + dueDate + ".\n";
+		}
+		cr.addCheckoutEntries(checkOutEntries);
+		boolean checkoutStatus = checkoutBook(cr);
+		if (!checkoutStatus) {
+			return Response.getRsp("Failed to checkout book.Try again later", false);
+		} else {
+			return Response.getRsp(checkoutMsg, true, cr);
+		}
+	}
 
 	@Override
-    public boolean checkoutBook(CheckoutRecord cr) {
-        try {
-            DataAccess da = new DataAccessFacade();
-            da.checkoutBook(cr);
-            for (int i = 0; i < cr.getCheckoutEntries().size(); i++) {
-                da.updateBookCopyAvailability(cr.getCheckoutEntries().get(i).getBookCopy(), false);
-            }
-            return true;
-        } catch (Exception e) {
-            System.out.println(e.getLocalizedMessage());
-            return false;
-        }
-    }
+	public boolean checkoutBook(CheckoutRecord cr) {
+		try {
+			DataAccess da = new DataAccessFacade();
+			da.checkoutBook(cr);
+			for (int i = 0; i < cr.getCheckoutEntries().size(); i++) {
+				da.updateBookCopyAvailability(cr.getCheckoutEntries().get(i).getBookCopy(), false);
+			}
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getLocalizedMessage());
+			return false;
+		}
+	}
 
-    //below functions is not necessary for our current requirement, just kept as a room for enhancement if possible
+	// below functions is not necessary for our current requirement, just kept as a
+	// room for enhancement if possible
 	@Override
-    public Response returnBook(String lmId, String isbn, int copyNo) {
-        Response rsp = new Response();
-        LibraryMember lm = getLibraryMemberbyId(lmId);
-        if (lm == null) {
-            return Response.getRsp("Library member with given id not found", false);
-        }
-        Book b = getBookbyisbn(isbn);
-        if (b == null) {
-            return Response.getRsp("Book with given isbn not found", false);
-        }
-        BookCopy[] copies = b.getCopies();
-        BookCopy copy = null;
-        for (int i = 0; i < b.getNumCopies(); i++) {
-            if (copies[i].getCopyNum() == copyNo) {
-                copy = copies[i];
-            }
-        }
-        if (copy == null) {
-            return Response.getRsp("Book with given copy number doesnt exist", false);
-        }
-        CheckoutRecord cr = findCheckOutRecordBy(lm, b, copyNo);
-        if (cr == null) {
-            return Response.getRsp("Checkout with given params doesnt exist", false);
-        }
-        boolean bookReturnStatus = returnBook(cr, copyNo, b);
-        if (!bookReturnStatus) {
-            return Response.getRsp("Failed to complete process.Try again later", false);
-        } else {
-            return Response.getRsp("Book returned successfully.", true);
-        }
-    }
-    
-	@Override
-    public Response addBookCopies(String isbn, int count) {
-        Book book =getBookbyisbn(isbn);
-        Response rsp = new Response();
-        if (book == null) {
-            return Response.getRsp("Book with provided ISBN not found", false);
-        }
-        book.addCopies(count);
-        DataAccess da = new DataAccessFacade();
-        da.updateBook(book);
-        rsp.setMessage("Book copies added successfully");
-        return rsp;
-    }
+	public Response returnBook(String lmId, String isbn, int copyNo) {
+		Response rsp = new Response();
+		LibraryMember lm = getLibraryMemberbyId(lmId);
+		if (lm == null) {
+			return Response.getRsp("Library member with given id not found", false);
+		}
+		Book b = getBookbyisbn(isbn);
+		if (b == null) {
+			return Response.getRsp("Book with given isbn not found", false);
+		}
+		BookCopy[] copies = b.getCopies();
+		BookCopy copy = null;
+		for (int i = 0; i < b.getNumCopies(); i++) {
+			if (copies[i].getCopyNum() == copyNo) {
+				copy = copies[i];
+			}
+		}
+		if (copy == null) {
+			return Response.getRsp("Book with given copy number doesnt exist", false);
+		}
+		CheckoutRecord cr = findCheckOutRecordBy(lm, b, copyNo);
+		if (cr == null) {
+			return Response.getRsp("Checkout with given params doesnt exist", false);
+		}
+		boolean bookReturnStatus = returnBook(cr, copyNo, b);
+		if (!bookReturnStatus) {
+			return Response.getRsp("Failed to complete process.Try again later", false);
+		} else {
+			return Response.getRsp("Book returned successfully.", true);
+		}
+	}
 
 	@Override
-    public  boolean returnBook(CheckoutRecord cr, int copyNo, Book b) {
-        try {
-            List<CheckoutEntry> checkoutEntries = cr.getCheckoutEntries();
-            for (int i = 0; i < checkoutEntries.size(); i++) {
-                CheckoutEntry en = checkoutEntries.get(i);
-                if (en.getBookCopy().getCopyNum() == copyNo && en.getBookCopy().getBook().getIsbn().equals(b.getIsbn())) {
-                    DataAccess da = new DataAccessFacade();
-                    da.updateBookCopyAvailability(cr.getCheckoutEntries().get(i).getBookCopy(), true);
-                    da.updateCheckoutEntry(cr, b.getIsbn(), copyNo);
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+	public Response addBookCopies(String isbn, int count) {
+		Book book = getBookbyisbn(isbn);
+		Response rsp = new Response();
+		if (book == null) {
+			return Response.getRsp("Book with provided ISBN not found", false);
+		}
+		book.addCopies(count);
+		DataAccess da = new DataAccessFacade();
+		da.updateBook(book);
+		rsp.setMessage("Book copies added successfully");
+		return rsp;
+	}
 
 	@Override
-    public CheckoutRecord findCheckOutRecordBy(LibraryMember lm, Book b, int copyNo) {
-        DataAccess da = new DataAccessFacade();
-        HashMap<String, CheckoutRecord> checkoutRecordsMap = da.readCheckoutRecordsMap();
-        List<Map.Entry<String, CheckoutRecord>> entryList = new ArrayList<>(checkoutRecordsMap.entrySet());
-        ListIterator<Map.Entry<String, CheckoutRecord>> iterator = entryList.listIterator(entryList.size());
-
-        while (iterator.hasPrevious()) {
-            Map.Entry<String, CheckoutRecord> entry = iterator.previous();
-            LibraryMember libM = entry.getValue().getLibraryMember();
-            if (libM.getMemberId().equals(lm.getMemberId())) {
-                List<CheckoutEntry> entries = entry.getValue().getCheckoutEntries();
-                for (int i = 0; i < entries.size(); i++) {
-                    CheckoutEntry en = entries.get(i);
-                    if (en.getBookCopy().getCopyNum() == copyNo && en.getBookCopy().getBook().getIsbn().equals(b.getIsbn())) {
-                        return entry.getValue();
-                    }
-                }
-            }
-        }
-        return null;
-    }
+	public boolean returnBook(CheckoutRecord cr, int copyNo, Book b) {
+		try {
+			List<CheckoutEntry> checkoutEntries = cr.getCheckoutEntries();
+			for (int i = 0; i < checkoutEntries.size(); i++) {
+				CheckoutEntry en = checkoutEntries.get(i);
+				if (en.getBookCopy().getCopyNum() == copyNo
+						&& en.getBookCopy().getBook().getIsbn().equals(b.getIsbn())) {
+					DataAccess da = new DataAccessFacade();
+					da.updateBookCopyAvailability(cr.getCheckoutEntries().get(i).getBookCopy(), true);
+					da.updateCheckoutEntry(cr, b.getIsbn(), copyNo);
+				}
+			}
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 	@Override
-    public Response findCheckOutRecordsByMember(String memberId) {
-        DataAccess da = new DataAccessFacade();
-        List<CheckoutRecord> cr = new ArrayList<>();
-        HashMap<String, CheckoutRecord> checkoutRecordsMap = da.readCheckoutRecordsMap();
-        for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
-            CheckoutRecord value = entry.getValue();
-            if (value.getLibraryMember().getMemberId().equals(memberId)) {
-                cr.add(value);
-            }
-        }
-        Response rsp = Response.getRsp("", true, cr);
-        return rsp;
-    }
+	public CheckoutRecord findCheckOutRecordBy(LibraryMember lm, Book b, int copyNo) {
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, CheckoutRecord> checkoutRecordsMap = da.readCheckoutRecordsMap();
+		List<Map.Entry<String, CheckoutRecord>> entryList = new ArrayList<>(checkoutRecordsMap.entrySet());
+		ListIterator<Map.Entry<String, CheckoutRecord>> iterator = entryList.listIterator(entryList.size());
+
+		while (iterator.hasPrevious()) {
+			Map.Entry<String, CheckoutRecord> entry = iterator.previous();
+			LibraryMember libM = entry.getValue().getLibraryMember();
+			if (libM.getMemberId().equals(lm.getMemberId())) {
+				List<CheckoutEntry> entries = entry.getValue().getCheckoutEntries();
+				for (int i = 0; i < entries.size(); i++) {
+					CheckoutEntry en = entries.get(i);
+					if (en.getBookCopy().getCopyNum() == copyNo
+							&& en.getBookCopy().getBook().getIsbn().equals(b.getIsbn())) {
+						return entry.getValue();
+					}
+				}
+			}
+		}
+		return null;
+	}
 
 	@Override
-    public Response findCheckOutRecordsByBook(String isbn) {
-        DataAccess da = new DataAccessFacade();
-        List<CheckoutRecord> cr = new ArrayList<>();
-        HashMap<String, CheckoutRecord> checkoutRecordsMap = da.readCheckoutRecordsMap();
-        for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
-            CheckoutRecord value = entry.getValue();
-            List<CheckoutEntry> ce = value.getCheckoutEntries();
-            boolean hasAny = false;
-            for (int i = 0; i < ce.size(); i++) {
-                if (ce.get(i).getBookCopy().getBook().getIsbn().equals(isbn)) {
-                    hasAny = true;
-                } else {
-                    ce.remove(ce.get(i));
-                }
-            }
-            if (hasAny) {
-                cr.add(value);
-            }
-        }
-        Response rsp = Response.getRsp("", true, cr);
-        return rsp;
-    }
-    
-    public static List<Book> getAvailableBooksFromList(List<Book> b) {
-        List<Book> availableBooks = new ArrayList<>();
-        for (int i = 0; i < b.size(); i++) {
-            if (b.get(i).isAvailable())
-                availableBooks.add(b.get(i));
-        }
-        return availableBooks;
-    }
+	public Response findCheckOutRecordsByMember(String memberId) {
+		DataAccess da = new DataAccessFacade();
+		List<CheckoutRecord> cr = new ArrayList<>();
+		HashMap<String, CheckoutRecord> checkoutRecordsMap = da.readCheckoutRecordsMap();
+		for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
+			CheckoutRecord value = entry.getValue();
+			if (value.getLibraryMember().getMemberId().equals(memberId)) {
+				cr.add(value);
+			}
+		}
+		Response rsp = Response.getRsp("", true, cr);
+		return rsp;
+	}
 
+	@Override
+	public Response findCheckOutRecordsByBook(String isbn) {
+		DataAccess da = new DataAccessFacade();
+		List<CheckoutRecord> cr = new ArrayList<>();
+		HashMap<String, CheckoutRecord> checkoutRecordsMap = da.readCheckoutRecordsMap();
+		for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
+			CheckoutRecord value = entry.getValue();
+			List<CheckoutEntry> ce = value.getCheckoutEntries();
+			boolean hasAny = false;
+			for (int i = 0; i < ce.size(); i++) {
+				if (ce.get(i).getBookCopy().getBook().getIsbn().equals(isbn)) {
+					hasAny = true;
+				} else {
+					ce.remove(ce.get(i));
+				}
+			}
+			if (hasAny) {
+				cr.add(value);
+			}
+		}
+		Response rsp = Response.getRsp("", true, cr);
+		return rsp;
+	}
+
+	public static List<Book> getAvailableBooksFromList(List<Book> b) {
+		List<Book> availableBooks = new ArrayList<>();
+		for (int i = 0; i < b.size(); i++) {
+			if (b.get(i).isAvailable())
+				availableBooks.add(b.get(i));
+		}
+		return availableBooks;
+	}
 
 }
