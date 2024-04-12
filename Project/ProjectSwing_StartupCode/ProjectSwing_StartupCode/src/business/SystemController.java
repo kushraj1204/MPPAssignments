@@ -157,18 +157,57 @@ public class SystemController implements ControllerInterface {
 		return retval;
 	}
 
+//	@Override
+//	public void saveBook(Book b) {
+//		// TODO Auto-generated method stub
+//		DataAccess da = new DataAccessFacade();
+//		da.saveNewBook(b);
+//	}
+	
 	@Override
-	public void saveBook(Book b) {
+	public Response saveBook(Book b) {
 		// TODO Auto-generated method stub
+		try {
 		DataAccess da = new DataAccessFacade();
+		Book book=getBookbyisbn(b.getIsbn());
+		if(book!=null) {
+			return Response.getRsp("Book with given ISBN already exists. Add copies instead", false);
+		}
 		da.saveNewBook(b);
+		return Response.getRsp("Save book successfully", true);
+		}
+		catch(Exception e) {
+			return Response.getRsp("Unable to save book", false);
+		}
 	}
 
 	@Override
-	public void saveAuthor(Author b) {
+	public Response saveAuthor(Author b) {
 		// TODO Auto-generated method stub
 		DataAccess da = new DataAccessFacade();
-		da.saveNewAuthor(b);
+		Author auth=findAuthorByPhone(b.getTelephone());
+		if(auth!=null) {
+			return Response.getRsp("Author with given phone number already exists.", false);
+		}
+		try {
+			da.saveNewAuthor(b);
+		return Response.getRsp("Saved author successfully", true);
+		}
+		catch(Exception e) {
+			return Response.getRsp("Unable to add author", false);
+		}
+	}
+
+	private Author findAuthorByPhone(String telephone) {
+		// TODO Auto-generated method stub
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, Author> map = da.readAuthorMap();
+		for(Map.Entry<String,Author> entry:map.entrySet()) {
+			if(entry.getValue().getTelephone().equals(telephone)) {
+				return entry.getValue();
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -188,10 +227,31 @@ public class SystemController implements ControllerInterface {
 	}
 
 	@Override
-	public void saveLibraryMember(LibraryMember lm) {
+	public Response saveLibraryMember(LibraryMember lm) {
 		// TODO Auto-generated method stub
 		DataAccess da = new DataAccessFacade();
+		LibraryMember lMem=findLibraryMemberByPhone(lm.getTelephone());
+		if(lMem!=null) {
+			return Response.getRsp("Member with given phone already exists.", false);
+		}
+		try {
 		da.saveNewMember(lm);
+		return Response.getRsp("Saved member successfully", true);
+		}
+		catch(Exception e) {
+			return Response.getRsp("Unable to add member", false);
+		}
+	}
+
+	private LibraryMember findLibraryMemberByPhone(String telephone) {
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, LibraryMember> map = da.readMemberMap();
+		for(Map.Entry<String,LibraryMember> entry:map.entrySet()) {
+			if(entry.getValue().getTelephone().equals(telephone)) {
+				return entry.getValue();
+			}
+		}
+		return null;
 	}
 
 	@Override

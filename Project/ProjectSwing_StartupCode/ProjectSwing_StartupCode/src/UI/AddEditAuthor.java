@@ -27,6 +27,7 @@ import business.Author;
 import business.Book;
 import business.ControllerInterface;
 import business.LibraryMember;
+import business.Response;
 import business.SystemController;
 import dataaccess.Auth;
 import dataaccess.User;
@@ -207,12 +208,21 @@ public class AddEditAuthor extends JFrame {
 						a, bio.getText());
 				ArrayList<Author> authors = new ArrayList<Author>();
 				authors.add(b);
-
+				
 				ControllerInterface ci = new SystemController();
-				ci.saveAuthor(b);
-				dispose();
-				AuthorWindow.INSTANCE.refresh();
-				Util.centerFrameOnDesktop(BookWindow.INSTANCE);
+				Response resp=ci.saveAuthor(b);
+				if(resp.isStatus()) {
+					JOptionPane.showMessageDialog(AddEditAuthor.this, resp.getMessage(), "Info",
+							JOptionPane.INFORMATION_MESSAGE);
+					BookWindow.INSTANCE.refresh();
+					dispose();
+					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
+				}
+				else {
+					JOptionPane.showMessageDialog(AddEditAuthor.this, resp.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				
 			} else {
 				JOptionPane.showMessageDialog(AddEditAuthor.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);

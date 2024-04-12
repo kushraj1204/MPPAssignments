@@ -32,7 +32,7 @@ public interface ControllerInterface {
 
 	public String getPassword(String id);
 
-	public void saveLibraryMember(LibraryMember lm);
+	public Response saveLibraryMember(LibraryMember lm);
 
 	public void deleteLibraryMember(String string);
 
@@ -40,11 +40,11 @@ public interface ControllerInterface {
 
 	public Book getBookbyisbn(String isbnBook);
 
-	public void saveBook(Book b);
+	public Response saveBook(Book b);
 
 	public void deleteBook(String idbook);
 
-	public void saveAuthor(Author b);
+	public Response saveAuthor(Author b);
 
 	public Response findCheckOutRecordsByBook(String isbn);
 

@@ -34,6 +34,7 @@ import business.Author;
 import business.Book;
 import business.ControllerInterface;
 import business.LibraryMember;
+import business.Response;
 import business.SystemController;
 import dataaccess.Auth;
 import dataaccess.User;
@@ -409,10 +410,19 @@ public class AddEditBook extends JFrame {
 					c.addCopy();
 				}
 				ControllerInterface ci = new SystemController();
-				ci.saveBook(c);
-				BookWindow.INSTANCE.refresh();
-				dispose();
-				Util.centerFrameOnDesktop(BookWindow.INSTANCE);
+				Response resp=ci.saveBook(c);
+				if(resp.isStatus()) {
+					JOptionPane.showMessageDialog(AddEditBook.this, resp.getMessage(), "Info",
+							JOptionPane.INFORMATION_MESSAGE);
+					BookWindow.INSTANCE.refresh();
+					dispose();
+					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
+					
+				}
+				else {
+					JOptionPane.showMessageDialog(AddEditBook.this, resp.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			} else {
 				JOptionPane.showMessageDialog(AddEditBook.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);

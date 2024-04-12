@@ -125,8 +125,6 @@ public class LoginWindow extends JFrame implements LibWindow {
 					System.out.println(password.getText());
 					ci.login(username.getText(), password.getText());
 					if (SystemController.currentAuth != null) {
-						JOptionPane.showMessageDialog(LoginWindow.this, "Logged in successfully", "Success",
-								JOptionPane.INFORMATION_MESSAGE);
 						LibrarySystemWindow.hideAllWindows();
 						MajorWindow.INSTANCE.init();
 						Util.centerFrameOnDesktop(MajorWindow.INSTANCE);

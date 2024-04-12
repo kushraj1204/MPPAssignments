@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 import business.Address;
 import business.ControllerInterface;
 import business.LibraryMember;
+import business.Response;
 import business.SystemController;
 import dataaccess.Auth;
 import dataaccess.User;
@@ -224,10 +225,20 @@ public class AddEditLibraryMember extends JFrame {
 						telephone.getText(), a);
 
 				ControllerInterface ci = new SystemController();
-				ci.saveLibraryMember(lm);
-				LibraryMemberWindow.INSTANCE.refresh();
-				dispose();
-				Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
+				
+				Response resp=ci.saveLibraryMember(lm);
+				if(resp.isStatus()) {
+					JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Info",
+							JOptionPane.INFORMATION_MESSAGE);
+					BookWindow.INSTANCE.refresh();
+					dispose();
+					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
+				}
+				else {
+					JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				
 			} else {
 				JOptionPane.showMessageDialog(AddEditLibraryMember.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);
