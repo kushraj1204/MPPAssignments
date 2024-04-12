@@ -21,13 +21,13 @@ public class Main {
 			MajorWindow.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			ControllerInterface ci = new SystemController();
 
-//			try {
-//				ci.login("FELIPE", "lipe");
-//				// ci.login("100", "100");
-//			} catch (LoginException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			try {
+				ci.login("103", "111");
+				// ci.login("100", "100");
+			} catch (LoginException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 //			MajorWindow.INSTANCE.init();
 //			centerFrameOnDesktop(MajorWindow.INSTANCE);
 //			MajorWindow.INSTANCE.setVisible(true);

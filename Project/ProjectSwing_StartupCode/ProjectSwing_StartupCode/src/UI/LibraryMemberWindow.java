@@ -57,7 +57,7 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 	private final String ADDRESS = "Address";
 
 	// Title
-	private final String MAIN_LABEL = "Maintain Members";
+	private final String MAIN_LABEL = "Manage Members";
 
 	// Buttons
 	private final String ADD_BUTN = "Add";

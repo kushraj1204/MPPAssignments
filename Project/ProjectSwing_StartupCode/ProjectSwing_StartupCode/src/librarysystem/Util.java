@@ -76,54 +76,41 @@ public class Util {
 	}
 	
 	 public static boolean isValidISBN10(String isbn) {
-	        if (isbn == null || isbn.length() != 10) {
-	            return false;
-	        }
+	        isbn = isbn.replaceAll("[^0-9X]", "");
+	        if (isbn.length() != 10) return false;
 	        
 	        int sum = 0;
 	        for (int i = 0; i < 9; i++) {
-	            char digit = isbn.charAt(i);
-	            if (!Character.isDigit(digit)) {
-	                return false;
-	            }
-	            sum += (10 - i) * Character.getNumericValue(digit);
+	            int digit = isbn.charAt(i) - '0';
+	            if (digit < 0 || digit > 9) return false;
+	            sum += digit * (i + 1);
 	        }
 	        
-	        char lastChar = isbn.charAt(9);
-	        if (lastChar == 'X') {
-	            sum += 10;
-	        } else if (!Character.isDigit(lastChar)) {
-	            return false;
+	        if (isbn.charAt(9) == 'X') {
+	            sum += 10 * 10;
 	        } else {
-	            sum += Character.getNumericValue(lastChar);
+	            int digit = isbn.charAt(9) - '0';
+	            if (digit < 0 || digit > 9) return false;
+	            sum += digit * 10;
 	        }
 	        
 	        return sum % 11 == 0;
 	    }
 	    
+	    // Function to validate ISBN-13
 	    public static boolean isValidISBN13(String isbn) {
-	        if (isbn == null || isbn.length() != 13) {
-	            return false;
-	        }
-	        
-	        Pattern pattern = Pattern.compile("^\\d{13}$");
-	        Matcher matcher = pattern.matcher(isbn);
-	        if (!matcher.matches()) {
-	            return false;
-	        }
+	        isbn = isbn.replaceAll("[^0-9]", "");
+	        if (isbn.length() != 13) return false;
 	        
 	        int sum = 0;
 	        for (int i = 0; i < 12; i++) {
-	            int digit = Character.getNumericValue(isbn.charAt(i));
+	            int digit = isbn.charAt(i) - '0';
+	            if (digit < 0 || digit > 9) return false;
 	            sum += (i % 2 == 0) ? digit : digit * 3;
 	        }
 	        
-	        int checksum = 10 - (sum % 10);
-	        if (checksum == 10) {
-	            checksum = 0;
-	        }
-	        
-	        return checksum == Character.getNumericValue(isbn.charAt(12));
+	        int checkDigit = isbn.charAt(12) - '0';
+	        return (10 - (sum % 10)) % 10 == checkDigit;
 	    }
 	    
 	    public static boolean isValidISBN(String s) {

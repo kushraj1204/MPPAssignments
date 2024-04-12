@@ -197,6 +197,9 @@ public class SystemController implements ControllerInterface {
 			rs.setStatus(false);
 			rs.addFormFieldMessages("authors","Author Is Required While Creating Book");
 		}
+		if(!rs.isStatus()) {
+			rs.setMessage("Validation failed");
+		}
 		
 		
 	return rs;
@@ -211,7 +214,7 @@ public class SystemController implements ControllerInterface {
 		}
 		DataAccess da = new DataAccessFacade();
 		Author auth=findAuthorByPhone(b.getTelephone());
-		if(auth!=null) {
+		if(auth!=null && !auth.getidAuthor().equals(b.getidAuthor()) ) {
 			return Response.getRsp("Author with given phone number already exists.", false);
 		}
 		try {
@@ -304,7 +307,7 @@ public class SystemController implements ControllerInterface {
 			return rs;
 		}
 		LibraryMember lMem=findLibraryMemberByPhone(lm.getTelephone());
-		if(lMem!=null) {
+			if(lMem!=null && !lMem.getMemberId().equals(lm.getMemberId()) ) {
 			return Response.getRsp("Member with given phone already exists.", false);
 		}
 		try {

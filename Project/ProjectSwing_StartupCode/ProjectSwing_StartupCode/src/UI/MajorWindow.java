@@ -74,10 +74,10 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		book = new JMenu("Book");
 		menuBar.add(book);
-		books = new JMenuItem("Maintain Book");
+		books = new JMenuItem("Manage Books");
 		books.addActionListener(new maintainBooksListener());
 		book.add(books);
-		author = new JMenuItem("Author Book");
+		author = new JMenuItem("Manage Authors");
 		author.addActionListener(new maintainAuthorListener());
 		book.add(author);
 		checkout = new JMenuItem("Checkout Book");

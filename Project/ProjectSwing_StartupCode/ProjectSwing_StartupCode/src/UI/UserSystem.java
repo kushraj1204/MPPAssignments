@@ -50,7 +50,7 @@ public class UserSystem extends JFrame implements LibWindow {
 	private final String CREDENTIAl = "Credential";
 
 	// Title
-	private final String MAIN_LABEL = "Maintain Users";
+	private final String MAIN_LABEL = "Manage Users";
 
 	// Buttons
 	private final String ADD_BUTN = "Add";
