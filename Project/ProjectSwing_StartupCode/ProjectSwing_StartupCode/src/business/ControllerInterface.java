@@ -41,4 +41,22 @@ public interface ControllerInterface {
 	public void deleteBook(String idbook);
 
 	public void saveAuthor(Author b);
+
+	public List<Book> getBookbyisbns(List<String> isbnBooks);
+
+	public Response findCheckOutRecordsByBook(String isbn);
+
+	public Response findCheckOutRecordsByMember(String memberId);
+
+	public CheckoutRecord findCheckOutRecordBy(LibraryMember lm, Book b, int copyNo);
+
+	public boolean returnBook(CheckoutRecord cr, int copyNo, Book b);
+
+	public Response addBookCopies(String isbn, int count);
+
+	public Response returnBook(String lmId, String isbn, int copyNo);
+
+	public boolean checkoutBook(CheckoutRecord cr);
+
+	public Response checkoutBook(String lmId, String isbns);
 }

@@ -3,6 +3,7 @@ package dataaccess;
 import java.util.HashMap;
 
 import business.Book;
+import business.CheckoutRecord;
 import business.LibraryMember;
 import dataaccess.DataAccessFacade.StorageType;
 
@@ -14,5 +15,6 @@ public interface DataAccess {
 	public void saveNewUser(User user);
 	public void deleteUser(String idMember);
 	public void deleteLibraryMember(String idMember);
+	void checkoutBook(CheckoutRecord checkoutRecord);
 
 }

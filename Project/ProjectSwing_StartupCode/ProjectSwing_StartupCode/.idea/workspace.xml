@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2c2cb2e9-9307-4c89-b82d-eb06015825a1" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2esndkJ2M2jo3gXe8zAH1lnZIUs" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.BookExample.executor": "Run",
+    "Application.BookWindow.executor": "Run",
+    "Application.Driver.executor": "Run",
+    "Application.FormAndTableExample.executor": "Run",
+    "Application.LibraryMemberWindow.executor": "Run",
+    "Application.LibrarySystem.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.TestData.executor": "Run",
+    "Application.UI.Main.executor": "Run",
+    "Application.librarysystem.Main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/kush/MSC/MPP/Assignments/Project/ProjectSwing_StartupCode/ProjectSwing_StartupCode",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/dataaccess/storage" />
+      <recent name="$PROJECT_DIR$/src/business" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="business" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.SwingApplication">
+    <configuration name="LibraryMemberWindow" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="librarysystem.LibraryMemberWindow" />
+      <module name="ProjectSwing_StartupCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="librarysystem.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="business.Main" />
+      <module name="bibliothek" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="business.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SwingApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="librarysystem.SwingApplication" />
+      <module name="ProjectSwing_StartupCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="librarysystem.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UI.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="UI.Main" />
+      <module name="ProjectSwing_StartupCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="UI.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="librarysystem.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="librarysystem.Main" />
+      <module name="ProjectSwing_StartupCode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="librarysystem.Main" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.SwingApplication" />
+        <item itemvalue="Application.librarysystem.Main" />
+        <item itemvalue="Application.UI.Main" />
+        <item itemvalue="Application.LibraryMemberWindow" />
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-78a6f59c" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2c2cb2e9-9307-4c89-b82d-eb06015825a1" name="Changes" comment="" />
+      <created>1712702242309</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712702242309</updated>
+      <workItem from="1712702243368" duration="54000" />
+      <workItem from="1712702353027" duration="101000" />
+      <workItem from="1712702461838" duration="6662000" />
+      <workItem from="1712749715006" duration="4018000" />
+      <workItem from="1712753878002" duration="1276000" />
+      <workItem from="1712757436826" duration="6092000" />
+      <workItem from="1712764047287" duration="3508000" />
+      <workItem from="1712774538212" duration="4724000" />
+      <workItem from="1712779611536" duration="1419000" />
+      <workItem from="1712786207657" duration="274000" />
+      <workItem from="1712788197963" duration="11032000" />
+      <workItem from="1712803486073" duration="646000" />
+      <workItem from="1712837390321" duration="120000" />
+      <workItem from="1712837529746" duration="11750000" />
+      <workItem from="1712858529417" duration="1831000" />
+      <workItem from="1712863062608" duration="2877000" />
+      <workItem from="1712868668158" duration="1096000" />
+      <workItem from="1712869866268" duration="1999000" />
+      <workItem from="1712872139262" duration="3785000" />
+      <workItem from="1712879951011" duration="7680000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/business/Main.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/business/Main.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/business/Main.java</url>
+          <line>14</line>
+          <properties class="business.Main">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="business.model.CheckoutRecord" memberName="checkoutEntries" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+</project>

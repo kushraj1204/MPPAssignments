@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,12 +16,14 @@ import business.Author;
 import business.Book;
 import business.BookCopy;
 import business.LibraryMember;
+import business.CheckoutEntry;
+import business.CheckoutRecord;
 import dataaccess.DataAccessFacade.StorageType;
 
 public class DataAccessFacade implements DataAccess {
 
 	enum StorageType {
-		BOOKS, MEMBERS, USERS, AUTHOR;
+		BOOKS, MEMBERS, USERS, AUTHOR,CHECKOUTRECORD;
 	}
 	// Windows user can use
 
@@ -128,6 +131,54 @@ public class DataAccessFacade implements DataAccess {
 		authorList.forEach(author -> authors.put(author.getFirstName(), author));
 		saveToStorage(StorageType.AUTHOR, authors);
 	}
+	
+	 @Override
+	    public void checkoutBook(CheckoutRecord checkoutRecord) {
+	        HashMap<String, CheckoutRecord> checkoutRecords = readCheckoutRecordsMap();
+	        String checkoutRecordId = checkoutRecord.getId();
+	        checkoutRecords.put(checkoutRecordId, checkoutRecord);
+	        saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecords);
+	    }
+
+	    @Override
+	    public void updateBookCopyAvailability(BookCopy bookCopy,boolean availability) {
+	        HashMap<String, Book> books = readBooksMap();
+	        for (Map.Entry<String, Book> entry : books.entrySet()) {
+	            Book book = entry.getValue();
+	            if(book.getIsbn().equals(bookCopy.getBook().getIsbn())){
+	                for (int j = 0; j < book.getNumCopies(); j++) {
+	                    if(book.getCopies()[j].getCopyNum()==bookCopy.getCopyNum()){
+	                        BookCopy bCopy=book.getCopies()[j];
+	                        bCopy.changeAvailability();
+	                        book.getCopies()[j]=bCopy;
+	                        break;
+	                    }
+	                }
+	                break;
+	            }
+	        }
+	        saveToStorage(StorageType.BOOKS, books);
+	    }
+
+	    @Override
+	    public void updateCheckoutEntry(CheckoutRecord cr, String isbn, int copyNo) {
+	        HashMap<String, CheckoutRecord> checkoutRecordsMap = readCheckoutRecordsMap();//checkoutRecordsMap
+	        for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
+	            CheckoutRecord checkoutRecord = entry.getValue();
+	            if(checkoutRecord.getId().equals(cr.getId())){
+	                for (int j = 0; j < checkoutRecord.getCheckoutEntries().size(); j++) {
+	                    if(checkoutRecord.getCheckoutEntries().get(j).getBookCopy().getCopyNum()==copyNo){
+	                        CheckoutEntry e=checkoutRecord.getCheckoutEntries().get(j);
+	                        e.setReturnDate(LocalDate.now());
+	                        break;
+	                    }
+	                }
+	                break;
+	            }
+	        }
+	        saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecordsMap);
+	    }
+
 
 	static void saveToStorage(StorageType type, Object ob) {
 		ObjectOutputStream out = null;
@@ -215,5 +266,28 @@ public class DataAccessFacade implements DataAccess {
 		us.put(usID, author);
 		saveToStorage(StorageType.AUTHOR, us);
 	}
+
+	@SuppressWarnings("unchecked")
+	public HashMap<String, CheckoutRecord> readCheckoutRecordsMap() {
+		HashMap<String, CheckoutRecord> checkoutRecords = (HashMap<String, CheckoutRecord>) readFromStorage(
+				StorageType.CHECKOUTRECORD);
+		checkoutRecords = checkoutRecords == null ? new HashMap<String, CheckoutRecord>() : checkoutRecords;
+		return checkoutRecords;
+	}
+
+
+	@Override
+	public void updateBook(Book book) {
+		HashMap<String, Book> books = readBooksMap();
+		String bookId = book.getIsbn();
+		for (Map.Entry<String, Book> entry : books.entrySet()) {
+			Book value = entry.getValue();
+			if(value.getIsbn().equals(bookId)){
+				books.put(bookId,book);
+			}
+		}
+		saveToStorage(StorageType.BOOKS, books);
+	}
+
 
 }

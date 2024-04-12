@@ -7,19 +7,22 @@ import java.io.Serializable;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import business.Book;
 import business.BookCopy;
+import business.CheckoutEntry;
 import business.LibraryMember;
+import business.CheckoutRecord;
 import dataaccess.DataAccessFacade.StorageType;
 
 public class DataAccessFacade implements DataAccess {
 
 	enum StorageType {
-		BOOKS, MEMBERS, USERS;
+		BOOKS, MEMBERS, USERS,CHECKOUTRECORD;
 	}
 	// Windows user can use
 
@@ -104,6 +107,50 @@ public class DataAccessFacade implements DataAccess {
 		HashMap<String, LibraryMember> members = new HashMap<String, LibraryMember>();
 		memberList.forEach(member -> members.put(member.getMemberId(), member));
 		saveToStorage(StorageType.MEMBERS, members);
+	}
+	
+
+	@Override
+	public void checkoutBook(CheckoutRecord checkoutRecord) {
+		HashMap<String, CheckoutRecord> checkoutRecords = readCheckoutRecordsMap();
+		String checkoutRecordId = checkoutRecord.getId();
+		checkoutRecords.put(checkoutRecordId, checkoutRecord);
+		saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecords);
+	}
+	
+	@Override
+
+	public void updateBookCopyAvailability(BookCopy bookCopy, boolean availability) {
+		HashMap<String, Book> books = readBooksMap();
+
+		saveToStorage(StorageType.BOOKS, books);
+	}
+	
+	@Override
+	public void updateCheckoutEntry(CheckoutRecord cr, String isbn, int copyNo) {
+		HashMap<String, CheckoutRecord> checkoutRecordsMap = readCheckoutRecordsMap();//checkoutRecordsMap
+		for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
+			CheckoutRecord checkoutRecord = entry.getValue();
+			if(checkoutRecord.getId().equals(cr.getId())){
+				for (int j = 0; j < checkoutRecord.getCheckoutEntries().size(); j++) {
+					if(checkoutRecord.getCheckoutEntries().get(j).getBookCopy().getCopyNum()==copyNo){
+						CheckoutEntry e=checkoutRecord.getCheckoutEntries().get(j);
+						e.setReturnDate(LocalDate.now());
+						break;
+					}
+				}
+				break;
+			}
+		}
+		saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecordsMap);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public HashMap<String, CheckoutRecord> readCheckoutRecordsMap() {
+		HashMap<String, CheckoutRecord> checkoutRecords = (HashMap<String, CheckoutRecord>) readFromStorage(
+				StorageType.CHECKOUTRECORD);
+		checkoutRecords = checkoutRecords == null ? new HashMap<String, CheckoutRecord>() : checkoutRecords;
+		return checkoutRecords;
 	}
 
 	static void saveToStorage(StorageType type, Object ob) {
