@@ -3,6 +3,7 @@ package dataaccess;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import business.model.Address;
 import business.model.Author;
@@ -81,11 +82,11 @@ public class TestData {
 	@SuppressWarnings("serial")
 	public List<Author> allAuthors = new ArrayList<Author>() {
 		{
-			add(new Author("Joe", "Thomas", "641-445-2123", addresses.get(0), "A happy man is he."));
-			add(new Author("Sandra", "Thomas", "641-445-2123", addresses.get(0), "A happy wife is she."));
-			add(new Author("Nirmal", "Pugh", "641-919-3223", addresses.get(1), "Thinker of thoughts."));
-			add(new Author("Andrew", "Cleveland", "976-445-2232", addresses.get(2), "Author of childrens' books."));
-			add(new Author("Sarah", "Connor", "123-422-2663", addresses.get(3), "Known for her clever style."));
+			add(new Author("Joe", "Thomas", "641-445-2123", addresses.get(0), "A happy man is he.",UUID.randomUUID().toString()));
+			add(new Author("Sandra", "Thomas", "641-445-2123", addresses.get(0), "A happy wife is she.",UUID.randomUUID().toString()));
+			add(new Author("Nirmal", "Pugh", "641-919-3223", addresses.get(1), "Thinker of thoughts.",UUID.randomUUID().toString()));
+			add(new Author("Andrew", "Cleveland", "976-445-2232", addresses.get(2), "Author of childrens' books.",UUID.randomUUID().toString()));
+			add(new Author("Sarah", "Connor", "123-422-2663", addresses.get(3), "Known for her clever style.",UUID.randomUUID().toString()));
 		}
 	};
 	

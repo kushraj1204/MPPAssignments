@@ -2,6 +2,7 @@ package librarysystem;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +32,13 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 	
 
 	//Singleton class
-	private AllBookIdsWindow() {}
+	private AllBookIdsWindow() {
+		init();
+	}
+	
+	public JPanel getMainPanel() {
+		return mainPanel;
+	}
 	
 	public void init() {
 		mainPanel = new JPanel();
@@ -41,17 +48,20 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 		defineLowerPanel();
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(middlePanel, BorderLayout.CENTER);
-		mainPanel.add(lowerPanel, BorderLayout.SOUTH);
+		//mainPanel.add(lowerPanel, BorderLayout.SOUTH);
 		getContentPane().add(mainPanel);
 		isInitialized = true;
+		
+		setData();
 	}
 	
 	public void defineTopPanel() {
 		topPanel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) topPanel.getLayout();
+		flowLayout.setVgap(30);
 		JLabel AllIDsLabel = new JLabel("All Book IDs");
-		Util.adjustLabelFont(AllIDsLabel, Util.DARK_BLUE, true);
-		topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		topPanel.add(AllIDsLabel);
+		AllIDsLabel.setFont(new Font("Fira Code Retina", Font.BOLD, 20));
+		topPanel.add(AllIDsLabel);	
 	}
 	
 	public void defineMiddlePanel() {
@@ -76,12 +86,21 @@ public class AllBookIdsWindow extends JFrame implements LibWindow {
 	class BackToMainListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
-			LibrarySystemWindow.hideAllWindows();
-			LibrarySystemWindow.INSTANCE.setVisible(true);
+			LibrarySystem.hideAllWindows();
+			LibrarySystem.INSTANCE.setVisible(true);
     		
 		}
 	}
 	
+	public void setData() {
+		List<String> ids = ci.allBookIds();
+		Collections.sort(ids);
+		StringBuilder sb = new StringBuilder();
+		for (String s : ids) {
+			sb.append(s + "\n");
+		}
+		setData(sb.toString());
+	}
 	public void setData(String data) {
 		textArea.setText(data);
 	}

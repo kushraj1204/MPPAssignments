@@ -6,29 +6,15 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import business.ControllerInterface;
-import business.LoginException;
-import business.SystemController;
-
 public class Main {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
-
-			MajorWindow.INSTANCE.setTitle("Sample Library Application");
-			MajorWindow.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			ControllerInterface ci = new SystemController();
-
-			try {
-				ci.login("101", "xyz");
-				// ci.login("100", "100");
-			} catch (LoginException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			MajorWindow.INSTANCE.init();
-			centerFrameOnDesktop(MajorWindow.INSTANCE);
-			MajorWindow.INSTANCE.setVisible(true);
+			LibrarySystem.INSTANCE.setTitle("Bibliothek-A Library Management System");
+			LibrarySystem.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			LibrarySystem.INSTANCE.init();
+			centerFrameOnDesktop(LibrarySystem.INSTANCE);
+			LibrarySystem.INSTANCE.setVisible(true);
 		});
 	}
 
