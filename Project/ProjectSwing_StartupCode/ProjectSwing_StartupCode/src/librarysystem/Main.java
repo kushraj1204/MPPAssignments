@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import UI.LoginWindow;
 import UI.MajorWindow;
 import business.ControllerInterface;
 import business.LoginException;
@@ -20,16 +21,19 @@ public class Main {
 			MajorWindow.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			ControllerInterface ci = new SystemController();
 
-			try {
-				ci.login("101", "xyz");
-				// ci.login("100", "100");
-			} catch (LoginException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			MajorWindow.INSTANCE.init();
-			centerFrameOnDesktop(MajorWindow.INSTANCE);
-			MajorWindow.INSTANCE.setVisible(true);
+//			try {
+//				ci.login("FELIPE", "lipe");
+//				// ci.login("100", "100");
+//			} catch (LoginException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			MajorWindow.INSTANCE.init();
+//			centerFrameOnDesktop(MajorWindow.INSTANCE);
+//			MajorWindow.INSTANCE.setVisible(true);
+			LoginWindow.INSTANCE.init();
+			centerFrameOnDesktop(LoginWindow.INSTANCE);
+			LoginWindow.INSTANCE.setVisible(true);
 		});
 	}
 

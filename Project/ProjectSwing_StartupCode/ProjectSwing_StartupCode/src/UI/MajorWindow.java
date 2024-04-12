@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import business.ControllerInterface;
@@ -27,17 +28,6 @@ public class MajorWindow extends JFrame implements LibWindow {
 	JMenuItem userSystems, librarymember, books, checkout, copy, logoutit, author;
 	String pathToImage;
 	private boolean isInitialized = false;
-
-	private static LibWindow[] allWindows = { LibrarySystemWindow.INSTANCE, LoginWindow.INSTANCE,
-			AllMemberIdsWindow.INSTANCE, AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE
-
-	};
-
-	public static void hideAllWindows() {
-		for (LibWindow frame : allWindows) {
-			frame.setVisible(false);
-		}
-	}
 
 	private MajorWindow() {
 	}
@@ -81,13 +71,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 		menuBar.add(admin);
 		userSystems = new JMenuItem("User Systems");
 		userSystems.addActionListener(new userSystemListener());
-		// allBookIds = new JMenuItem("All Book Ids");
-		// allBookIds.addActionListener(new AllBookIdsListener());
-		// allMemberIds = new JMenuItem("All Member Ids");
-		// allMemberIds.addActionListener(new AllMemberIdsListener());
-		// options.add(login);
-		// options.add(allBookIds);
-		// options.add(allMemberIds);
+
 		book = new JMenu("Book");
 		menuBar.add(book);
 		books = new JMenuItem("Maintain Book");
@@ -117,11 +101,11 @@ public class MajorWindow extends JFrame implements LibWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
+			SystemController.currentAuth = null;
 			LibrarySystemWindow.hideAllWindows();
-			LoginWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
 			LoginWindow.INSTANCE.setVisible(true);
-			SystemController.currentAuth = null;
+			
 		}
 	}
 
@@ -129,11 +113,14 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			LibrarySystemWindow.hideAllWindows();
-			CheckOutBookWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
-			CheckOutBookWindow.INSTANCE.setVisible(true);
+			if (!SystemController.currentAuth.toString().equals("ADMIN")) {
+				LibrarySystemWindow.hideAllWindows();
+				CheckOutBookWindow.INSTANCE.init();
+				Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
+				CheckOutBookWindow.INSTANCE.setVisible(true);
+			} else
+				JOptionPane.showMessageDialog(MajorWindow.this, "Forbidden section!", "Error",
+						JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -141,11 +128,15 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			LibrarySystemWindow.hideAllWindows();
-			LibraryMemberWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
-			LibraryMemberWindow.INSTANCE.setVisible(true);
+			if (!SystemController.currentAuth.toString().equals("LIBRARIAN")) {
+				LibrarySystemWindow.hideAllWindows();
+				LibraryMemberWindow.INSTANCE.init();
+				Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
+				LibraryMemberWindow.INSTANCE.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(MajorWindow.this, "Forbidden section!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
@@ -154,10 +145,16 @@ public class MajorWindow extends JFrame implements LibWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			LibrarySystemWindow.hideAllWindows();
-			AuthorWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(AuthorWindow.INSTANCE);
-			AuthorWindow.INSTANCE.setVisible(true);
+			if (!SystemController.currentAuth.toString().equals("LIBRARIAN")) {
+				LibrarySystemWindow.hideAllWindows();
+				AuthorWindow.INSTANCE.init();
+				Util.centerFrameOnDesktop(AuthorWindow.INSTANCE);
+				AuthorWindow.INSTANCE.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(MajorWindow.this, "Forbidden section!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
 		}
 	}
 
@@ -165,11 +162,15 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			LibrarySystemWindow.hideAllWindows();
-			UserSystem.INSTANCE.init();
-			Util.centerFrameOnDesktop(UserSystem.INSTANCE);
-			UserSystem.INSTANCE.setVisible(true);
+			if (!SystemController.currentAuth.toString().equals("LIBRARIAN")) {
+				LibrarySystemWindow.hideAllWindows();
+				UserSystem.INSTANCE.init();
+				Util.centerFrameOnDesktop(UserSystem.INSTANCE);
+				UserSystem.INSTANCE.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(MajorWindow.this, "Forbidden section!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
@@ -177,12 +178,17 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			LibrarySystemWindow.hideAllWindows();
-			BookWindow.INSTANCE.init();
-			Util.centerFrameOnDesktop(BookWindow.INSTANCE);
-			BookWindow.INSTANCE.setVisible(true);
+			if (!SystemController.currentAuth.toString().equals("LIBRARIAN")) {
+				LibrarySystemWindow.hideAllWindows();
+				BookWindow.INSTANCE.init();
+				Util.centerFrameOnDesktop(BookWindow.INSTANCE);
+				BookWindow.INSTANCE.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(MajorWindow.this, "Forbidden section!", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
+
 	}
 
 	@Override
@@ -193,7 +199,6 @@ public class MajorWindow extends JFrame implements LibWindow {
 	@Override
 	public void isInitialized(boolean val) {
 		isInitialized = val;
-
 	}
 
 }
