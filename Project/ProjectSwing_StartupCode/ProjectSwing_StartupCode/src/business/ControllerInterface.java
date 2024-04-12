@@ -15,12 +15,6 @@ public interface ControllerInterface {
 	public List<String> allBookIds();
 
 	public List<String[]> allUsers();
-
-	public void saveUser(String a, String b, Auth c);
-
-	public void deleteUser(String valueAt);
-
-	public String getPassword(String id);
 	
 	public List<String[]> allMemberIdsTable();
 
@@ -29,6 +23,14 @@ public interface ControllerInterface {
 	public List<String[]> allAuthorTable();
 	
 	public List<String[]> allCheckOutTable();
+	
+	public List<Book> getBookbyisbns(List<String> isbnBooks);
+
+	public void saveUser(String a, String b, Auth c);
+
+	public void deleteUser(String valueAt);
+
+	public String getPassword(String id);
 
 	public void saveLibraryMember(LibraryMember lm);
 
@@ -43,8 +45,6 @@ public interface ControllerInterface {
 	public void deleteBook(String idbook);
 
 	public void saveAuthor(Author b);
-
-	public List<Book> getBookbyisbns(List<String> isbnBooks);
 
 	public Response findCheckOutRecordsByBook(String isbn);
 

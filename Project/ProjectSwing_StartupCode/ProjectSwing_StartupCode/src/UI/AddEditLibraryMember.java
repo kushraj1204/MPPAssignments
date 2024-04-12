@@ -9,6 +9,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,18 +33,18 @@ public class AddEditLibraryMember extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	/** final value of label will be set in the constructor */
-	private String mainLabel = " Library Member";
+	private String mainLabel = "Library Member";
 	private final String SAVE_BUTN = "Save";
 	private final String BACK_BUTN = "Close";
 
 	private JTextField idMemberField;
 	private JTextField firstName;
 	private JTextField lastName;
-	private JTextField telephone;
+	private JNumberTextField telephone;
 	private JTextField street;
 	private JTextField city;
 	private JTextField state;
-	private JTextField zip;
+	private JNumberTextField zip;
 
 	/** value is "Add New" or "Edit" */
 	private String addOrEdit = GuiControl.ADD_NEW;
@@ -52,15 +53,15 @@ public class AddEditLibraryMember extends JFrame {
 	private Properties fieldValues;
 
 	// JPanels
-	JPanel mainPanel;
-	JPanel upper, middle, lower;
+	JPanel mainPanellm;
+	JPanel upperlm, middlelm, lowerlm;
 
 	public AddEditLibraryMember(String addOrEdit, Properties fieldValues) {
 		this.addOrEdit = addOrEdit;
 		this.fieldValues = fieldValues;
 		initializeWindow();
 		defineMainPanel();
-		getContentPane().add(mainPanel);
+		getContentPane().add(mainPanellm);
 
 	}
 
@@ -72,30 +73,30 @@ public class AddEditLibraryMember extends JFrame {
 	}
 
 	private void defineMainPanel() {
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.setBackground(GuiControl.FILLER_COLOR);
-		mainPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
+		mainPanellm = new JPanel();
+		mainPanellm.setLayout(new BorderLayout());
+		mainPanellm.setBackground(GuiControl.FILLER_COLOR);
+		mainPanellm.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 		defineUpperPanel();
 		defineMiddlePanel();
 		defineLowerPanel();
-		mainPanel.add(upper, BorderLayout.NORTH);
-		mainPanel.add(middle, BorderLayout.CENTER);
-		mainPanel.add(lower, BorderLayout.SOUTH);
+		mainPanellm.add(upperlm, BorderLayout.NORTH);
+		mainPanellm.add(middlelm, BorderLayout.CENTER);
+		mainPanellm.add(lowerlm, BorderLayout.SOUTH);
 
 	}
 
 	// label
 	public void defineUpperPanel() {
-		upper = new JPanel();
-		upper.setBackground(GuiControl.FILLER_COLOR);
-		upper.setLayout(new FlowLayout(FlowLayout.CENTER));
+		upperlm = new JPanel();
+		upperlm.setBackground(GuiControl.FILLER_COLOR);
+		upperlm.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		JLabel mainLabel = new JLabel(finalMainLabelName());
 		Font f = GuiControl.makeVeryLargeFont(mainLabel.getFont());
 		f = GuiControl.makeBoldFont(f);
 		mainLabel.setFont(f);
-		upper.add(mainLabel);
+		upperlm.add(mainLabel);
 	}
 
 	private String finalMainLabelName() {
@@ -104,12 +105,12 @@ public class AddEditLibraryMember extends JFrame {
 
 	// table
 	public void defineMiddlePanel() {
-		middle = new JPanel();
-		middle.setBackground(GuiControl.FILLER_COLOR);
-		middle.setLayout(new FlowLayout(FlowLayout.CENTER));
+		middlelm = new JPanel();
+		middlelm.setBackground(GuiControl.FILLER_COLOR);
+		middlelm.setLayout(new FlowLayout(FlowLayout.CENTER));
 		JPanel gridPanel = new JPanel();
 		gridPanel.setBackground(GuiControl.SCREEN_BACKGROUND);
-		middle.add(gridPanel);
+		middlelm.add(gridPanel);
 		GridLayout gl = new GridLayout(8, 4);
 		gl.setHgap(8);
 		gl.setVgap(8);
@@ -119,13 +120,17 @@ public class AddEditLibraryMember extends JFrame {
 		String labelName = "id LibraryMember";
 		makeLabel(gridPanel, labelName);
 		idMemberField = new JTextField(15);
-		idMemberField.setText(fieldValues.getProperty(labelName));
+		if (fieldValues.getProperty(labelName) != null)
+			idMemberField.setText(fieldValues.getProperty(labelName));
+		else
+			idMemberField.setText(UUID.randomUUID().toString());
+
 		gridPanel.add(idMemberField);
-		idMemberField.setEditable(true);
+		idMemberField.setEditable(false);
 
 		labelName = "First Name";
 		makeLabel(gridPanel, labelName);
-		firstName = new JTextField(15);
+		firstName = new JTextField(20);
 		gridPanel.add(firstName);
 
 		// catalog group is different from the other fields
@@ -133,22 +138,22 @@ public class AddEditLibraryMember extends JFrame {
 		// so it is set differently
 		labelName = "Last Name";
 		makeLabel(gridPanel, labelName);
-		lastName = new JTextField(15);
+		lastName = new JTextField(20);
 		gridPanel.add(lastName);
 
 		labelName = "Telephone";
 		makeLabel(gridPanel, labelName);
-		telephone = new JTextField(15);
+		telephone = new JNumberTextField();
 		gridPanel.add(telephone);
 
 		labelName = "Street";
 		makeLabel(gridPanel, labelName);
-		street = new JTextField(15);
+		street = new JTextField(20);
 		gridPanel.add(street);
 
 		labelName = "city";
 		makeLabel(gridPanel, labelName);
-		city = new JTextField(15);
+		city = new JTextField(20);
 		gridPanel.add(city);
 
 		labelName = "state";
@@ -158,7 +163,7 @@ public class AddEditLibraryMember extends JFrame {
 
 		labelName = "zip";
 		makeLabel(gridPanel, labelName);
-		zip = new JTextField(15);
+		zip = new JNumberTextField();
 		gridPanel.add(zip);
 
 		if (fieldValues.getProperty("id LibraryMember") != null) {
@@ -187,7 +192,7 @@ public class AddEditLibraryMember extends JFrame {
 
 		// create lower panel
 		JButton[] buttons = { saveButton, backButton };
-		lower = GuiControl.createStandardButtonPanel(buttons);
+		lowerlm = GuiControl.createStandardButtonPanel(buttons);
 	}
 
 	private void makeLabel(JPanel p, String s) {
@@ -220,8 +225,8 @@ public class AddEditLibraryMember extends JFrame {
 
 				ControllerInterface ci = new SystemController();
 				ci.saveLibraryMember(lm);
-				dispose();
 				LibraryMemberWindow.INSTANCE.refresh();
+				dispose();
 				Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
 			} else {
 				JOptionPane.showMessageDialog(AddEditLibraryMember.this, "Invalid field on form!", "Error",

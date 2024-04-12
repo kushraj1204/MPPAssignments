@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -39,6 +40,7 @@ public class AddEditAuthor extends JFrame {
 	private final String SAVE_BUTN = "Save";
 	private final String BACK_BUTN = "Close";
 
+	private JTextField idAuthor;
 	private JTextField firstName;
 	private JTextField lastName;
 	private JTextField telephone;
@@ -115,7 +117,14 @@ public class AddEditAuthor extends JFrame {
 		gridPanel.setLayout(gl);
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
-		String labelName = "First Name";
+		String labelName = "id Author";
+		makeLabel(gridPanel, labelName);
+		idAuthor = new JTextField(15);
+		idAuthor.setText(UUID.randomUUID().toString());
+		gridPanel.add(idAuthor);
+		idAuthor.setEditable(false);
+
+		labelName = "First Name";
 		makeLabel(gridPanel, labelName);
 		firstName = new JTextField(15);
 		firstName.setText(fieldValues.getProperty(labelName));
@@ -194,7 +203,8 @@ public class AddEditAuthor extends JFrame {
 				// LibraryMember lm = new LibraryMember(idMemberField.getText(),
 				// firstName.getText(), lastName.getText(),
 				// telephone.getText(), a);
-				Author b = new Author(firstName.getText(), lastName.getText(), telephone.getText(), a, bio.getText());
+				Author b = new Author(idAuthor.getText(), firstName.getText(), lastName.getText(), telephone.getText(),
+						a, bio.getText());
 				ArrayList<Author> authors = new ArrayList<Author>();
 				authors.add(b);
 

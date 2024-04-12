@@ -45,6 +45,7 @@ public class AuthorWindow extends JFrame implements LibWindow {
 	JPanel upperauthors, middleauthors, comboPanelauthors, lowerauthors;
 
 	// Columns
+	private final String IDAUTHOR = "id author";
 	private final String FIRSTNAME = "first name";
 	private final String LASTNAME = "last name";
 	private final String BIO = "bio";
@@ -61,21 +62,12 @@ public class AuthorWindow extends JFrame implements LibWindow {
 	private final String BACK_TO_MAIN = "Back to Main";
 
 	// table config
-	private final String[] DEFAULT_COLUMN_HEADERS = { FIRSTNAME, LASTNAME, BIO, TELEPHONE };
+	private final String[] DEFAULT_COLUMN_HEADERS = { IDAUTHOR, FIRSTNAME, LASTNAME, BIO, TELEPHONE };
 	private final int TABLE_WIDTH = GuiControl.SCREEN_WIDTH;
 	private final int DEFAULT_TABLE_HEIGHT = Math.round(0.75f * GuiControl.SCREEN_HEIGHT);
 
 	// these numbers specify relative widths of the columns -- they must add up to 1
-	private final float[] COL_WIDTH_PROPORTIONS = { 0.3f, 0.2f, 0.2f, 0.3f };
-
-	private static LibWindow[] allWindows = { AuthorWindow.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
-			AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE };
-
-	public static void hideAllWindows() {
-		for (LibWindow frame : allWindows) {
-			frame.setVisible(false);
-		}
-	}
+	private final float[] COL_WIDTH_PROPORTIONS = { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f };
 
 	public void init() {
 		initializeWindow();
@@ -124,12 +116,12 @@ public class AuthorWindow extends JFrame implements LibWindow {
 		JButton editButton = new JButton(EDIT_BUTN);
 		// editButton.addActionListener(new EditButtonListener());
 		editButton.setEnabled(false);
-		
+
 		// delete button
 		JButton deleteButton = new JButton(DELETE_BUTN);
 		// deleteButton.addActionListener(new DeleteButtonListener());
 		deleteButton.setEnabled(false);
-		
+
 		// search button
 		JButton searchButton = new JButton(SEARCH_BUTN);
 		// searchButton.addActionListener(new SearchButtonListener());

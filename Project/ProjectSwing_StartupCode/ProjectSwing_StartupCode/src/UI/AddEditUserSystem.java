@@ -198,10 +198,10 @@ public class AddEditUserSystem extends JFrame {
 
 			if (idUserNameField.getText().length() > 0 && PasswordField.getPassword().length > 0) {
 				ControllerInterface ci = new SystemController();
-				ci.saveUser(idUserNameField.getText(),new String(PasswordField.getPassword()),
+				ci.saveUser(idUserNameField.getText(), new String(PasswordField.getPassword()),
 						(Auth) AuthGroupField.getSelectedItem());
-				dispose();
 				UserSystem.INSTANCE.refresh();
+				dispose();
 				Util.centerFrameOnDesktop(UserSystem.INSTANCE);
 			} else {
 				JOptionPane.showMessageDialog(AddEditUserSystem.this, "Invalid field on form!", "Error",

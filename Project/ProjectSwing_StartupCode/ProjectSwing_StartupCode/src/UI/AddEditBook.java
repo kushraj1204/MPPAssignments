@@ -68,6 +68,7 @@ public class AddEditBook extends JFrame {
 	CustomTableModel modelauthors, modelauthorschoosed;
 
 	// Columns
+	private final String IDAUTHOR = "id author";
 	private final String FIRSTNAME = "first name";
 	private final String LASTNAME = "last name";
 	private final String BIO = "bio";
@@ -77,12 +78,12 @@ public class AddEditBook extends JFrame {
 	private final String MAIN_LABEL = "Maintain Authors";
 
 	// table config
-	private final String[] DEFAULT_COLUMN_HEADERS = { FIRSTNAME, LASTNAME, BIO, TELEPHONE };
+	private final String[] DEFAULT_COLUMN_HEADERS = { IDAUTHOR, FIRSTNAME, LASTNAME, BIO, TELEPHONE };
 	private final int TABLE_WIDTH = GuiControl.SCREEN_WIDTH;
 	private final int DEFAULT_TABLE_HEIGHT = Math.round(0.75f * GuiControl.SCREEN_HEIGHT);
 
 	// these numbers specify relative widths of the columns -- they must add up to 1
-	private final float[] COL_WIDTH_PROPORTIONS = { 0.3f, 0.2f, 0.2f, 0.3f };
+	private final float[] COL_WIDTH_PROPORTIONS = { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f };
 
 	// JPanels
 	JPanel mainPanel;
@@ -256,7 +257,8 @@ public class AddEditBook extends JFrame {
 //				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 2));
 //				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 3));
 
-				String[][] author = new String[1][4];
+				String[][] author = new String[1][5];
+				author[0][4] = (String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 4);
 				author[0][3] = (String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 3);
 				author[0][2] = (String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 2);
 				author[0][1] = (String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 1);
@@ -393,11 +395,11 @@ public class AddEditBook extends JFrame {
 				// LibraryMember lm = new LibraryMember(idMemberField.getText(),
 				// firstName.getText(), lastName.getText(),
 				// telephone.getText(), a);
-				Author b = new Author("a", "b", "c", a, "d");
+				// Author b = new Author("a", "b", "c", a, "d");
 				ArrayList<Author> authors = new ArrayList<Author>();
 				for (int i = 0; i < dataBooksChoosed.size(); i++) {
 					Author tmp = new Author(dataBooksChoosed.get(i)[0], dataBooksChoosed.get(i)[1],
-							dataBooksChoosed.get(i)[2], a, dataBooksChoosed.get(i)[2]);
+							dataBooksChoosed.get(i)[2], dataBooksChoosed.get(i)[3], a, dataBooksChoosed.get(i)[4]);
 					// System.out.println(dataBooksChoosed.get(i)[0]);
 					authors.add(tmp);
 				}

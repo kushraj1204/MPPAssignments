@@ -29,7 +29,6 @@ public class SystemController implements ControllerInterface {
 			throw new LoginException("Password incorrect");
 		}
 		currentAuth = map.get(id).getAuthorization();
-
 	}
 
 	public String getPassword(String id) {
@@ -79,39 +78,19 @@ public class SystemController implements ControllerInterface {
 		cont = 0;
 		for (Map.Entry<String, CheckoutRecord> entry : map.entrySet()) {
 			for (int i = 0; i < entry.getValue().getCheckoutEntries().size(); i++) {
-				System.out.println(
-						"entry.getValue().getCheckoutEntries().size()" + entry.getValue().getCheckoutEntries().size());
 				if (entry.getValue().getCheckoutEntries().get(i).getReturnDate() != null)
 					checkouts[cont][4] = "" + entry.getValue().getCheckoutEntries().get(i).getReturnDate();
 				else
 					checkouts[cont][4] = "";
-				// System.out.println("return
-				// date"+entry.getValue().getCheckoutEntries().get(i).getDueDate());
-				// checkouts[cont][4] = "today";
-				// checkouts[cont][3] = "yesterday";
 				checkouts[cont][3] = "" + entry.getValue().getCheckoutEntries().get(i).getDueDate();
-				System.out.print("entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle();"
-						+ entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle());
 				checkouts[cont][2] = entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle();
 				checkouts[cont][1] = entry.getValue().getLibraryMember().getFirstName();
 				checkouts[cont][0] = entry.getValue().getId();
 				cont++;
 			}
-			System.out.println("contco" + cont);
-
 		}
-//		DataAccess da = new DataAccessFacade();
-//		HashMap<String, CheckoutRecord> map = da.readCheckoutRecordsMap();
-//		String[][] cos = new String[map.size()][2];
-//		int cont = 0;
-//		for (Map.Entry<String, CheckoutRecord> entry : map.entrySet()) {
-//			cos[cont][1] = entry.getValue().getLibraryMember().getFirstName();
-//			cos[cont][0] = entry.getValue().getId();
-//			cont++;
-//		}
-//
+
 		return Arrays.asList(checkouts);
-//		return Arrays.asList(cos);
 	}
 
 	@Override
@@ -119,13 +98,14 @@ public class SystemController implements ControllerInterface {
 		// TODO Auto-generated method stub
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, Author> map = da.readAuthorMap();
-		String[][] authors = new String[map.size()][4];
+		String[][] authors = new String[map.size()][5];
 		int cont = 0;
 		for (Map.Entry<String, Author> entry : map.entrySet()) {
-			authors[cont][3] = entry.getValue().getTelephone();
-			authors[cont][2] = entry.getValue().getBio();
-			authors[cont][1] = entry.getValue().getLastName();
-			authors[cont][0] = entry.getValue().getFirstName();
+			authors[cont][4] = entry.getValue().getTelephone();
+			authors[cont][3] = entry.getValue().getBio();
+			authors[cont][2] = entry.getValue().getLastName();
+			authors[cont][1] = entry.getValue().getFirstName();
+			authors[cont][0] = entry.getValue().getidAuthor();
 			cont++;
 		}
 
@@ -144,9 +124,8 @@ public class SystemController implements ControllerInterface {
 			books[cont][3] = "" + entry.getValue().getMaxCheckoutLength();
 			tmpname = "";
 			for (int i = 0; i < entry.getValue().getAuthors().size(); i++) {
-				tmpname += "Author " + (i + 1) + ": " + entry.getValue().getAuthors().get(i).getFirstName()+" ";
+				tmpname += "Author " + (i + 1) + ": " + entry.getValue().getAuthors().get(i).getFirstName() + " ";
 			}
-			// books[cont][2] = entry.getValue().getAuthors().get(0).getFirstName();
 			books[cont][2] = tmpname;
 			books[cont][1] = entry.getValue().getTitle();
 			books[cont][0] = entry.getValue().getIsbn();
@@ -167,7 +146,6 @@ public class SystemController implements ControllerInterface {
 			Users1[cont][0] = entry.getValue().getId();
 			cont++;
 		}
-
 		return Arrays.asList(Users1);
 	}
 
