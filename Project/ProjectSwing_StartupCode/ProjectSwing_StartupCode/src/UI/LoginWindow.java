@@ -254,9 +254,9 @@ public class LoginWindow extends JFrame implements LibWindow {
 
 	private void defineLowerPanel() {
 		lowerPanel = new JPanel();
-		loginButton = new JButton("Login");
-		addLoginButtonListener(loginButton);
-		lowerPanel.add(loginButton);
+//		loginButton = new JButton("Login");
+//		addLoginButtonListener(loginButton);
+//		lowerPanel.add(loginButton);
 	}
 
 	private void defineLeftTextPanel() {
@@ -294,25 +294,5 @@ public class LoginWindow extends JFrame implements LibWindow {
 		});
 	}
 
-	private void addLoginButtonListener(JButton butn) {
-		butn.addActionListener(evt -> {
-			ControllerInterface ci = new SystemController();
-			try {
-				ci.login(username.getText(), password.getText());
-				if (SystemController.currentAuth != null) {
-					JOptionPane.showMessageDialog(LoginWindow.this, "OK!", "OK", JOptionPane.INFORMATION_MESSAGE);
-					LibrarySystemWindow.hideAllWindows();
-					MajorWindow.INSTANCE.init();
-					Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
-					MajorWindow.INSTANCE.setVisible(true);
-				}
-			} catch (LoginException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(LoginWindow.this, "Wrong credentials!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-
-		});
-	}
 
 }

@@ -165,10 +165,18 @@ public class AddCheckOutBook extends JFrame {
 				ControllerInterface ci = new SystemController();
 
 				Response resp = ci.checkoutBook(idlibraryMember.getText(), isbnBook.getText());
-				System.out.println(resp.getMessage());
-				dispose();
-				CheckOutBookWindow.INSTANCE.refresh();
-				Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
+				if(resp.isStatus()) {
+					JOptionPane.showMessageDialog(AddCheckOutBook.this, resp.getMessage(), "Info",
+							JOptionPane.INFORMATION_MESSAGE);
+					dispose();
+					CheckOutBookWindow.INSTANCE.refresh();
+					Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
+
+				}
+				else {
+					JOptionPane.showMessageDialog(AddCheckOutBook.this, resp.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			} else {
 				JOptionPane.showMessageDialog(AddCheckOutBook.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);

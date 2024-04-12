@@ -50,14 +50,14 @@ public class Response {
     public static Response getRsp(String msg, boolean status) {
         Response rsp = new Response();
         rsp.setMessage(msg);
-        rsp.setStatus(false);
+        rsp.setStatus(status);
         return rsp;
     }
 
     public static Response getRsp(String msg, boolean status,Object obj) {
         Response rsp = new Response();
         rsp.setMessage(msg);
-        rsp.setStatus(false);
+        rsp.setStatus(status);
         rsp.setRsp(obj);
         return rsp;
     }
