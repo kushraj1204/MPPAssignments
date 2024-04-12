@@ -1,4 +1,4 @@
-package librarysystem;
+package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -29,29 +29,29 @@ import javax.swing.JTable;
 import business.ControllerInterface;
 import business.SystemController;
 import dataaccess.Auth;
+import librarysystem.GuiControl;
 
-public class UserSystem extends JFrame implements LibWindow {
+public class AuthorWindow extends JFrame implements LibWindow {
 
 	ControllerInterface ci = new SystemController();
-	public final static UserSystem INSTANCE = new UserSystem();
-	JPanel mainPanel;
-	JMenuBar menuBar;
-	JMenu admin;
-	JMenuItem libraryMembers, books, copy;
-	String pathToImage;
+	public final static AuthorWindow INSTANCE = new AuthorWindow();
+	JPanel mainPanelauthor;
+
 	private boolean isInitialized = false;
-	JTable table;
-	JScrollPane tablePane;
-	CustomTableModel model;
+	JTable tableauthor;
+	JScrollPane tablePaneauthors;
+	CustomTableModel modelauthors;
 	// JPanels
-	JPanel upper, middle, comboPanel, lower;
+	JPanel upperauthors, middleauthors, comboPanelauthors, lowerauthors;
 
 	// Columns
-	private final String USER = "User";
-	private final String CREDENTIAl = "Credential";
+	private final String FIRSTNAME = "first name";
+	private final String LASTNAME = "last name";
+	private final String BIO = "bio";
+	private final String TELEPHONE = "telephone";
 
 	// Title
-	private final String MAIN_LABEL = "Maintain Users";
+	private final String MAIN_LABEL = "Maintain Authors";
 
 	// Buttons
 	private final String ADD_BUTN = "Add";
@@ -61,14 +61,14 @@ public class UserSystem extends JFrame implements LibWindow {
 	private final String BACK_TO_MAIN = "Back to Main";
 
 	// table config
-	private final String[] DEFAULT_COLUMN_HEADERS = { USER, CREDENTIAl };
+	private final String[] DEFAULT_COLUMN_HEADERS = { FIRSTNAME, LASTNAME, BIO, TELEPHONE };
 	private final int TABLE_WIDTH = GuiControl.SCREEN_WIDTH;
 	private final int DEFAULT_TABLE_HEIGHT = Math.round(0.75f * GuiControl.SCREEN_HEIGHT);
 
 	// these numbers specify relative widths of the columns -- they must add up to 1
-	private final float[] COL_WIDTH_PROPORTIONS = { 0.4f, 0.2f };
+	private final float[] COL_WIDTH_PROPORTIONS = { 0.3f, 0.2f, 0.2f, 0.3f };
 
-	private static LibWindow[] allWindows = { UserSystem.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
+	private static LibWindow[] allWindows = { AuthorWindow.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
 			AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE };
 
 	public static void hideAllWindows() {
@@ -94,17 +94,17 @@ public class UserSystem extends JFrame implements LibWindow {
 	}
 
 	private void formatContentPane() {
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.setBackground(GuiControl.FILLER_COLOR);
-		mainPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
+		mainPanelauthor = new JPanel();
+		mainPanelauthor.setLayout(new BorderLayout());
+		mainPanelauthor.setBackground(GuiControl.FILLER_COLOR);
+		mainPanelauthor.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 		defineUpperPanel();
 		defineMiddlePanel();
 		defineLowerPanel();
-		mainPanel.add(upper, BorderLayout.NORTH);
-		mainPanel.add(middle, BorderLayout.CENTER);
-		mainPanel.add(lower, BorderLayout.SOUTH);
-		getContentPane().add(mainPanel);
+		mainPanelauthor.add(upperauthors, BorderLayout.NORTH);
+		mainPanelauthor.add(middleauthors, BorderLayout.CENTER);
+		mainPanelauthor.add(lowerauthors, BorderLayout.SOUTH);
+		getContentPane().add(mainPanelauthor);
 	}
 
 	private void initializeWindow() {
@@ -122,12 +122,14 @@ public class UserSystem extends JFrame implements LibWindow {
 
 		// edit button
 		JButton editButton = new JButton(EDIT_BUTN);
-		editButton.addActionListener(new EditButtonListener());
-
+		// editButton.addActionListener(new EditButtonListener());
+		editButton.setEnabled(false);
+		
 		// delete button
 		JButton deleteButton = new JButton(DELETE_BUTN);
-		deleteButton.addActionListener(new DeleteButtonListener());
-
+		// deleteButton.addActionListener(new DeleteButtonListener());
+		deleteButton.setEnabled(false);
+		
 		// search button
 		JButton searchButton = new JButton(SEARCH_BUTN);
 		// searchButton.addActionListener(new SearchButtonListener());
@@ -139,43 +141,43 @@ public class UserSystem extends JFrame implements LibWindow {
 
 		// create lower panel
 		JButton[] buttons = { addButton, editButton, deleteButton, searchButton, backToMainButton };
-		lower = GuiControl.createStandardButtonPanel(buttons);
+		lowerauthors = GuiControl.createStandardButtonPanel(buttons);
 	}
 
 	// label
 	public void defineUpperPanel() {
-		upper = new JPanel();
-		upper.setBackground(GuiControl.FILLER_COLOR);
-		upper.setLayout(new FlowLayout(FlowLayout.CENTER));
+		upperauthors = new JPanel();
+		upperauthors.setBackground(GuiControl.FILLER_COLOR);
+		upperauthors.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		JLabel mainLabel = new JLabel(MAIN_LABEL);
 		Font f = GuiControl.makeVeryLargeFont(mainLabel.getFont());
 		f = GuiControl.makeBoldFont(f);
 		mainLabel.setFont(f);
-		upper.add(mainLabel);
+		upperauthors.add(mainLabel);
 	}
 
 	// middle -- table and combo box
 	public void defineMiddlePanel() {
 
-		middle = new JPanel();
-		middle.setLayout(new BorderLayout());
+		middleauthors = new JPanel();
+		middleauthors.setLayout(new BorderLayout());
 
 		// table
 		createTableAndTablePane();
-		GuiControl.createCustomColumns(table, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
+		GuiControl.createCustomColumns(tableauthor, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
 
-		middle.add(GuiControl.createStandardTablePanePanel(table, tablePane), BorderLayout.CENTER);
+		middleauthors.add(GuiControl.createStandardTablePanePanel(tableauthor, tablePaneauthors), BorderLayout.CENTER);
 
 	}
 
 	private void createTableAndTablePane() {
-		table = new JTable(model);
+		tableauthor = new JTable(modelauthors);
 
 		updateModel();
-		tablePane = new JScrollPane();
-		tablePane.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
-		tablePane.getViewport().add(table);
+		tablePaneauthors = new JScrollPane();
+		tablePaneauthors.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
+		tablePaneauthors.getViewport().add(tableauthor);
 
 	}
 
@@ -183,8 +185,8 @@ public class UserSystem extends JFrame implements LibWindow {
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i)[0]);
 		}
-		model = new CustomTableModel();
-		model.setTableValues(list);
+		modelauthors = new CustomTableModel();
+		modelauthors.setTableValues(list);
 	}
 
 	/**
@@ -194,14 +196,14 @@ public class UserSystem extends JFrame implements LibWindow {
 	 */
 	private void updateModel() {
 		ControllerInterface ci = new SystemController();
-		List<String[]> theData = ci.allUsers();
+		List<String[]> theData = ci.allAuhtorTable();
 		updateModel(theData);
 		updateTable();
 	}
 
 	private void updateTable() {
-		table.setModel(model);
-		table.updateUI();
+		tableauthor.setModel(modelauthors);
+		tableauthor.updateUI();
 		repaint();
 
 	}
@@ -212,39 +214,13 @@ public class UserSystem extends JFrame implements LibWindow {
 			// no field values need to be passed into AddEditProduct when adding a new
 			// product
 			// so we create an empty Properties instance
-			Properties emptyUserInfo = new Properties();
+			Properties emptyAuthor = new Properties();
 
-			AddEditUserSystem addProd = new AddEditUserSystem(GuiControl.ADD_NEW, emptyUserInfo);
+			AddEditAuthor addProd = new AddEditAuthor(GuiControl.ADD_NEW, emptyAuthor);
 			// setVisible(false);
 			// addProd.setParentWindow(UserSystem.this);
 			addProd.setVisible(true);
 
-		}
-
-	}
-
-	class EditButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-
-			int selectedRow = table.getSelectedRow();
-			if (selectedRow >= 0) {
-				String[] fldNames = { "id User" };
-
-				Properties UserInfo = new Properties();
-
-				// index for id User
-				UserInfo.setProperty("id User", (String) model.getValueAt(selectedRow, 0));
-
-				// index for Auth
-				UserInfo.setProperty("Auth", (String) model.getValueAt(selectedRow, 1));
-
-				AddEditUserSystem editProd = new AddEditUserSystem(GuiControl.EDIT, UserInfo);
-				editProd.setVisible(true);
-
-			} else {
-				JOptionPane.showMessageDialog(UserSystem.this, "Need to select a valid row!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
 		}
 
 	}
@@ -256,25 +232,6 @@ public class UserSystem extends JFrame implements LibWindow {
 			MajorWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
 			MajorWindow.INSTANCE.setVisible(true);
-
-		}
-
-	}
-
-	class DeleteButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-
-			ControllerInterface ci = new SystemController();
-			int selectedRow = table.getSelectedRow();
-			if (selectedRow >= 0) {
-				// Students: code goes here.
-				ci.deleteUser(model.getValueAt(selectedRow, 0).toString());
-				updateModel();
-
-			} else {
-				JOptionPane.showMessageDialog(UserSystem.this, "Need to select a valid row!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
 
 		}
 
@@ -292,7 +249,7 @@ public class UserSystem extends JFrame implements LibWindow {
 	}
 
 	public static void main(String[] args) {
-		(new UserSystem()).setVisible(true);
+		(new AuthorWindow()).setVisible(true);
 	}
 
 }

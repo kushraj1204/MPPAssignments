@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import business.Author;
 import business.Book;
 import business.BookCopy;
 import business.LibraryMember;
@@ -19,7 +20,7 @@ import dataaccess.DataAccessFacade.StorageType;
 public class DataAccessFacade implements DataAccess {
 
 	enum StorageType {
-		BOOKS, MEMBERS, USERS;
+		BOOKS, MEMBERS, USERS, AUTHOR;
 	}
 	// Windows user can use
 
@@ -41,12 +42,21 @@ public class DataAccessFacade implements DataAccess {
 		saveToStorage(StorageType.MEMBERS, mems);
 	}
 
+	@Override
+	public void saveNewBook(Book book) {
+		// TODO Auto-generated method stub
+		HashMap<String, Book> books = readBooksMap();
+		String bookisbn = book.getIsbn();
+		books.put(bookisbn, book);
+		saveToStorage(StorageType.BOOKS, books);
+	}
+
 	public void saveNewUser(User user) {
 		HashMap<String, User> us = readUserMap();
 		for (Map.Entry<String, User> entry : us.entrySet()) {
 			System.out.println(entry.getKey());
 		}
-		
+
 		String usID = user.getId();
 		us.put(usID, user);
 		saveToStorage(StorageType.USERS, us);
@@ -85,6 +95,13 @@ public class DataAccessFacade implements DataAccess {
 		return (HashMap<String, User>) readFromStorage(StorageType.USERS);
 	}
 
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Author> readAuthorMap() {
+		// Returns a Map with name/value pairs being
+		// userId -> User
+		return (HashMap<String, Author>) readFromStorage(StorageType.AUTHOR);
+	}
+
 	///// load methods - these place test data into the storage area
 	///// - used just once at startup
 
@@ -104,6 +121,12 @@ public class DataAccessFacade implements DataAccess {
 		HashMap<String, LibraryMember> members = new HashMap<String, LibraryMember>();
 		memberList.forEach(member -> members.put(member.getMemberId(), member));
 		saveToStorage(StorageType.MEMBERS, members);
+	}
+
+	static void loadAuthorMap(List<Author> authorList) {
+		HashMap<String, Author> authors = new HashMap<String, Author>();
+		authorList.forEach(author -> authors.put(author.getFirstName(), author));
+		saveToStorage(StorageType.AUTHOR, authors);
 	}
 
 	static void saveToStorage(StorageType type, Object ob) {
@@ -178,6 +201,19 @@ public class DataAccessFacade implements DataAccess {
 		}
 
 		private static final long serialVersionUID = 5399827794066637059L;
+	}
+
+	@Override
+	public void saveNewAuthor(Author author) {
+		// TODO Auto-generated method stub
+		HashMap<String, Author> us = readAuthorMap();
+		for (Map.Entry<String, Author> entry : us.entrySet()) {
+			System.out.println(entry.getKey());
+		}
+
+		String usID = author.getFirstName();
+		us.put(usID, author);
+		saveToStorage(StorageType.AUTHOR, us);
 	}
 
 }

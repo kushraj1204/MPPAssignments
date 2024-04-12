@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import UI.MajorWindow;
 import business.ControllerInterface;
 import business.LoginException;
 import business.SystemController;

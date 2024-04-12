@@ -62,6 +62,48 @@ public class SystemController implements ControllerInterface {
 	}
 
 	@Override
+	public List<String[]> allAuhtorTable() {
+		// TODO Auto-generated method stub
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, Author> map = da.readAuthorMap();
+		String[][] authors = new String[map.size()][4];
+		int cont = 0;
+		for (Map.Entry<String, Author> entry : map.entrySet()) {
+			authors[cont][3] = entry.getValue().getTelephone();
+			authors[cont][2] = entry.getValue().getBio();
+			authors[cont][1] = entry.getValue().getLastName();
+			authors[cont][0] = entry.getValue().getFirstName();
+			cont++;
+		}
+
+		return Arrays.asList(authors);
+	}
+
+	@Override
+	public List<String[]> allBooksIdsTable() {
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, Book> map = da.readBooksMap();
+		String[][] books = new String[map.size()][5];
+		String tmpname = "";
+		int cont = 0;
+		for (Map.Entry<String, Book> entry : map.entrySet()) {
+			books[cont][4] = "" + entry.getValue().getNumCopies();
+			books[cont][3] = "" + entry.getValue().getMaxCheckoutLength();
+			tmpname = "";
+			for (int i = 0; i < entry.getValue().getAuthors().size(); i++) {
+				tmpname += "Author " + i + 1 + ": " + entry.getValue().getAuthors().get(i).getFirstName();
+			}
+			// books[cont][2] = entry.getValue().getAuthors().get(0).getFirstName();
+			books[cont][2] = tmpname;
+			books[cont][1] = entry.getValue().getTitle();
+			books[cont][0] = entry.getValue().getIsbn();
+			cont++;
+		}
+
+		return Arrays.asList(books);
+	}
+
+	@Override
 	public List<String[]> allUsers() {
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, User> map = da.readUserMap();
@@ -82,6 +124,20 @@ public class SystemController implements ControllerInterface {
 		List<String> retval = new ArrayList<>();
 		retval.addAll(da.readBooksMap().keySet());
 		return retval;
+	}
+
+	@Override
+	public void saveBook(Book b) {
+		// TODO Auto-generated method stub
+		DataAccess da = new DataAccessFacade();
+		da.saveNewBook(b);
+	}
+
+	@Override
+	public void saveAuthor(Author b) {
+		// TODO Auto-generated method stub
+		DataAccess da = new DataAccessFacade();
+		da.saveNewAuthor(b);
 	}
 
 	@Override
@@ -122,6 +178,21 @@ public class SystemController implements ControllerInterface {
 		HashMap<String, LibraryMember> map = da.readMemberMap();
 		return map.get(idLibraryMember);
 
+	}
+
+	@Override
+	public Book getBookbyisbn(String isbnBook) {
+		// TODO Auto-generated method stub
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, Book> map = da.readBooksMap();
+		return map.get(isbnBook);
+	}
+
+	@Override
+	public void deleteBook(String idbook) {
+		// TODO Auto-generated method stub
+		DataAccess da = new DataAccessFacade();
+		// da.deleteBook(idbook);
 	}
 
 }

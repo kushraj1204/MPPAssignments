@@ -1,4 +1,4 @@
-package business;
+package business.model;
 
 import java.util.HashMap;
 

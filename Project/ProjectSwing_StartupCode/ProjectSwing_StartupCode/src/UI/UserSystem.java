@@ -1,4 +1,4 @@
-package librarysystem;
+package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -29,22 +29,20 @@ import javax.swing.JTable;
 import business.ControllerInterface;
 import business.SystemController;
 import dataaccess.Auth;
+import librarysystem.GuiControl;
 
 public class UserSystem extends JFrame implements LibWindow {
 
 	ControllerInterface ci = new SystemController();
 	public final static UserSystem INSTANCE = new UserSystem();
-	JPanel mainPanel;
-	JMenuBar menuBar;
-	JMenu admin;
-	JMenuItem libraryMembers, books, copy;
-	String pathToImage;
+
 	private boolean isInitialized = false;
-	JTable table;
-	JScrollPane tablePane;
-	CustomTableModel model;
+	JPanel mainPanelus;
+	JTable tableus;
+	JScrollPane tablePaneus;
+	CustomTableModel modelus;
 	// JPanels
-	JPanel upper, middle, comboPanel, lower;
+	JPanel upperus, middleus, comboPanelus, lowerus;
 
 	// Columns
 	private final String USER = "User";
@@ -94,17 +92,17 @@ public class UserSystem extends JFrame implements LibWindow {
 	}
 
 	private void formatContentPane() {
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.setBackground(GuiControl.FILLER_COLOR);
-		mainPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
+		mainPanelus = new JPanel();
+		mainPanelus.setLayout(new BorderLayout());
+		mainPanelus.setBackground(GuiControl.FILLER_COLOR);
+		mainPanelus.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 		defineUpperPanel();
 		defineMiddlePanel();
 		defineLowerPanel();
-		mainPanel.add(upper, BorderLayout.NORTH);
-		mainPanel.add(middle, BorderLayout.CENTER);
-		mainPanel.add(lower, BorderLayout.SOUTH);
-		getContentPane().add(mainPanel);
+		mainPanelus.add(upperus, BorderLayout.NORTH);
+		mainPanelus.add(middleus, BorderLayout.CENTER);
+		mainPanelus.add(lowerus, BorderLayout.SOUTH);
+		getContentPane().add(mainPanelus);
 	}
 
 	private void initializeWindow() {
@@ -139,43 +137,43 @@ public class UserSystem extends JFrame implements LibWindow {
 
 		// create lower panel
 		JButton[] buttons = { addButton, editButton, deleteButton, searchButton, backToMainButton };
-		lower = GuiControl.createStandardButtonPanel(buttons);
+		lowerus = GuiControl.createStandardButtonPanel(buttons);
 	}
 
 	// label
 	public void defineUpperPanel() {
-		upper = new JPanel();
-		upper.setBackground(GuiControl.FILLER_COLOR);
-		upper.setLayout(new FlowLayout(FlowLayout.CENTER));
+		upperus = new JPanel();
+		upperus.setBackground(GuiControl.FILLER_COLOR);
+		upperus.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		JLabel mainLabel = new JLabel(MAIN_LABEL);
 		Font f = GuiControl.makeVeryLargeFont(mainLabel.getFont());
 		f = GuiControl.makeBoldFont(f);
 		mainLabel.setFont(f);
-		upper.add(mainLabel);
+		upperus.add(mainLabel);
 	}
 
 	// middle -- table and combo box
 	public void defineMiddlePanel() {
 
-		middle = new JPanel();
-		middle.setLayout(new BorderLayout());
+		middleus = new JPanel();
+		middleus.setLayout(new BorderLayout());
 
 		// table
 		createTableAndTablePane();
-		GuiControl.createCustomColumns(table, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
+		GuiControl.createCustomColumns(tableus, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
 
-		middle.add(GuiControl.createStandardTablePanePanel(table, tablePane), BorderLayout.CENTER);
+		middleus.add(GuiControl.createStandardTablePanePanel(tableus, tablePaneus), BorderLayout.CENTER);
 
 	}
 
 	private void createTableAndTablePane() {
-		table = new JTable(model);
+		tableus = new JTable(modelus);
 
 		updateModel();
-		tablePane = new JScrollPane();
-		tablePane.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
-		tablePane.getViewport().add(table);
+		tablePaneus = new JScrollPane();
+		tablePaneus.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
+		tablePaneus.getViewport().add(tableus);
 
 	}
 
@@ -183,8 +181,8 @@ public class UserSystem extends JFrame implements LibWindow {
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i)[0]);
 		}
-		model = new CustomTableModel();
-		model.setTableValues(list);
+		modelus = new CustomTableModel();
+		modelus.setTableValues(list);
 	}
 
 	/**
@@ -200,8 +198,8 @@ public class UserSystem extends JFrame implements LibWindow {
 	}
 
 	private void updateTable() {
-		table.setModel(model);
-		table.updateUI();
+		tableus.setModel(modelus);
+		tableus.updateUI();
 		repaint();
 
 	}
@@ -226,17 +224,19 @@ public class UserSystem extends JFrame implements LibWindow {
 	class EditButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
-			int selectedRow = table.getSelectedRow();
+			int selectedRow = tableus.getSelectedRow();
+			System.out.println("Selected Row"+selectedRow);
+
 			if (selectedRow >= 0) {
 				String[] fldNames = { "id User" };
 
 				Properties UserInfo = new Properties();
 
 				// index for id User
-				UserInfo.setProperty("id User", (String) model.getValueAt(selectedRow, 0));
+				UserInfo.setProperty("id User", (String) modelus.getValueAt(selectedRow, 0));
 
 				// index for Auth
-				UserInfo.setProperty("Auth", (String) model.getValueAt(selectedRow, 1));
+				UserInfo.setProperty("Auth", (String) modelus.getValueAt(selectedRow, 1));
 
 				AddEditUserSystem editProd = new AddEditUserSystem(GuiControl.EDIT, UserInfo);
 				editProd.setVisible(true);
@@ -265,10 +265,11 @@ public class UserSystem extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent evt) {
 
 			ControllerInterface ci = new SystemController();
-			int selectedRow = table.getSelectedRow();
+			int selectedRow = tableus.getSelectedRow();
+			System.out.println("Selected Row"+selectedRow);
 			if (selectedRow >= 0) {
 				// Students: code goes here.
-				ci.deleteUser(model.getValueAt(selectedRow, 0).toString());
+				ci.deleteUser(modelus.getValueAt(selectedRow, 0).toString());
 				updateModel();
 
 			} else {

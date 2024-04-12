@@ -11,7 +11,6 @@ final public class Address implements Serializable {
 	private String state;
 	private String zip;
 	public Address(String street, String city, String state, String zip) {
-		//This is just for testing
 		this.street = street;
 		this.city = city;
 		this.state = state;

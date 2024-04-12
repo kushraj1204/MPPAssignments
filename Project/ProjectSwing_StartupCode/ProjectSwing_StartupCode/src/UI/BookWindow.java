@@ -1,4 +1,4 @@
-package librarysystem;
+package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -29,29 +29,33 @@ import javax.swing.JTable;
 import business.ControllerInterface;
 import business.SystemController;
 import dataaccess.Auth;
+import librarysystem.GuiControl;
 
-public class UserSystem extends JFrame implements LibWindow {
+public class BookWindow extends JFrame implements LibWindow {
 
 	ControllerInterface ci = new SystemController();
-	public final static UserSystem INSTANCE = new UserSystem();
+	public final static BookWindow INSTANCE = new BookWindow();
 	JPanel mainPanel;
 	JMenuBar menuBar;
 	JMenu admin;
 	JMenuItem libraryMembers, books, copy;
 	String pathToImage;
 	private boolean isInitialized = false;
-	JTable table;
-	JScrollPane tablePane;
-	CustomTableModel model;
+	JTable tablebooks;
+	JScrollPane tablePanebooks;
+	CustomTableModel modelbooks;
 	// JPanels
 	JPanel upper, middle, comboPanel, lower;
 
 	// Columns
-	private final String USER = "User";
-	private final String CREDENTIAl = "Credential";
+	private final String ISBN = "isbn";
+	private final String TITLE = "title";
+	private final String AUTHORS = "authors";
+	private final String MAXCHECKOUT = "max check out";
+	private final String NCOPIES = "number of copies";
 
 	// Title
-	private final String MAIN_LABEL = "Maintain Users";
+	private final String MAIN_LABEL = "Maintain Books";
 
 	// Buttons
 	private final String ADD_BUTN = "Add";
@@ -61,14 +65,14 @@ public class UserSystem extends JFrame implements LibWindow {
 	private final String BACK_TO_MAIN = "Back to Main";
 
 	// table config
-	private final String[] DEFAULT_COLUMN_HEADERS = { USER, CREDENTIAl };
+	private final String[] DEFAULT_COLUMN_HEADERS = { ISBN, TITLE, AUTHORS, MAXCHECKOUT, NCOPIES };
 	private final int TABLE_WIDTH = GuiControl.SCREEN_WIDTH;
 	private final int DEFAULT_TABLE_HEIGHT = Math.round(0.75f * GuiControl.SCREEN_HEIGHT);
 
 	// these numbers specify relative widths of the columns -- they must add up to 1
-	private final float[] COL_WIDTH_PROPORTIONS = { 0.4f, 0.2f };
+	private final float[] COL_WIDTH_PROPORTIONS = { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f };
 
-	private static LibWindow[] allWindows = { UserSystem.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
+	private static LibWindow[] allWindows = { BookWindow.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
 			AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE };
 
 	public static void hideAllWindows() {
@@ -163,19 +167,19 @@ public class UserSystem extends JFrame implements LibWindow {
 
 		// table
 		createTableAndTablePane();
-		GuiControl.createCustomColumns(table, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
+		GuiControl.createCustomColumns(tablebooks, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
 
-		middle.add(GuiControl.createStandardTablePanePanel(table, tablePane), BorderLayout.CENTER);
+		middle.add(GuiControl.createStandardTablePanePanel(tablebooks, tablePanebooks), BorderLayout.CENTER);
 
 	}
 
 	private void createTableAndTablePane() {
-		table = new JTable(model);
+		tablebooks = new JTable(modelbooks);
 
 		updateModel();
-		tablePane = new JScrollPane();
-		tablePane.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
-		tablePane.getViewport().add(table);
+		tablePanebooks = new JScrollPane();
+		tablePanebooks.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
+		tablePanebooks.getViewport().add(tablebooks);
 
 	}
 
@@ -183,8 +187,8 @@ public class UserSystem extends JFrame implements LibWindow {
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i)[0]);
 		}
-		model = new CustomTableModel();
-		model.setTableValues(list);
+		modelbooks = new CustomTableModel();
+		modelbooks.setTableValues(list);
 	}
 
 	/**
@@ -194,14 +198,14 @@ public class UserSystem extends JFrame implements LibWindow {
 	 */
 	private void updateModel() {
 		ControllerInterface ci = new SystemController();
-		List<String[]> theData = ci.allUsers();
+		List<String[]> theData = ci.allBooksIdsTable();
 		updateModel(theData);
 		updateTable();
 	}
 
 	private void updateTable() {
-		table.setModel(model);
-		table.updateUI();
+		tablebooks.setModel(modelbooks);
+		tablebooks.updateUI();
 		repaint();
 
 	}
@@ -212,9 +216,9 @@ public class UserSystem extends JFrame implements LibWindow {
 			// no field values need to be passed into AddEditProduct when adding a new
 			// product
 			// so we create an empty Properties instance
-			Properties emptyUserInfo = new Properties();
+			Properties emptyBook = new Properties();
 
-			AddEditUserSystem addProd = new AddEditUserSystem(GuiControl.ADD_NEW, emptyUserInfo);
+			AddEditBook addProd = new AddEditBook(GuiControl.ADD_NEW, emptyBook);
 			// setVisible(false);
 			// addProd.setParentWindow(UserSystem.this);
 			addProd.setVisible(true);
@@ -226,23 +230,21 @@ public class UserSystem extends JFrame implements LibWindow {
 	class EditButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
-			int selectedRow = table.getSelectedRow();
+			int selectedRow = tablebooks.getSelectedRow();
 			if (selectedRow >= 0) {
-				String[] fldNames = { "id User" };
+				String[] fldNames = { "isbn" };
 
-				Properties UserInfo = new Properties();
+				Properties BookMember = new Properties();
 
 				// index for id User
-				UserInfo.setProperty("id User", (String) model.getValueAt(selectedRow, 0));
+				BookMember.setProperty("isbn", (String) modelbooks.getValueAt(selectedRow, 0));
 
-				// index for Auth
-				UserInfo.setProperty("Auth", (String) model.getValueAt(selectedRow, 1));
-
-				AddEditUserSystem editProd = new AddEditUserSystem(GuiControl.EDIT, UserInfo);
-				editProd.setVisible(true);
+				// AddEditLibraryMember editProd = new AddEditLibraryMember(GuiControl.EDIT,
+				// LibraryMember);
+				// editProd.setVisible(true);
 
 			} else {
-				JOptionPane.showMessageDialog(UserSystem.this, "Need to select a valid row!", "Error",
+				JOptionPane.showMessageDialog(BookWindow.this, "Need to select a valid row!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -265,14 +267,14 @@ public class UserSystem extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent evt) {
 
 			ControllerInterface ci = new SystemController();
-			int selectedRow = table.getSelectedRow();
+			int selectedRow = tablebooks.getSelectedRow();
 			if (selectedRow >= 0) {
 				// Students: code goes here.
-				ci.deleteUser(model.getValueAt(selectedRow, 0).toString());
+				ci.deleteBook(modelbooks.getValueAt(selectedRow, 0).toString());
 				updateModel();
 
 			} else {
-				JOptionPane.showMessageDialog(UserSystem.this, "Need to select a valid row!", "Error",
+				JOptionPane.showMessageDialog(BookWindow.this, "Need to select a valid row!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 
@@ -292,7 +294,7 @@ public class UserSystem extends JFrame implements LibWindow {
 	}
 
 	public static void main(String[] args) {
-		(new UserSystem()).setVisible(true);
+		(new BookWindow()).setVisible(true);
 	}
 
 }

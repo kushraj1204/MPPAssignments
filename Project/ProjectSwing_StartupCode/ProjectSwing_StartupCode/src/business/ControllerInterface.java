@@ -24,9 +24,21 @@ public interface ControllerInterface {
 	
 	public List<String[]> allMemberIdsTable();
 
+	public List<String[]> allBooksIdsTable();
+	
+	public List<String[]> allAuhtorTable();
+
 	public void saveLibraryMember(LibraryMember lm);
 
 	public void deleteLibraryMember(String string);
 
 	public LibraryMember getLibraryMemberbyId(String idLibraryMember);
+
+	public Book getBookbyisbn(String isbnBook);
+
+	public void saveBook(Book b);
+
+	public void deleteBook(String idbook);
+
+	public void saveAuthor(Author b);
 }

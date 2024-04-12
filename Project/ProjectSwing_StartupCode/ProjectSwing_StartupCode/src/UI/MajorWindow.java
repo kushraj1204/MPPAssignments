@@ -1,4 +1,4 @@
-package librarysystem;
+package UI;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -23,13 +23,13 @@ public class MajorWindow extends JFrame implements LibWindow {
 	public final static MajorWindow INSTANCE = new MajorWindow();
 	JPanel mainPanel;
 	JMenuBar menuBar;
-	JMenu admin, logout;
-	JMenuItem userSystems, librarymember, books, copy, logoutit;
+	JMenu admin, logout, book;
+	JMenuItem userSystems, librarymember, books, copy, logoutit, author;
 	String pathToImage;
 	private boolean isInitialized = false;
 
-	private static LibWindow[] allWindows = { LibrarySystemWindow.INSTANCE, LoginWindow.INSTANCE, AllMemberIdsWindow.INSTANCE,
-			AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE
+	private static LibWindow[] allWindows = { LibrarySystemWindow.INSTANCE, LoginWindow.INSTANCE,
+			AllMemberIdsWindow.INSTANCE, AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE
 
 	};
 
@@ -88,6 +88,15 @@ public class MajorWindow extends JFrame implements LibWindow {
 		// options.add(login);
 		// options.add(allBookIds);
 		// options.add(allMemberIds);
+		book = new JMenu("Book");
+		menuBar.add(book);
+		books = new JMenuItem("Maintain Book");
+		books.addActionListener(new maintainBooksListener());
+		book.add(books);
+		author = new JMenuItem("Author");
+		author.addActionListener(new maintainAuthorListener());
+		book.add(author);
+
 		librarymember = new JMenuItem("Library Member");
 		librarymember.addActionListener(new libraryMemberListener());
 		admin.add(librarymember);
@@ -112,6 +121,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 			SystemController.currentAuth = null;
 		}
 	}
+
 	class libraryMemberListener implements ActionListener {
 
 		@Override
@@ -123,7 +133,19 @@ public class MajorWindow extends JFrame implements LibWindow {
 			LibraryMemberWindow.INSTANCE.setVisible(true);
 		}
 	}
-	
+
+	class maintainAuthorListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			LibrarySystemWindow.hideAllWindows();
+			AuthorWindow.INSTANCE.init();
+			Util.centerFrameOnDesktop(AuthorWindow.INSTANCE);
+			AuthorWindow.INSTANCE.setVisible(true);
+		}
+	}
+
 	class userSystemListener implements ActionListener {
 
 		@Override
@@ -133,6 +155,18 @@ public class MajorWindow extends JFrame implements LibWindow {
 			UserSystem.INSTANCE.init();
 			Util.centerFrameOnDesktop(UserSystem.INSTANCE);
 			UserSystem.INSTANCE.setVisible(true);
+		}
+	}
+
+	class maintainBooksListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			LibrarySystemWindow.hideAllWindows();
+			BookWindow.INSTANCE.init();
+			Util.centerFrameOnDesktop(BookWindow.INSTANCE);
+			BookWindow.INSTANCE.setVisible(true);
 		}
 	}
 

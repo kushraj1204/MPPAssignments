@@ -1,4 +1,4 @@
-package librarysystem;
+package UI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -24,6 +24,7 @@ import business.ControllerInterface;
 import business.SystemController;
 import dataaccess.Auth;
 import dataaccess.User;
+import librarysystem.GuiControl;
 
 public class AddEditUserSystem extends JFrame {
 

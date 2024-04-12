@@ -1,4 +1,4 @@
-package librarysystem;
+package UI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -20,26 +20,30 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import business.Address;
 import business.ControllerInterface;
+import business.LibraryMember;
 import business.SystemController;
 import dataaccess.Auth;
 import dataaccess.User;
+import librarysystem.GuiControl;
 
-public class AddEditUserSystem extends JFrame {
+public class AddEditLibraryMember extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	/** final value of label will be set in the constructor */
-	private String mainLabel = " User";
+	private String mainLabel = " Library Member";
 	private final String SAVE_BUTN = "Save";
 	private final String BACK_BUTN = "Close";
 
-	private JTextField idUserNameField;
-	private JComboBox AuthGroupField;
-	private JTextField NameField;
-	private JPasswordField PasswordField;
-
-	/** group is "Books", "Clothes" etc */
-	private String authGroup;
+	private JTextField idMemberField;
+	private JTextField firstName;
+	private JTextField lastName;
+	private JTextField telephone;
+	private JTextField street;
+	private JTextField city;
+	private JTextField state;
+	private JTextField zip;
 
 	/** value is "Add New" or "Edit" */
 	private String addOrEdit = GuiControl.ADD_NEW;
@@ -51,7 +55,7 @@ public class AddEditUserSystem extends JFrame {
 	JPanel mainPanel;
 	JPanel upper, middle, lower;
 
-	public AddEditUserSystem(String addOrEdit, Properties fieldValues) {
+	public AddEditLibraryMember(String addOrEdit, Properties fieldValues) {
 		this.addOrEdit = addOrEdit;
 		this.fieldValues = fieldValues;
 		initializeWindow();
@@ -62,7 +66,7 @@ public class AddEditUserSystem extends JFrame {
 
 	private void initializeWindow() {
 
-		setSize(Math.round(.7f * GuiControl.SCREEN_WIDTH), Math.round(.7f * GuiControl.SCREEN_HEIGHT));
+		setSize(Math.round(.8f * GuiControl.SCREEN_WIDTH), Math.round(.8f * GuiControl.SCREEN_HEIGHT));
 		GuiControl.centerFrameOnDesktop(this);
 
 	}
@@ -106,60 +110,69 @@ public class AddEditUserSystem extends JFrame {
 		JPanel gridPanel = new JPanel();
 		gridPanel.setBackground(GuiControl.SCREEN_BACKGROUND);
 		middle.add(gridPanel);
-		GridLayout gl = new GridLayout(5, 2);
+		GridLayout gl = new GridLayout(8, 4);
 		gl.setHgap(8);
 		gl.setVgap(8);
 		gridPanel.setLayout(gl);
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
-		String labelName = "id User";
+		String labelName = "id LibraryMember";
 		makeLabel(gridPanel, labelName);
-		idUserNameField = new JTextField(10);
-		idUserNameField.setText(fieldValues.getProperty(labelName));
-		gridPanel.add(idUserNameField);
-		idUserNameField.setEditable(true);
+		idMemberField = new JTextField(15);
+		idMemberField.setText(fieldValues.getProperty(labelName));
+		gridPanel.add(idMemberField);
+		idMemberField.setEditable(true);
 
-		PasswordField = new JPasswordField(10);
-		if (fieldValues.getProperty("Auth") != null) {
-			ControllerInterface ci = new SystemController();
-			System.out.println(ci.getPassword(fieldValues.getProperty(labelName)));
-			PasswordField.setText(ci.getPassword(fieldValues.getProperty(labelName)));
-			idUserNameField.setEditable(false);
-		}
-		labelName = "Password";
+		labelName = "First Name";
 		makeLabel(gridPanel, labelName);
-		gridPanel.add(PasswordField);
+		firstName = new JTextField(15);
+		gridPanel.add(firstName);
 
 		// catalog group is different from the other fields
 		// because it plays a different role in MaintainCatalog
 		// so it is set differently
-		labelName = "Auth";
+		labelName = "Last Name";
 		makeLabel(gridPanel, labelName);
-		System.out.println(fieldValues.getProperty("Auth"));
-		AuthGroupField = new JComboBox();
-		AuthGroupField.addItem(Auth.ADMIN);
-		AuthGroupField.addItem(Auth.BOTH);
-		AuthGroupField.addItem(Auth.LIBRARIAN);
+		lastName = new JTextField(15);
+		gridPanel.add(lastName);
 
-		if (fieldValues.getProperty("Auth") != null) {
-			switch (fieldValues.getProperty("Auth")) {
-			case "":
-				AuthGroupField.setSelectedIndex(0);
-				break;
-			case "ADMIN":
-				AuthGroupField.setSelectedIndex(0);
-				break;
-			case "BOTH":
-				AuthGroupField.setSelectedIndex(1);
-				break;
-			case "LIBRARIAN":
-				AuthGroupField.setSelectedIndex(2);
-				break;
-			// code block
-			}
+		labelName = "Telephone";
+		makeLabel(gridPanel, labelName);
+		telephone = new JTextField(15);
+		gridPanel.add(telephone);
+
+		labelName = "Street";
+		makeLabel(gridPanel, labelName);
+		street = new JTextField(15);
+		gridPanel.add(street);
+
+		labelName = "city";
+		makeLabel(gridPanel, labelName);
+		city = new JTextField(15);
+		gridPanel.add(city);
+
+		labelName = "state";
+		makeLabel(gridPanel, labelName);
+		state = new JTextField(15);
+		gridPanel.add(state);
+
+		labelName = "zip";
+		makeLabel(gridPanel, labelName);
+		zip = new JTextField(15);
+		gridPanel.add(zip);
+
+		if (fieldValues.getProperty("id LibraryMember") != null) {
+			idMemberField.setEditable(false);
+			ControllerInterface ci = new SystemController();
+			LibraryMember lm = ci.getLibraryMemberbyId(fieldValues.getProperty("id LibraryMember"));
+			firstName.setText(lm.getFirstName());
+			lastName.setText(lm.getLastName());
+			telephone.setText(lm.getTelephone());
+			street.setText(lm.getAddress().getStreet());
+			city.setText(lm.getAddress().getCity());
+			state.setText(lm.getAddress().getState());
+			zip.setText(lm.getAddress().getZip());
 		}
-		gridPanel.add(AuthGroupField);
-
 	}
 
 	// buttons
@@ -195,15 +208,23 @@ public class AddEditUserSystem extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 
-			if (idUserNameField.getText().length() > 0 && PasswordField.getPassword().length > 0) {
+			if (idMemberField.getText().length() > 0 && firstName.getText().length() > 0
+					&& lastName.getText().length() > 0 && telephone.getText().length() > 0
+					&& street.getText().length() > 0 && city.getText().length() > 0 && state.getText().length() > 0
+					&& zip.getText().length() > 0) {
+
+				Address a = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
+
+				LibraryMember lm = new LibraryMember(idMemberField.getText(), firstName.getText(), lastName.getText(),
+						telephone.getText(), a);
+
 				ControllerInterface ci = new SystemController();
-				ci.saveUser(idUserNameField.getText(),new String(PasswordField.getPassword()),
-						(Auth) AuthGroupField.getSelectedItem());
+				ci.saveLibraryMember(lm);
 				dispose();
-				UserSystem.INSTANCE.refresh();
-				Util.centerFrameOnDesktop(UserSystem.INSTANCE);
+				LibraryMemberWindow.INSTANCE.refresh();
+				Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
 			} else {
-				JOptionPane.showMessageDialog(AddEditUserSystem.this, "Invalid field on form!", "Error",
+				JOptionPane.showMessageDialog(AddEditLibraryMember.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}

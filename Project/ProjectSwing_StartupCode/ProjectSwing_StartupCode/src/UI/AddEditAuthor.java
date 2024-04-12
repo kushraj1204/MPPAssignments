@@ -1,4 +1,4 @@
-package librarysystem;
+package UI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -20,26 +21,28 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import business.Address;
+import business.Author;
+import business.Book;
 import business.ControllerInterface;
+import business.LibraryMember;
 import business.SystemController;
 import dataaccess.Auth;
 import dataaccess.User;
+import librarysystem.GuiControl;
 
-public class AddEditUserSystem extends JFrame {
+public class AddEditAuthor extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	/** final value of label will be set in the constructor */
-	private String mainLabel = " User";
+	private String mainLabela = " Author";
 	private final String SAVE_BUTN = "Save";
 	private final String BACK_BUTN = "Close";
 
-	private JTextField idUserNameField;
-	private JComboBox AuthGroupField;
-	private JTextField NameField;
-	private JPasswordField PasswordField;
-
-	/** group is "Books", "Clothes" etc */
-	private String authGroup;
+	private JTextField firstName;
+	private JTextField lastName;
+	private JTextField telephone;
+	private JTextField bio;
 
 	/** value is "Add New" or "Edit" */
 	private String addOrEdit = GuiControl.ADD_NEW;
@@ -48,118 +51,105 @@ public class AddEditUserSystem extends JFrame {
 	private Properties fieldValues;
 
 	// JPanels
-	JPanel mainPanel;
-	JPanel upper, middle, lower;
+	JPanel mainPanela;
+	JPanel uppera, middlea, lowera;
 
-	public AddEditUserSystem(String addOrEdit, Properties fieldValues) {
+	public AddEditAuthor(String addOrEdit, Properties fieldValues) {
 		this.addOrEdit = addOrEdit;
 		this.fieldValues = fieldValues;
 		initializeWindow();
 		defineMainPanel();
-		getContentPane().add(mainPanel);
+		getContentPane().add(mainPanela);
 
 	}
 
 	private void initializeWindow() {
 
-		setSize(Math.round(.7f * GuiControl.SCREEN_WIDTH), Math.round(.7f * GuiControl.SCREEN_HEIGHT));
+		setSize(Math.round(.8f * GuiControl.SCREEN_WIDTH), Math.round(.8f * GuiControl.SCREEN_HEIGHT));
 		GuiControl.centerFrameOnDesktop(this);
 
 	}
 
 	private void defineMainPanel() {
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.setBackground(GuiControl.FILLER_COLOR);
-		mainPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
+		mainPanela = new JPanel();
+		mainPanela.setLayout(new BorderLayout());
+		mainPanela.setBackground(GuiControl.FILLER_COLOR);
+		mainPanela.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 		defineUpperPanel();
 		defineMiddlePanel();
 		defineLowerPanel();
-		mainPanel.add(upper, BorderLayout.NORTH);
-		mainPanel.add(middle, BorderLayout.CENTER);
-		mainPanel.add(lower, BorderLayout.SOUTH);
+		mainPanela.add(uppera, BorderLayout.NORTH);
+		mainPanela.add(middlea, BorderLayout.CENTER);
+		mainPanela.add(lowera, BorderLayout.SOUTH);
 
 	}
 
 	// label
 	public void defineUpperPanel() {
-		upper = new JPanel();
-		upper.setBackground(GuiControl.FILLER_COLOR);
-		upper.setLayout(new FlowLayout(FlowLayout.CENTER));
+		uppera = new JPanel();
+		uppera.setBackground(GuiControl.FILLER_COLOR);
+		uppera.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		JLabel mainLabel = new JLabel(finalMainLabelName());
 		Font f = GuiControl.makeVeryLargeFont(mainLabel.getFont());
 		f = GuiControl.makeBoldFont(f);
 		mainLabel.setFont(f);
-		upper.add(mainLabel);
+		uppera.add(mainLabel);
 	}
 
 	private String finalMainLabelName() {
-		return addOrEdit + " " + mainLabel;
+		return addOrEdit + " " + mainLabela;
 	}
 
 	// table
 	public void defineMiddlePanel() {
-		middle = new JPanel();
-		middle.setBackground(GuiControl.FILLER_COLOR);
-		middle.setLayout(new FlowLayout(FlowLayout.CENTER));
+		middlea = new JPanel();
+		middlea.setBackground(GuiControl.FILLER_COLOR);
+		middlea.setLayout(new FlowLayout(FlowLayout.CENTER));
 		JPanel gridPanel = new JPanel();
 		gridPanel.setBackground(GuiControl.SCREEN_BACKGROUND);
-		middle.add(gridPanel);
-		GridLayout gl = new GridLayout(5, 2);
+		middlea.add(gridPanel);
+		GridLayout gl = new GridLayout(8, 4);
 		gl.setHgap(8);
 		gl.setVgap(8);
 		gridPanel.setLayout(gl);
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
-		String labelName = "id User";
+		String labelName = "First Name";
 		makeLabel(gridPanel, labelName);
-		idUserNameField = new JTextField(10);
-		idUserNameField.setText(fieldValues.getProperty(labelName));
-		gridPanel.add(idUserNameField);
-		idUserNameField.setEditable(true);
+		firstName = new JTextField(15);
+		firstName.setText(fieldValues.getProperty(labelName));
+		gridPanel.add(firstName);
+		firstName.setEditable(true);
 
-		PasswordField = new JPasswordField(10);
-		if (fieldValues.getProperty("Auth") != null) {
-			ControllerInterface ci = new SystemController();
-			System.out.println(ci.getPassword(fieldValues.getProperty(labelName)));
-			PasswordField.setText(ci.getPassword(fieldValues.getProperty(labelName)));
-			idUserNameField.setEditable(false);
-		}
-		labelName = "Password";
+		labelName = "Last Name";
 		makeLabel(gridPanel, labelName);
-		gridPanel.add(PasswordField);
+		lastName = new JTextField(15);
+		gridPanel.add(lastName);
+
+		labelName = "Telephone";
+		makeLabel(gridPanel, labelName);
+		telephone = new JTextField(15);
+		gridPanel.add(telephone);
 
 		// catalog group is different from the other fields
 		// because it plays a different role in MaintainCatalog
 		// so it is set differently
-		labelName = "Auth";
+		labelName = "bio";
 		makeLabel(gridPanel, labelName);
-		System.out.println(fieldValues.getProperty("Auth"));
-		AuthGroupField = new JComboBox();
-		AuthGroupField.addItem(Auth.ADMIN);
-		AuthGroupField.addItem(Auth.BOTH);
-		AuthGroupField.addItem(Auth.LIBRARIAN);
+		bio = new JTextField(15);
+		gridPanel.add(bio);
 
-		if (fieldValues.getProperty("Auth") != null) {
-			switch (fieldValues.getProperty("Auth")) {
-			case "":
-				AuthGroupField.setSelectedIndex(0);
-				break;
-			case "ADMIN":
-				AuthGroupField.setSelectedIndex(0);
-				break;
-			case "BOTH":
-				AuthGroupField.setSelectedIndex(1);
-				break;
-			case "LIBRARIAN":
-				AuthGroupField.setSelectedIndex(2);
-				break;
-			// code block
-			}
+		if (fieldValues.getProperty("isbn") != null) {
+			// isbn.setEditable(false);
+			// ControllerInterface ci = new SystemController();
+			// Book lm = ci.getBookbyisbn(fieldValues.getProperty("isbn"));
+			// isbn.setText(lm.getIsbn());
+			// author.setText(lm.getAuthors().get(0).getFirstName());
+			// maxcheckout.setText("" + lm.getMaxCheckoutLength());
+			// numberofcopies.setText("" + lm.getNumCopies());
+
 		}
-		gridPanel.add(AuthGroupField);
-
 	}
 
 	// buttons
@@ -174,7 +164,7 @@ public class AddEditUserSystem extends JFrame {
 
 		// create lower panel
 		JButton[] buttons = { saveButton, backButton };
-		lower = GuiControl.createStandardButtonPanel(buttons);
+		lowera = GuiControl.createStandardButtonPanel(buttons);
 	}
 
 	private void makeLabel(JPanel p, String s) {
@@ -195,15 +185,26 @@ public class AddEditUserSystem extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 
-			if (idUserNameField.getText().length() > 0 && PasswordField.getPassword().length > 0) {
+			if (firstName.getText().length() > 0 && lastName.getText().length() > 0 && telephone.getText().length() > 0
+					&& bio.getText().length() > 0) {
+
+				// Address a = new Address(street.getText(), city.getText(), state.getText(),
+				// zip.getText());
+				Address a = new Address("A", "b", "c", "d");
+				// LibraryMember lm = new LibraryMember(idMemberField.getText(),
+				// firstName.getText(), lastName.getText(),
+				// telephone.getText(), a);
+				Author b = new Author(firstName.getText(), lastName.getText(), telephone.getText(), a, bio.getText());
+				ArrayList<Author> authors = new ArrayList<Author>();
+				authors.add(b);
+
 				ControllerInterface ci = new SystemController();
-				ci.saveUser(idUserNameField.getText(),new String(PasswordField.getPassword()),
-						(Auth) AuthGroupField.getSelectedItem());
+				ci.saveAuthor(b);
 				dispose();
-				UserSystem.INSTANCE.refresh();
-				Util.centerFrameOnDesktop(UserSystem.INSTANCE);
+				AuthorWindow.INSTANCE.refresh();
+				Util.centerFrameOnDesktop(BookWindow.INSTANCE);
 			} else {
-				JOptionPane.showMessageDialog(AddEditUserSystem.this, "Invalid field on form!", "Error",
+				JOptionPane.showMessageDialog(AddEditAuthor.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}

@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.Collections;
-import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -184,25 +182,29 @@ public class LoginWindow extends JFrame implements LibWindow {
 
 	private void addBackButtonListener(JButton butn) {
 		butn.addActionListener(evt -> {
-			LibrarySystem.hideAllWindows();
-			LibrarySystem.INSTANCE.setVisible(true);
+			LibrarySystemWindow.hideAllWindows();
+			LibrarySystemWindow.INSTANCE.setVisible(true);
 		});
 	}
 
 	private void addLoginButtonListener(JButton butn) {
 		butn.addActionListener(evt -> {
 			ControllerInterface ci = new SystemController();
-
 			try {
 				ci.login(username.getText(), password.getText());
 				if (SystemController.currentAuth != null) {
-					JOptionPane.showMessageDialog(this, "Login Successfull");
+					JOptionPane.showMessageDialog(LoginWindow.this, "OK!", "OK", JOptionPane.INFORMATION_MESSAGE);
+					LibrarySystemWindow.hideAllWindows();
+					MajorWindow.INSTANCE.init();
+					Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
+					MajorWindow.INSTANCE.setVisible(true);
 				}
 			} catch (LoginException e) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(this, "Incorrect credentials, please try it again!");
-				// e.printStackTrace();
+				JOptionPane.showMessageDialog(LoginWindow.this, "Wrong credentials!", "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
+
 		});
 	}
 
