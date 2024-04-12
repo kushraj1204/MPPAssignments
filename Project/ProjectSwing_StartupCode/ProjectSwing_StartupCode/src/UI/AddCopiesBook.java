@@ -166,10 +166,20 @@ public class AddCopiesBook extends JFrame {
 				ControllerInterface ci = new SystemController();
 
 				Response resp = ci.addBookCopies(isbn.getText(), Integer.parseInt(Ncopies.getText()));
-				System.out.println(resp.getMessage());
-				dispose();
-				BookWindow.INSTANCE.refresh();
-				Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
+				
+				if(resp.isStatus()) {
+					JOptionPane.showMessageDialog(AddCopiesBook.this, resp.getMessage(), "Info",
+							JOptionPane.INFORMATION_MESSAGE);
+					dispose();
+					CheckOutBookWindow.INSTANCE.refresh();
+					Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
+
+				}
+				else {
+					JOptionPane.showMessageDialog(AddCopiesBook.this, resp.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				
 			} else {
 				JOptionPane.showMessageDialog(AddCopiesBook.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);
