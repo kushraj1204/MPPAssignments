@@ -68,7 +68,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 	}
 
 	private void addMenuItems() {
-		if (List.of(Auth.ADMIN, Auth.BOTH).contains(SystemController.currentAuth)) {
+//		if (List.of(Auth.ADMIN, Auth.BOTH).contains(SystemController.currentAuth)) {
 
 			admin = new JMenu("Admin");
 			menuBar.add(admin);
@@ -78,20 +78,22 @@ public class MajorWindow extends JFrame implements LibWindow {
 			librarymember.addActionListener(new libraryMemberListener());
 			admin.add(librarymember);
 			admin.add(userSystems);
-		}
-		if (List.of(Auth.LIBRARIAN, Auth.BOTH).contains(SystemController.currentAuth)) {
-			book = new JMenu("Book");
-			menuBar.add(book);
+//		}
+		book = new JMenu("Book");
+		menuBar.add(book);
+//		if (List.of(Auth.ADMIN, Auth.BOTH).contains(SystemController.currentAuth)) {
 			books = new JMenuItem("Manage Books");
 			books.addActionListener(new maintainBooksListener());
 			book.add(books);
 			author = new JMenuItem("Manage Authors");
 			author.addActionListener(new maintainAuthorListener());
 			book.add(author);
-			checkout = new JMenuItem("Checkout Book");
+//		}
+//		if (List.of(Auth.LIBRARIAN, Auth.BOTH).contains(SystemController.currentAuth)) {
+		checkout = new JMenuItem("Checkout Book");
 			checkout.addActionListener(new maintainCheckOutBookListener());
 			book.add(checkout);
-		}
+//		}
 
 		logout = new JMenu("Logout");
 		menuBar.add(logout);
@@ -118,6 +120,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println(SystemController.currentAuth.toString());
 			if (!SystemController.currentAuth.toString().equals(Auth.ADMIN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
 				CheckOutBookWindow.INSTANCE.init();
@@ -133,6 +136,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println(SystemController.currentAuth.toString());
 			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
 				if(!LibraryMemberWindow.INSTANCE.isInitialized())
@@ -150,7 +154,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+			System.out.println(SystemController.currentAuth.toString());
 			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
 				if (!AuthorWindow.INSTANCE.isInitialized())
@@ -169,6 +173,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println(SystemController.currentAuth.toString());
 			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
 				if (!UserSystem.INSTANCE.isInitialized())
@@ -187,7 +192,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
-				
+				System.out.println(SystemController.currentAuth.toString());
 				LibrarySystemWindow.hideAllWindows();
 				if(!BookWindow.INSTANCE.isInitialized())
 				BookWindow.INSTANCE.init();
