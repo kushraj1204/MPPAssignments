@@ -369,6 +369,10 @@ public class AddEditBook extends JFrame {
 					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
 
 				} else {
+					if (title.getText().length()==0) {
+						JOptionPane.showMessageDialog(AddEditBook.this, "Invalid value for Title!", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					} 
 					if (!resp.getFormFieldMessages().isEmpty()) {
 						String message = Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
 						JOptionPane.showMessageDialog(AddEditBook.this, message, resp.getMessage(),
