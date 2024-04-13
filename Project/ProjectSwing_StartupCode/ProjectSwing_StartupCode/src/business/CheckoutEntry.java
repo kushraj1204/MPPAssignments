@@ -15,12 +15,12 @@ public class CheckoutEntry implements Serializable {
     private LocalDate returnDate;
     private BookCopy bookCopy;
 
-    public CheckoutEntry(CheckoutRecord checkoutRecord, LocalDate returnDate, BookCopy bookCopy) {
+    CheckoutEntry(CheckoutRecord checkoutRecord, LocalDate returnDate, BookCopy bookCopy) {
         this.checkoutRecord = checkoutRecord;
         this.dueReturnDate = returnDate;
         this.bookCopy = bookCopy;
     }
-    public CheckoutEntry( LocalDate returnDate, BookCopy bookCopy) {
+    CheckoutEntry( LocalDate returnDate, BookCopy bookCopy) {
         this.dueReturnDate = returnDate;
         this.bookCopy = bookCopy;
     }

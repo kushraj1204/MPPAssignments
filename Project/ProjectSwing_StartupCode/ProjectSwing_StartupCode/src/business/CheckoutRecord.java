@@ -13,7 +13,7 @@ public class CheckoutRecord implements Serializable {
 	private String id;
 	private List<CheckoutEntry> checkoutEntries;
 
-	public CheckoutRecord(String id, LibraryMember libraryMember, List<CheckoutEntry> checkoutEntries) {
+	CheckoutRecord(String id, LibraryMember libraryMember, List<CheckoutEntry> checkoutEntries) {
 		this.id = id;
 		this.libraryMember = libraryMember;
 		this.checkoutEntries = checkoutEntries;
@@ -38,7 +38,4 @@ public class CheckoutRecord implements Serializable {
 	public String getId() {
 		return id;
 	}
-	// public SystemUser getUser() {
-//        return user;
-//    }
 }
