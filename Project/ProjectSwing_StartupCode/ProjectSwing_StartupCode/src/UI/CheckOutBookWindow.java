@@ -36,8 +36,7 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	ControllerInterface ci = new SystemController();
 	public final static CheckOutBookWindow INSTANCE = new CheckOutBookWindow();
 	JPanel mainPanelcow;
-	JMenuBar menuBarcow;
-	JMenu admincow;
+
 
 	private boolean isInitialized = false;
 	JTable tablecow;
@@ -71,23 +70,9 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	// these numbers specify relative widths of the columns -- they must add up to 1
 	private final float[] COL_WIDTH_PROPORTIONS = { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f };
 
-	private static LibWindow[] allWindows = { CheckOutBookWindow.INSTANCE, LoginWindow.INSTANCE,
-			AllMemberIdsWindow.INSTANCE, AllBookIdsWindow.INSTANCE, MajorWindow.INSTANCE };
-
-	public static void hideAllWindows() {
-		for (LibWindow frame : allWindows) {
-			frame.setVisible(false);
-		}
-	}
-
 	public void init() {
 		initializeWindow();
 		formatContentPane();
-		// setPathToImage();
-		// insertSplashImage();
-		// defineMainPanel();
-		// createMenus();
-		// pack();
 		setSize(700, 700);
 		isInitialized = true;
 	}
@@ -175,7 +160,6 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 
 	private void createTableAndTablePane() {
 		tablecow = new JTable(modelcow);
-
 		updateModel();
 		tablePanecow = new JScrollPane();
 		tablePanecow.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
@@ -184,10 +168,6 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	}
 
 	public void updateModel(List<String[]> list) {
-		System.out.println("updatemodel");
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i)[0]);
-		}
 		modelcow = new CustomTableModel();
 		modelcow.setTableValues(list);
 	}
@@ -214,15 +194,10 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	class AddButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
-			// no field values need to be passed into AddEditProduct when adding a new
-			// product
-			// so we create an empty Properties instance
-			Properties emptyLibraryMember = new Properties();
 
-			AddCheckOutBook addProd = new AddCheckOutBook(GuiControl.ADD_NEW, emptyLibraryMember);
-			// setVisible(false);
-			// addProd.setParentWindow(UserSystem.this);
-			addProd.setVisible(true);
+			Properties emptyCheckOutBook = new Properties();
+			AddCheckOutBook addCheckOutBook = new AddCheckOutBook(GuiControl.ADD_NEW, emptyCheckOutBook);
+			addCheckOutBook.setVisible(true);
 
 		}
 

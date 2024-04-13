@@ -118,6 +118,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 						username.setText("");
 						password.setText("");
 						LibrarySystemWindow.hideAllWindows();
+						if(!MajorWindow.INSTANCE.isInitialized())
 						MajorWindow.INSTANCE.init();
 						Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
 						MajorWindow.INSTANCE.setVisible(true);

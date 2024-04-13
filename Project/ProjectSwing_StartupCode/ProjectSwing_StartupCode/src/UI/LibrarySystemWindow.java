@@ -45,9 +45,7 @@ public class LibrarySystemWindow extends JFrame implements LibWindow {
 		formatContentPane();
 		setPathToImage();
 		insertSplashImage();
-
 		createMenus();
-		// pack();
 		setSize(660, 500);
 		isInitialized = true;
 	}
@@ -94,6 +92,7 @@ public class LibrarySystemWindow extends JFrame implements LibWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			LibrarySystemWindow.hideAllWindows();
+			if(!LoginWindow.INSTANCE.isInitialized())
 			LoginWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
 			LoginWindow.INSTANCE.setVisible(true);

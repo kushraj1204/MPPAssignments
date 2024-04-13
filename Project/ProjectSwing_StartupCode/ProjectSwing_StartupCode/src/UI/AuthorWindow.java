@@ -72,11 +72,6 @@ public class AuthorWindow extends JFrame implements LibWindow {
 	public void init() {
 		initializeWindow();
 		formatContentPane();
-		// setPathToImage();
-		// insertSplashImage();
-		// defineMainPanel();
-		// createMenus();
-		// pack();
 		setSize(700, 700);
 		isInitialized = true;
 	}
@@ -174,9 +169,6 @@ public class AuthorWindow extends JFrame implements LibWindow {
 	}
 
 	public void updateModel(List<String[]> list) {
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i)[0]);
-		}
 		modelauthors = new CustomTableModel();
 		modelauthors.setTableValues(list);
 	}
@@ -203,15 +195,9 @@ public class AuthorWindow extends JFrame implements LibWindow {
 	class AddButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
-			// no field values need to be passed into AddEditProduct when adding a new
-			// product
-			// so we create an empty Properties instance
 			Properties emptyAuthor = new Properties();
-
-			AddEditAuthor addProd = new AddEditAuthor(GuiControl.ADD_NEW, emptyAuthor);
-			// setVisible(false);
-			// addProd.setParentWindow(UserSystem.this);
-			addProd.setVisible(true);
+			AddEditAuthor addAuthor = new AddEditAuthor(GuiControl.ADD_NEW, emptyAuthor);
+			addAuthor.setVisible(true);
 
 		}
 
@@ -221,6 +207,7 @@ public class AuthorWindow extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent evt) {
 
 			LibrarySystemWindow.hideAllWindows();
+			if(!MajorWindow.INSTANCE.isInitialized())
 			MajorWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
 			MajorWindow.INSTANCE.setVisible(true);

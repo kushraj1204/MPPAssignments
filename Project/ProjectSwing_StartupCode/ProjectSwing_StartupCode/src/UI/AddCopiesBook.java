@@ -133,7 +133,7 @@ public class AddCopiesBook extends JFrame {
 		JButton saveButton = new JButton(SAVE_BUTN);
 		saveButton.addActionListener(new SaveListener());
 
-		// back to cart button
+		// back to book
 		JButton backButton = new JButton(BACK_BUTN);
 		backButton.addActionListener(new BackListener());
 

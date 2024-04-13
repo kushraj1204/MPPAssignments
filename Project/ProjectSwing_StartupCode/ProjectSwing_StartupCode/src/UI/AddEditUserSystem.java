@@ -39,7 +39,7 @@ public class AddEditUserSystem extends JFrame {
 	private JTextField NameField;
 	private JPasswordField PasswordField;
 
-	/** group is "Books", "Clothes" etc */
+	/** group is "ADMIN", "BOTH" etc */
 	private String authGroup;
 
 	/** value is "Add New" or "Edit" */
@@ -49,15 +49,15 @@ public class AddEditUserSystem extends JFrame {
 	private Properties fieldValues;
 
 	// JPanels
-	JPanel mainPanel;
-	JPanel upper, middle, lower;
+	JPanel mainPaneladdus;
+	JPanel upperaddus, middleaddus, loweraddus;
 
 	public AddEditUserSystem(String addOrEdit, Properties fieldValues) {
 		this.addOrEdit = addOrEdit;
 		this.fieldValues = fieldValues;
 		initializeWindow();
 		defineMainPanel();
-		getContentPane().add(mainPanel);
+		getContentPane().add(mainPaneladdus);
 
 	}
 
@@ -69,30 +69,30 @@ public class AddEditUserSystem extends JFrame {
 	}
 
 	private void defineMainPanel() {
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.setBackground(GuiControl.FILLER_COLOR);
-		mainPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
+		mainPaneladdus = new JPanel();
+		mainPaneladdus.setLayout(new BorderLayout());
+		mainPaneladdus.setBackground(GuiControl.FILLER_COLOR);
+		mainPaneladdus.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 		defineUpperPanel();
 		defineMiddlePanel();
 		defineLowerPanel();
-		mainPanel.add(upper, BorderLayout.NORTH);
-		mainPanel.add(middle, BorderLayout.CENTER);
-		mainPanel.add(lower, BorderLayout.SOUTH);
+		mainPaneladdus.add(upperaddus, BorderLayout.NORTH);
+		mainPaneladdus.add(middleaddus, BorderLayout.CENTER);
+		mainPaneladdus.add(loweraddus, BorderLayout.SOUTH);
 
 	}
 
 	// label
 	public void defineUpperPanel() {
-		upper = new JPanel();
-		upper.setBackground(GuiControl.FILLER_COLOR);
-		upper.setLayout(new FlowLayout(FlowLayout.CENTER));
+		upperaddus = new JPanel();
+		upperaddus.setBackground(GuiControl.FILLER_COLOR);
+		upperaddus.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		JLabel mainLabel = new JLabel(finalMainLabelName());
 		Font f = GuiControl.makeVeryLargeFont(mainLabel.getFont());
 		f = GuiControl.makeBoldFont(f);
 		mainLabel.setFont(f);
-		upper.add(mainLabel);
+		upperaddus.add(mainLabel);
 	}
 
 	private String finalMainLabelName() {
@@ -101,12 +101,12 @@ public class AddEditUserSystem extends JFrame {
 
 	// table
 	public void defineMiddlePanel() {
-		middle = new JPanel();
-		middle.setBackground(GuiControl.FILLER_COLOR);
-		middle.setLayout(new FlowLayout(FlowLayout.CENTER));
+		middleaddus = new JPanel();
+		middleaddus.setBackground(GuiControl.FILLER_COLOR);
+		middleaddus.setLayout(new FlowLayout(FlowLayout.CENTER));
 		JPanel gridPanel = new JPanel();
 		gridPanel.setBackground(GuiControl.SCREEN_BACKGROUND);
-		middle.add(gridPanel);
+		middleaddus.add(gridPanel);
 		GridLayout gl = new GridLayout(5, 2);
 		gl.setHgap(8);
 		gl.setVgap(8);
@@ -131,9 +131,6 @@ public class AddEditUserSystem extends JFrame {
 		makeLabel(gridPanel, labelName);
 		gridPanel.add(PasswordField);
 
-		// catalog group is different from the other fields
-		// because it plays a different role in MaintainCatalog
-		// so it is set differently
 		labelName = "Auth";
 		makeLabel(gridPanel, labelName);
 		System.out.println(fieldValues.getProperty("Auth"));
@@ -175,7 +172,7 @@ public class AddEditUserSystem extends JFrame {
 
 		// create lower panel
 		JButton[] buttons = { saveButton, backButton };
-		lower = GuiControl.createStandardButtonPanel(buttons);
+		loweraddus = GuiControl.createStandardButtonPanel(buttons);
 	}
 
 	private void makeLabel(JPanel p, String s) {

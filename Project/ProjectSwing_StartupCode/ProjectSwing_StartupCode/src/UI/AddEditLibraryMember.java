@@ -34,7 +34,7 @@ import librarysystem.Util;
 public class AddEditLibraryMember extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	/** final value of label will be set in the constructor */
+
 	private String mainLabel = "Library Member";
 	private final String SAVE_BUTN = "Save";
 	private final String BACK_BUTN = "Close";
@@ -48,10 +48,8 @@ public class AddEditLibraryMember extends JFrame {
 	private JTextField state;
 	private JNumberTextField zip;
 
-	/** value is "Add New" or "Edit" */
 	private String addOrEdit = GuiControl.ADD_NEW;
 
-	/** map of initial field values */
 	private Properties fieldValues;
 
 	// JPanels
@@ -64,7 +62,7 @@ public class AddEditLibraryMember extends JFrame {
 		initializeWindow();
 		defineMainPanel();
 		getContentPane().add(mainPanellm);
-		setSize(600,600);
+		setSize(600, 600);
 	}
 
 	private void initializeWindow() {
@@ -186,7 +184,7 @@ public class AddEditLibraryMember extends JFrame {
 		JButton saveButton = new JButton(SAVE_BUTN);
 		saveButton.addActionListener(new SaveListener());
 
-		// back to cart button
+		// back to library member
 		JButton backButton = new JButton(BACK_BUTN);
 		backButton.addActionListener(new BackListener());
 
@@ -213,41 +211,30 @@ public class AddEditLibraryMember extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 
-/*			if (idMemberField.getText().length() > 0 && firstName.getText().length() > 0
-					&& lastName.getText().length() > 0 && telephone.getText().length() > 0
-					&& street.getText().length() > 0 && city.getText().length() > 0 && state.getText().length() > 0
-					&& zip.getText().length() > 0) {*/
+			Address a = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
 
-				Address a = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
+			LibraryMember lm = new LibraryMember(idMemberField.getText(), firstName.getText(), lastName.getText(),
+					telephone.getText(), a);
 
-				LibraryMember lm = new LibraryMember(idMemberField.getText(), firstName.getText(), lastName.getText(),
-						telephone.getText(), a);
+			ControllerInterface ci = new SystemController();
 
-				ControllerInterface ci = new SystemController();
-
-				Response resp = ci.saveLibraryMember(lm);
-				if (resp.isStatus()) {
-					JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Info",
-							JOptionPane.INFORMATION_MESSAGE);
-					LibraryMemberWindow.INSTANCE.refresh();
-					dispose();
-					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
+			Response resp = ci.saveLibraryMember(lm);
+			if (resp.isStatus()) {
+				JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				LibraryMemberWindow.INSTANCE.refresh();
+				dispose();
+				Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
+			} else {
+				if (!resp.getFormFieldMessages().isEmpty()) {
+					String message = Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
+					JOptionPane.showMessageDialog(AddEditLibraryMember.this, message, resp.getMessage(),
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
 				}
-				else {
-					if(!resp.getFormFieldMessages().isEmpty()) {
-						String message=Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
-						JOptionPane.showMessageDialog(AddEditLibraryMember.this, message, resp.getMessage(), 
-								JOptionPane.ERROR_MESSAGE);
-					}
-					else {
-						JOptionPane.showMessageDialog(AddEditLibraryMember.this, resp.getMessage(), "Error",
-								JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			/*} else {
-				JOptionPane.showMessageDialog(AddEditLibraryMember.this, "Invalid field on form!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}*/
+			}
 		}
 	}
 

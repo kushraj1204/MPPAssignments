@@ -45,7 +45,7 @@ public class AddEditAuthor extends JFrame {
 	private JTextField idAuthor;
 	private JTextField firstName;
 	private JTextField lastName;
-	private JTextField telephone;
+	private JNumberTextField telephone;
 	private JTextField bio;
 
 	private JTextField street;
@@ -70,7 +70,7 @@ public class AddEditAuthor extends JFrame {
 		defineMainPanel();
 		getContentPane().add(mainPanela);
 
-		setSize(600,600);
+		setSize(600, 600);
 
 	}
 
@@ -147,12 +147,9 @@ public class AddEditAuthor extends JFrame {
 
 		labelName = "Telephone";
 		makeLabel(gridPanel, labelName);
-		telephone = new JTextField(15);
+		telephone = new JNumberTextField(15);
 		gridPanel.add(telephone);
 
-		// catalog group is different from the other fields
-		// because it plays a different role in MaintainCatalog
-		// so it is set differently
 		labelName = "Bio";
 		makeLabel(gridPanel, labelName);
 		bio = new JTextField(15);
@@ -178,16 +175,6 @@ public class AddEditAuthor extends JFrame {
 		zip = new JNumberTextField();
 		gridPanel.add(zip);
 
-		if (fieldValues.getProperty("ISBN") != null) {
-			// isbn.setEditable(false);
-			// ControllerInterface ci = new SystemController();
-			// Book lm = ci.getBookbyisbn(fieldValues.getProperty("ISBN"));
-			// isbn.setText(lm.getIsbn());
-			// author.setText(lm.getAuthors().get(0).getFirstName());
-			// maxcheckout.setText("" + lm.getMaxCheckoutLength());
-			// numberofcopies.setText("" + lm.getNumCopies());
-
-		}
 	}
 
 	// buttons
@@ -196,7 +183,7 @@ public class AddEditAuthor extends JFrame {
 		JButton saveButton = new JButton(SAVE_BUTN);
 		saveButton.addActionListener(new SaveListener());
 
-		// back to cart button
+		// back to author
 		JButton backButton = new JButton(BACK_BUTN);
 		backButton.addActionListener(new BackListener());
 
@@ -223,47 +210,29 @@ public class AddEditAuthor extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 
-/*			if (firstName.getText().length() > 0 && lastName.getText().length() > 0 && telephone.getText().length() > 0
-					&& bio.getText().length() > 0) {*/
+			Address a = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
+			Author b = new Author(idAuthor.getText(), firstName.getText(), lastName.getText(), telephone.getText(), a,
+					bio.getText());
 
-				// Address a = new Address(street.getText(), city.getText(), state.getText(),
-				// zip.getText());
-				// LibraryMember lm = new LibraryMember(idMemberField.getText(),
-				// firstName.getText(), lastName.getText(),
-				// telephone.getText(), a);
-				Address a = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
-				Author b = new Author(idAuthor.getText(), firstName.getText(), lastName.getText(), telephone.getText(),
-						a, bio.getText());
-				ArrayList<Author> authors = new ArrayList<Author>();
-				authors.add(b);
-				
-				ControllerInterface ci = new SystemController();
-				Response resp=ci.saveAuthor(b);
-				if(resp.isStatus()) {
-				
-					JOptionPane.showMessageDialog(AddEditAuthor.this, resp.getMessage(), "Info",
-							JOptionPane.INFORMATION_MESSAGE);
-					AuthorWindow.INSTANCE.refresh();
-					dispose();
-					Util.centerFrameOnDesktop(AuthorWindow.INSTANCE);
-				}
-				else {
-				if(!resp.getFormFieldMessages().isEmpty()) {
-					String message=Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
-					JOptionPane.showMessageDialog(AddEditAuthor.this, message, resp.getMessage(), 
+			ControllerInterface ci = new SystemController();
+			Response resp = ci.saveAuthor(b);
+			if (resp.isStatus()) {
+				JOptionPane.showMessageDialog(AddEditAuthor.this, resp.getMessage(), "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				AuthorWindow.INSTANCE.refresh();
+				dispose();
+				Util.centerFrameOnDesktop(AuthorWindow.INSTANCE);
+			} else {
+				if (!resp.getFormFieldMessages().isEmpty()) {
+					String message = Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
+					JOptionPane.showMessageDialog(AddEditAuthor.this, message, resp.getMessage(),
 							JOptionPane.ERROR_MESSAGE);
-				}
-				else {
+				} else {
 					JOptionPane.showMessageDialog(AddEditAuthor.this, resp.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-					
-				}
-				
-			/*} else {
-				JOptionPane.showMessageDialog(AddEditAuthor.this, "Invalid field on form!", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}*/
+
+			}
 		}
 	}
 

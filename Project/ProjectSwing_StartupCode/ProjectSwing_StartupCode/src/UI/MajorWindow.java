@@ -68,7 +68,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 	}
 
 	private void addMenuItems() {
-		if(List.of(Auth.ADMIN,Auth.BOTH).contains(SystemController.currentAuth)){
+		if (List.of(Auth.ADMIN, Auth.BOTH).contains(SystemController.currentAuth)) {
 
 			admin = new JMenu("Admin");
 			menuBar.add(admin);
@@ -79,7 +79,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 			admin.add(librarymember);
 			admin.add(userSystems);
 		}
-		if(List.of(Auth.LIBRARIAN,Auth.BOTH).contains(SystemController.currentAuth)){
+		if (List.of(Auth.LIBRARIAN, Auth.BOTH).contains(SystemController.currentAuth)) {
 			book = new JMenu("Book");
 			menuBar.add(book);
 			books = new JMenuItem("Manage Books");
@@ -92,7 +92,6 @@ public class MajorWindow extends JFrame implements LibWindow {
 			checkout.addActionListener(new maintainCheckOutBookListener());
 			book.add(checkout);
 		}
-
 
 		logout = new JMenu("Logout");
 		menuBar.add(logout);
@@ -111,7 +110,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 			LibrarySystemWindow.hideAllWindows();
 			Util.centerFrameOnDesktop(LoginWindow.INSTANCE);
 			LoginWindow.INSTANCE.setVisible(true);
-			
+
 		}
 	}
 
@@ -136,6 +135,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent e) {
 			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
+				if(!LibraryMemberWindow.INSTANCE.isInitialized())
 				LibraryMemberWindow.INSTANCE.init();
 				Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
 				LibraryMemberWindow.INSTANCE.setVisible(true);
@@ -153,7 +153,8 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
-				AuthorWindow.INSTANCE.init();
+				if (!AuthorWindow.INSTANCE.isInitialized())
+					AuthorWindow.INSTANCE.init();
 				Util.centerFrameOnDesktop(AuthorWindow.INSTANCE);
 				AuthorWindow.INSTANCE.setVisible(true);
 			} else {
@@ -170,7 +171,8 @@ public class MajorWindow extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent e) {
 			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
-				UserSystem.INSTANCE.init();
+				if (!UserSystem.INSTANCE.isInitialized())
+					UserSystem.INSTANCE.init();
 				Util.centerFrameOnDesktop(UserSystem.INSTANCE);
 				UserSystem.INSTANCE.setVisible(true);
 			} else {
@@ -185,7 +187,9 @@ public class MajorWindow extends JFrame implements LibWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
+				
 				LibrarySystemWindow.hideAllWindows();
+				if(!BookWindow.INSTANCE.isInitialized())
 				BookWindow.INSTANCE.init();
 				Util.centerFrameOnDesktop(BookWindow.INSTANCE);
 				BookWindow.INSTANCE.setVisible(true);

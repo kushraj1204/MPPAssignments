@@ -76,7 +76,7 @@ public class AddEditBook extends JFrame {
 	private final String TELEPHONE = "Telephone";
 
 	// Title
-	private final String MAIN_LABEL = "Maintain Authors";
+	private final String MAIN_LABEL = "Maintain Books";
 
 	// table config
 	private final String[] DEFAULT_COLUMN_HEADERS = { IDAUTHOR, FIRSTNAME, LASTNAME, BIO, TELEPHONE };
@@ -87,8 +87,8 @@ public class AddEditBook extends JFrame {
 	private final float[] COL_WIDTH_PROPORTIONS = { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f };
 
 	// JPanels
-	JPanel mainPanel;
-	JPanel upper, middle, lower;
+	JPanel mainPanelauthor;
+	JPanel upperaauthor, middleauthor, lowerauthor;
 
 	//
 	List<String[]> dataBooksChoosed = new ArrayList<String[]>();
@@ -98,7 +98,7 @@ public class AddEditBook extends JFrame {
 		this.fieldValues = fieldValues;
 		initializeWindow();
 		defineMainPanel();
-		getContentPane().add(mainPanel);
+		getContentPane().add(mainPanelauthor);
 
 	}
 
@@ -111,30 +111,30 @@ public class AddEditBook extends JFrame {
 	}
 
 	private void defineMainPanel() {
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.setBackground(GuiControl.FILLER_COLOR);
-		mainPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
+		mainPanelauthor = new JPanel();
+		mainPanelauthor.setLayout(new BorderLayout());
+		mainPanelauthor.setBackground(GuiControl.FILLER_COLOR);
+		mainPanelauthor.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 		defineUpperPanel();
 		defineMiddlePanel();
 		defineLowerPanel();
-		mainPanel.add(upper, BorderLayout.NORTH);
-		mainPanel.add(middle, BorderLayout.CENTER);
-		mainPanel.add(lower, BorderLayout.SOUTH);
+		mainPanelauthor.add(upperaauthor, BorderLayout.NORTH);
+		mainPanelauthor.add(middleauthor, BorderLayout.CENTER);
+		mainPanelauthor.add(lowerauthor, BorderLayout.SOUTH);
 
 	}
 
 	// label
 	public void defineUpperPanel() {
-		upper = new JPanel();
-		upper.setBackground(GuiControl.FILLER_COLOR);
-		upper.setLayout(new FlowLayout(FlowLayout.CENTER));
+		upperaauthor = new JPanel();
+		upperaauthor.setBackground(GuiControl.FILLER_COLOR);
+		upperaauthor.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		JLabel mainLabel = new JLabel(finalMainLabelName());
 		Font f = GuiControl.makeVeryLargeFont(mainLabel.getFont());
 		f = GuiControl.makeBoldFont(f);
 		mainLabel.setFont(f);
-		upper.add(mainLabel);
+		upperaauthor.add(mainLabel);
 	}
 
 	private String finalMainLabelName() {
@@ -143,12 +143,12 @@ public class AddEditBook extends JFrame {
 
 	// table
 	public void defineMiddlePanel() {
-		middle = new JPanel();
-		middle.setBackground(GuiControl.FILLER_COLOR);
-		middle.setLayout(new FlowLayout(FlowLayout.CENTER));
+		middleauthor = new JPanel();
+		middleauthor.setBackground(GuiControl.FILLER_COLOR);
+		middleauthor.setLayout(new FlowLayout(FlowLayout.CENTER));
 		JPanel gridPanel = new JPanel();
 		gridPanel.setBackground(GuiControl.SCREEN_BACKGROUND);
-		middle.add(gridPanel);
+		middleauthor.add(gridPanel);
 		GridLayout gl = new GridLayout(8, 4);
 		gl.setHgap(8);
 		gl.setVgap(8);
@@ -168,12 +168,8 @@ public class AddEditBook extends JFrame {
 		title = new JTextField(15);
 		gridPanel.add(title);
 
-		// catalog group is different from the other fields
-		// because it plays a different role in MaintainCatalog
-		// so it is set differently
 		labelName = "Max Days";
 		makeLabel(gridPanel, labelName);
-		// System.out.println(fieldValues.getProperty("Auth"));
 		maxcheckoutGroupField = new JComboBox();
 		maxcheckoutGroupField.addItem("7");
 		maxcheckoutGroupField.addItem("21");
@@ -214,14 +210,10 @@ public class AddEditBook extends JFrame {
 		GuiControl.createCustomColumns(tableauthor, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
 		GuiControl.createCustomColumns(tableauthorchoosed, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
 
-		middle.add(GuiControl.createStandardTablePanePanel(tableauthor, tablePaneauthors), BorderLayout.CENTER);
-		// back to cart button
-//		JButton backButton = new JButton("Author -->>");
-//		backButton.addActionListener(new BackListener());
-//		middle.add(backButton);
+		middleauthor.add(GuiControl.createStandardTablePanePanel(tableauthor, tablePaneauthors), BorderLayout.CENTER);
 		JLabel authorLabel = new JLabel("Choose Authors");
-		middle.add(authorLabel);
-		middle.add(GuiControl.createStandardTablePanePanel(tableauthorchoosed, tablePaneauthorschoosed),
+		middleauthor.add(authorLabel);
+		middleauthor.add(GuiControl.createStandardTablePanePanel(tableauthorchoosed, tablePaneauthorschoosed),
 				BorderLayout.CENTER);
 
 		tableauthor.addMouseListener(new MouseAdapter() {
@@ -230,32 +222,12 @@ public class AddEditBook extends JFrame {
 				Point point = mouseEvent.getPoint();
 				int row = table.rowAtPoint(point);
 				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-					// your valueChanged overridden method
-					// System.out.println("test");
-
 					updatetablechoosed();
 				}
 			}
 
 			private void updatetablechoosed() {
 				// TODO Auto-generated method stub
-				// String[][] Users1 = new String[map.size()][2];
-//				DataAccess da = new DataAccessFacade();
-//				HashMap<String, Author> map = da.readAuthorMap();
-//				String[][] authors = new String[map.size()][3];
-//				for (Map.Entry<String, Author> entry : map.entrySet()) {
-//					authors[cont][2] = entry.getValue().getBio();
-//					authors[cont][1] = entry.getValue().getLastName();
-//					authors[cont][0] = entry.getValue().getFirstName();
-//					cont++;
-//				}
-//
-//				return Arrays.asList(authors);
-				// index for id User
-//				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 0));
-//				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 1));
-//				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 2));
-//				System.out.println((String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 3));
 
 				String[][] author = new String[1][5];
 				author[0][4] = (String) modelauthors.getValueAt(tableauthor.getSelectedRow(), 4);
@@ -275,11 +247,6 @@ public class AddEditBook extends JFrame {
 						exist = true;
 					}
 				}
-
-				// dataBooksChoosed = dataBooksChoosed.add();
-				// dataBooksChoosed.add(0, (String[])
-				// modelauthors.getValueAt(tableauthor.getSelectedRow(), 0));
-				// UserInfo.setProperty("id User", (String) modelus.getValueAt(selectedRow, 0));
 				if (!exist) {
 					List<String[]> dataBooksChoosedtmp = new ArrayList<String[]>();
 					dataBooksChoosedtmp = Arrays.asList(author);
@@ -305,26 +272,16 @@ public class AddEditBook extends JFrame {
 	}
 
 	public void updateModel(List<String[]> list) {
-		for (int i = 0; i < list.size(); i++) {
-			// System.out.println(list.get(i)[0]);
-		}
 		modelauthors = new CustomTableModel();
 		modelauthors.setTableValues(list);
 	}
 
 	public void updateModelTableChoosed(List<String[]> list) {
-		for (int i = 0; i < list.size(); i++) {
-			// System.out.println(list.get(i)[0]);
-		}
+
 		modelauthorschoosed = new CustomTableModel();
 		modelauthorschoosed.setTableValues(list);
 	}
 
-	/**
-	 * If default data is being used, this method obtains it and then passes it to
-	 * updateModel(List). If real data is being used, the public updateModel(List)
-	 * should be called by the controller class.
-	 */
 	private void updateModel() {
 		ControllerInterface ci = new SystemController();
 		List<String[]> theData = ci.allAuthorTable();
@@ -360,13 +317,13 @@ public class AddEditBook extends JFrame {
 		JButton saveButton = new JButton(SAVE_BUTN);
 		saveButton.addActionListener(new SaveListener());
 
-		// back to cart button
+		// back to book
 		JButton backButton = new JButton(BACK_BUTN);
 		backButton.addActionListener(new BackListener());
 
 		// create lower panel
 		JButton[] buttons = { saveButton, backButton };
-		lower = GuiControl.createStandardButtonPanel(buttons);
+		lowerauthor = GuiControl.createStandardButtonPanel(buttons);
 	}
 
 	private void makeLabel(JPanel p, String s) {
@@ -388,20 +345,13 @@ public class AddEditBook extends JFrame {
 		public void actionPerformed(ActionEvent evt) {
 
 			System.out.println("ROW COUNT" + modelauthorschoosed.getRowCount());
-			if ( numberofcopies.getText().length() > 0) {
+			if (numberofcopies.getText().length() > 0) {
 
-				// Address a = new Address(street.getText(), city.getText(), state.getText(),
-				// zip.getText());
 				Address a = new Address("A", "b", "c", "d");
-				// LibraryMember lm = new LibraryMember(idMemberField.getText(),
-				// firstName.getText(), lastName.getText(),
-				// telephone.getText(), a);
-				// Author b = new Author("a", "b", "c", a, "d");
 				ArrayList<Author> authors = new ArrayList<Author>();
 				for (int i = 0; i < dataBooksChoosed.size(); i++) {
 					Author tmp = new Author(dataBooksChoosed.get(i)[0], dataBooksChoosed.get(i)[1],
 							dataBooksChoosed.get(i)[2], dataBooksChoosed.get(i)[3], a, dataBooksChoosed.get(i)[4]);
-					// System.out.println(dataBooksChoosed.get(i)[0]);
 					authors.add(tmp);
 				}
 				Book c = new Book(isbn.getText(), title.getText(),
@@ -410,22 +360,20 @@ public class AddEditBook extends JFrame {
 					c.addCopy();
 				}
 				ControllerInterface ci = new SystemController();
-				Response resp=ci.saveBook(c);
-				if(resp.isStatus()) {
+				Response resp = ci.saveBook(c);
+				if (resp.isStatus()) {
 					JOptionPane.showMessageDialog(AddEditBook.this, resp.getMessage(), "Info",
 							JOptionPane.INFORMATION_MESSAGE);
 					BookWindow.INSTANCE.refresh();
 					dispose();
 					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
-					
-				}
-				else {
-					if(!resp.getFormFieldMessages().isEmpty()) {
-						String message=Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
-						JOptionPane.showMessageDialog(AddEditBook.this, message, resp.getMessage(), 
+
+				} else {
+					if (!resp.getFormFieldMessages().isEmpty()) {
+						String message = Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
+						JOptionPane.showMessageDialog(AddEditBook.this, message, resp.getMessage(),
 								JOptionPane.ERROR_MESSAGE);
-					}
-					else {
+					} else {
 						JOptionPane.showMessageDialog(AddEditBook.this, resp.getMessage(), "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}

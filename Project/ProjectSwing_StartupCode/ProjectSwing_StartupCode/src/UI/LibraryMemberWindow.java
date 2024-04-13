@@ -203,14 +203,8 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 	class AddButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
-			// no field values need to be passed into AddEditLibraryMember when adding a new
-			// LibraryMember
-			// so we create an empty Properties instance
 			Properties emptyLibraryMember = new Properties();
-
 			AddEditLibraryMember addLibraryMember = new AddEditLibraryMember(GuiControl.ADD_NEW, emptyLibraryMember);
-			// setVisible(false);
-			// addProd.setParentWindow(UserSystem.this);
 			addLibraryMember.setVisible(true);
 
 		}
@@ -229,8 +223,8 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 				// index for id Library Member
 				LibraryMember.setProperty("LibraryMember Id", (String) modellm.getValueAt(selectedRow, 0));
 
-				AddEditLibraryMember editProd = new AddEditLibraryMember(GuiControl.EDIT, LibraryMember);
-				editProd.setVisible(true);
+				AddEditLibraryMember editLibraryMember = new AddEditLibraryMember(GuiControl.EDIT, LibraryMember);
+				editLibraryMember.setVisible(true);
 
 			} else {
 				JOptionPane.showMessageDialog(LibraryMemberWindow.this, "Need to select a valid row!", "Error",
@@ -244,6 +238,7 @@ public class LibraryMemberWindow extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent evt) {
 
 			LibrarySystemWindow.hideAllWindows();
+			if(!MajorWindow.INSTANCE.isInitialized())
 			MajorWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
 			MajorWindow.INSTANCE.setVisible(true);
