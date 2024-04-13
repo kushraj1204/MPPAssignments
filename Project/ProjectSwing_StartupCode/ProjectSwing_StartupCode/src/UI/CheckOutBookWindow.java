@@ -77,9 +77,7 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 		isInitialized = true;
 	}
 
-	public void refresh() {
-		updateModel();
-	}
+
 
 	private void formatContentPane() {
 		mainPanelcow = new JPanel();
@@ -190,7 +188,16 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 		repaint();
 
 	}
-
+	public void refresh() {
+		//updateModel();
+		ControllerInterface ci = new SystemController();
+		List<String[]> theData = ci.allCheckOutTable();
+		modelcow = new CustomTableModel();
+		modelcow.setTableValues(theData);
+		tablecow.setModel(modelcow);
+		//tablecow.updateUI();
+		//repaint();
+	}
 	class AddButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
