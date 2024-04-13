@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -126,6 +127,23 @@ public class Util {
 	        return matcher.matches();
 	    }
 	    
+	    public static int getNextKey(Map<String, ?> map) {
+	        if (map.isEmpty()) {
+	            return 1; // If the map is empty, return 1
+	        } else {
+	            int maxKey = Integer.MIN_VALUE;
+	            for (String key : map.keySet()) {
+	                try {
+	                    int parsedKey = Integer.parseInt(key); // Parse the key to integer
+	                    maxKey = Math.max(maxKey, parsedKey); // Find the maximum key
+	                } catch (NumberFormatException e) {
+	                	maxKey=1;
+	                    // Ignore non-integer keys
+	                }
+	            }
+	            return maxKey == Integer.MIN_VALUE ? 1 : maxKey + 1; // Increment the maximum key and return
+	        }
+	    }
 	    public static boolean isValidZipCode(String zipCode) {
 	        // Regular expression for US zip codes (5-digit or 5-digit followed by optional 4-digit extension)
 	        String regex = "^\\d{5}(?:[-\\s]\\d{4})?$";

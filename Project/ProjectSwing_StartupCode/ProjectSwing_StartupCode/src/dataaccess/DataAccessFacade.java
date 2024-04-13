@@ -19,11 +19,12 @@ import business.LibraryMember;
 import business.CheckoutEntry;
 import business.CheckoutRecord;
 import dataaccess.DataAccessFacade.StorageType;
+import librarysystem.Util;
 
 public class DataAccessFacade implements DataAccess {
 
 	enum StorageType {
-		BOOKS, MEMBERS, USERS, AUTHOR,CHECKOUTRECORD;
+		BOOKS, MEMBERS, USERS, AUTHOR, CHECKOUTRECORD;
 	}
 	// Windows user can use
 
@@ -40,9 +41,10 @@ public class DataAccessFacade implements DataAccess {
 	// implement: other save operations
 	public void saveNewMember(LibraryMember member) {
 		HashMap<String, LibraryMember> mems = readMemberMap();
-		if(mems==null)
-			mems=new HashMap<String,LibraryMember>();
-		String memberId = member.getMemberId();
+		if (mems == null)
+			mems = new HashMap<String, LibraryMember>();
+		String memberId = "" + Util.getNextKey(mems);
+		member.setMemberId(memberId);
 		mems.put(memberId, member);
 		saveToStorage(StorageType.MEMBERS, mems);
 	}
@@ -51,8 +53,8 @@ public class DataAccessFacade implements DataAccess {
 	public void saveNewBook(Book book) {
 		// TODO Auto-generated method stub
 		HashMap<String, Book> books = readBooksMap();
-		if(books==null)
-			books=new HashMap<String,Book>();
+		if (books == null)
+			books = new HashMap<String, Book>();
 		String bookisbn = book.getIsbn();
 		books.put(bookisbn, book);
 		saveToStorage(StorageType.BOOKS, books);
@@ -60,8 +62,8 @@ public class DataAccessFacade implements DataAccess {
 
 	public void saveNewUser(User user) {
 		HashMap<String, User> us = readUserMap();
-		if(us==null)
-			us=new HashMap<String,User>();
+		if (us == null)
+			us = new HashMap<String, User>();
 		for (Map.Entry<String, User> entry : us.entrySet()) {
 			System.out.println(entry.getKey());
 		}
@@ -87,9 +89,9 @@ public class DataAccessFacade implements DataAccess {
 	public HashMap<String, Book> readBooksMap() {
 		// Returns a Map with name/value pairs being
 		// isbn -> Book
-		HashMap<String, Book> map=(HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
-		if(map==null){
-			map=new HashMap<>();
+		HashMap<String, Book> map = (HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
+		if (map == null) {
+			map = new HashMap<>();
 		}
 		return map;
 	}
@@ -98,9 +100,9 @@ public class DataAccessFacade implements DataAccess {
 	public HashMap<String, LibraryMember> readMemberMap() {
 		// Returns a Map with name/value pairs being
 		// memberId -> LibraryMember
-		HashMap<String, LibraryMember> map=(HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
-		if(map==null){
-			map=new HashMap<>();
+		HashMap<String, LibraryMember> map = (HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
+		if (map == null) {
+			map = new HashMap<>();
 		}
 		return map;
 	}
@@ -109,9 +111,9 @@ public class DataAccessFacade implements DataAccess {
 	public HashMap<String, User> readUserMap() {
 		// Returns a Map with name/value pairs being
 		// userId -> User
-		HashMap<String, User> map=(HashMap<String, User>) readFromStorage(StorageType.USERS);
-		if(map==null){
-			map=new HashMap<>();
+		HashMap<String, User> map = (HashMap<String, User>) readFromStorage(StorageType.USERS);
+		if (map == null) {
+			map = new HashMap<>();
 		}
 		return map;
 	}
@@ -120,9 +122,9 @@ public class DataAccessFacade implements DataAccess {
 	public HashMap<String, Author> readAuthorMap() {
 		// Returns a Map with name/value pairs being
 		// userId -> User
-		HashMap<String, Author> map=(HashMap<String, Author>) readFromStorage(StorageType.AUTHOR);
-		if(map==null){
-			map=new HashMap<>();
+		HashMap<String, Author> map = (HashMap<String, Author>) readFromStorage(StorageType.AUTHOR);
+		if (map == null) {
+			map = new HashMap<>();
 		}
 		return map;
 	}
@@ -153,54 +155,53 @@ public class DataAccessFacade implements DataAccess {
 		authorList.forEach(author -> authors.put(author.getFirstName(), author));
 		saveToStorage(StorageType.AUTHOR, authors);
 	}
-	
-	 @Override
-	    public void checkoutBook(CheckoutRecord checkoutRecord) {
-	        HashMap<String, CheckoutRecord> checkoutRecords = readCheckoutRecordsMap();
-	        String checkoutRecordId = checkoutRecord.getId();
-	        checkoutRecords.put(checkoutRecordId, checkoutRecord);
-	        saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecords);
-	    }
 
-	    @Override
-	    public void updateBookCopyAvailability(BookCopy bookCopy,boolean availability) {
-	        HashMap<String, Book> books = readBooksMap();
-	        for (Map.Entry<String, Book> entry : books.entrySet()) {
-	            Book book = entry.getValue();
-	            if(book.getIsbn().equals(bookCopy.getBook().getIsbn())){
-	                for (int j = 0; j < book.getNumCopies(); j++) {
-	                    if(book.getCopies()[j].getCopyNum()==bookCopy.getCopyNum()){
-	                        BookCopy bCopy=book.getCopies()[j];
-	                        bCopy.changeAvailability();
-	                        book.getCopies()[j]=bCopy;
-	                        break;
-	                    }
-	                }
-	                break;
-	            }
-	        }
-	        saveToStorage(StorageType.BOOKS, books);
-	    }
+	@Override
+	public void checkoutBook(CheckoutRecord checkoutRecord) {
+		HashMap<String, CheckoutRecord> checkoutRecords = readCheckoutRecordsMap();
+		String checkoutRecordId = checkoutRecord.getId();
+		checkoutRecords.put(checkoutRecordId, checkoutRecord);
+		saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecords);
+	}
 
-	    @Override
-	    public void updateCheckoutEntry(CheckoutRecord cr, String isbn, int copyNo) {
-	        HashMap<String, CheckoutRecord> checkoutRecordsMap = readCheckoutRecordsMap();//checkoutRecordsMap
-	        for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
-	            CheckoutRecord checkoutRecord = entry.getValue();
-	            if(checkoutRecord.getId().equals(cr.getId())){
-	                for (int j = 0; j < checkoutRecord.getCheckoutEntries().size(); j++) {
-	                    if(checkoutRecord.getCheckoutEntries().get(j).getBookCopy().getCopyNum()==copyNo){
-	                        CheckoutEntry e=checkoutRecord.getCheckoutEntries().get(j);
-	                        e.setReturnDate(LocalDate.now());
-	                        break;
-	                    }
-	                }
-	                break;
-	            }
-	        }
-	        saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecordsMap);
-	    }
+	@Override
+	public void updateBookCopyAvailability(BookCopy bookCopy, boolean availability) {
+		HashMap<String, Book> books = readBooksMap();
+		for (Map.Entry<String, Book> entry : books.entrySet()) {
+			Book book = entry.getValue();
+			if (book.getIsbn().equals(bookCopy.getBook().getIsbn())) {
+				for (int j = 0; j < book.getNumCopies(); j++) {
+					if (book.getCopies()[j].getCopyNum() == bookCopy.getCopyNum()) {
+						BookCopy bCopy = book.getCopies()[j];
+						bCopy.changeAvailability();
+						book.getCopies()[j] = bCopy;
+						break;
+					}
+				}
+				break;
+			}
+		}
+		saveToStorage(StorageType.BOOKS, books);
+	}
 
+	@Override
+	public void updateCheckoutEntry(CheckoutRecord cr, String isbn, int copyNo) {
+		HashMap<String, CheckoutRecord> checkoutRecordsMap = readCheckoutRecordsMap();// checkoutRecordsMap
+		for (Map.Entry<String, CheckoutRecord> entry : checkoutRecordsMap.entrySet()) {
+			CheckoutRecord checkoutRecord = entry.getValue();
+			if (checkoutRecord.getId().equals(cr.getId())) {
+				for (int j = 0; j < checkoutRecord.getCheckoutEntries().size(); j++) {
+					if (checkoutRecord.getCheckoutEntries().get(j).getBookCopy().getCopyNum() == copyNo) {
+						CheckoutEntry e = checkoutRecord.getCheckoutEntries().get(j);
+						e.setReturnDate(LocalDate.now());
+						break;
+					}
+				}
+				break;
+			}
+		}
+		saveToStorage(StorageType.CHECKOUTRECORD, checkoutRecordsMap);
+	}
 
 	static void saveToStorage(StorageType type, Object ob) {
 		ObjectOutputStream out = null;
@@ -281,8 +282,8 @@ public class DataAccessFacade implements DataAccess {
 	public void saveNewAuthor(Author author) {
 		// TODO Auto-generated method stub
 		HashMap<String, Author> us = readAuthorMap();
-		if(us==null)
-			us=new HashMap<String,Author>();
+		if (us == null)
+			us = new HashMap<String, Author>();
 		for (Map.Entry<String, Author> entry : us.entrySet()) {
 			System.out.println(entry.getKey());
 		}
@@ -300,19 +301,17 @@ public class DataAccessFacade implements DataAccess {
 		return checkoutRecords;
 	}
 
-
 	@Override
 	public void updateBook(Book book) {
 		HashMap<String, Book> books = readBooksMap();
 		String bookId = book.getIsbn();
 		for (Map.Entry<String, Book> entry : books.entrySet()) {
 			Book value = entry.getValue();
-			if(value.getIsbn().equals(bookId)){
-				books.put(bookId,book);
+			if (value.getIsbn().equals(bookId)) {
+				books.put(bookId, book);
 			}
 		}
 		saveToStorage(StorageType.BOOKS, books);
 	}
-
 
 }
