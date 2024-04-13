@@ -40,6 +40,8 @@ public class DataAccessFacade implements DataAccess {
 	// implement: other save operations
 	public void saveNewMember(LibraryMember member) {
 		HashMap<String, LibraryMember> mems = readMemberMap();
+		if(mems==null)
+			mems=new HashMap<String,LibraryMember>();
 		String memberId = member.getMemberId();
 		mems.put(memberId, member);
 		saveToStorage(StorageType.MEMBERS, mems);
@@ -49,6 +51,8 @@ public class DataAccessFacade implements DataAccess {
 	public void saveNewBook(Book book) {
 		// TODO Auto-generated method stub
 		HashMap<String, Book> books = readBooksMap();
+		if(books==null)
+			books=new HashMap<String,Book>();
 		String bookisbn = book.getIsbn();
 		books.put(bookisbn, book);
 		saveToStorage(StorageType.BOOKS, books);
@@ -56,6 +60,8 @@ public class DataAccessFacade implements DataAccess {
 
 	public void saveNewUser(User user) {
 		HashMap<String, User> us = readUserMap();
+		if(us==null)
+			us=new HashMap<String,User>();
 		for (Map.Entry<String, User> entry : us.entrySet()) {
 			System.out.println(entry.getKey());
 		}
@@ -81,28 +87,44 @@ public class DataAccessFacade implements DataAccess {
 	public HashMap<String, Book> readBooksMap() {
 		// Returns a Map with name/value pairs being
 		// isbn -> Book
-		return (HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
+		HashMap<String, Book> map=(HashMap<String, Book>) readFromStorage(StorageType.BOOKS);
+		if(map==null){
+			map=new HashMap<>();
+		}
+		return map;
 	}
 
 	@SuppressWarnings("unchecked")
 	public HashMap<String, LibraryMember> readMemberMap() {
 		// Returns a Map with name/value pairs being
 		// memberId -> LibraryMember
-		return (HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
+		HashMap<String, LibraryMember> map=(HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
+		if(map==null){
+			map=new HashMap<>();
+		}
+		return map;
 	}
 
 	@SuppressWarnings("unchecked")
 	public HashMap<String, User> readUserMap() {
 		// Returns a Map with name/value pairs being
 		// userId -> User
-		return (HashMap<String, User>) readFromStorage(StorageType.USERS);
+		HashMap<String, User> map=(HashMap<String, User>) readFromStorage(StorageType.USERS);
+		if(map==null){
+			map=new HashMap<>();
+		}
+		return map;
 	}
 
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Author> readAuthorMap() {
 		// Returns a Map with name/value pairs being
 		// userId -> User
-		return (HashMap<String, Author>) readFromStorage(StorageType.AUTHOR);
+		HashMap<String, Author> map=(HashMap<String, Author>) readFromStorage(StorageType.AUTHOR);
+		if(map==null){
+			map=new HashMap<>();
+		}
+		return map;
 	}
 
 	///// load methods - these place test data into the storage area
@@ -202,6 +224,7 @@ public class DataAccessFacade implements DataAccess {
 		ObjectInputStream in = null;
 		Object retVal = null;
 		try {
+
 			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
 			in = new ObjectInputStream(Files.newInputStream(path));
 			retVal = in.readObject();
@@ -258,6 +281,8 @@ public class DataAccessFacade implements DataAccess {
 	public void saveNewAuthor(Author author) {
 		// TODO Auto-generated method stub
 		HashMap<String, Author> us = readAuthorMap();
+		if(us==null)
+			us=new HashMap<String,Author>();
 		for (Map.Entry<String, Author> entry : us.entrySet()) {
 			System.out.println(entry.getKey());
 		}
