@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import business.ControllerInterface;
 import business.SystemController;
+import dataaccess.Auth;
 
 public class MajorWindow extends JFrame implements LibWindow {
 	ControllerInterface ci = new SystemController();
@@ -67,27 +68,32 @@ public class MajorWindow extends JFrame implements LibWindow {
 	}
 
 	private void addMenuItems() {
-		admin = new JMenu("Admin");
-		menuBar.add(admin);
-		userSystems = new JMenuItem("User Systems");
-		userSystems.addActionListener(new userSystemListener());
+		if(List.of(Auth.ADMIN,Auth.BOTH).contains(SystemController.currentAuth)){
 
-		book = new JMenu("Book");
-		menuBar.add(book);
-		books = new JMenuItem("Manage Books");
-		books.addActionListener(new maintainBooksListener());
-		book.add(books);
-		author = new JMenuItem("Manage Authors");
-		author.addActionListener(new maintainAuthorListener());
-		book.add(author);
-		checkout = new JMenuItem("Checkout Book");
-		checkout.addActionListener(new maintainCheckOutBookListener());
-		book.add(checkout);
+			admin = new JMenu("Admin");
+			menuBar.add(admin);
+			userSystems = new JMenuItem("User Systems");
+			userSystems.addActionListener(new userSystemListener());
+			librarymember = new JMenuItem("Library Member");
+			librarymember.addActionListener(new libraryMemberListener());
+			admin.add(librarymember);
+			admin.add(userSystems);
+		}
+		if(List.of(Auth.LIBRARIAN,Auth.BOTH).contains(SystemController.currentAuth)){
+			book = new JMenu("Book");
+			menuBar.add(book);
+			books = new JMenuItem("Manage Books");
+			books.addActionListener(new maintainBooksListener());
+			book.add(books);
+			author = new JMenuItem("Manage Authors");
+			author.addActionListener(new maintainAuthorListener());
+			book.add(author);
+			checkout = new JMenuItem("Checkout Book");
+			checkout.addActionListener(new maintainCheckOutBookListener());
+			book.add(checkout);
+		}
 
-		librarymember = new JMenuItem("Library Member");
-		librarymember.addActionListener(new libraryMemberListener());
-		admin.add(librarymember);
-		admin.add(userSystems);
+
 		logout = new JMenu("Logout");
 		menuBar.add(logout);
 		logoutit = new JMenuItem("User Logout");
@@ -113,7 +119,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (!SystemController.currentAuth.toString().equals("ADMIN")) {
+			if (!SystemController.currentAuth.toString().equals(Auth.ADMIN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
 				CheckOutBookWindow.INSTANCE.init();
 				Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
@@ -128,7 +134,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (!SystemController.currentAuth.toString().equals("LIBRARIAN")) {
+			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
 				LibraryMemberWindow.INSTANCE.init();
 				Util.centerFrameOnDesktop(LibraryMemberWindow.INSTANCE);
@@ -145,7 +151,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			if (!SystemController.currentAuth.toString().equals("LIBRARIAN")) {
+			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
 				AuthorWindow.INSTANCE.init();
 				Util.centerFrameOnDesktop(AuthorWindow.INSTANCE);
@@ -162,7 +168,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (!SystemController.currentAuth.toString().equals("LIBRARIAN")) {
+			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
 				UserSystem.INSTANCE.init();
 				Util.centerFrameOnDesktop(UserSystem.INSTANCE);
@@ -178,7 +184,7 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (!SystemController.currentAuth.toString().equals("LIBRARIAN")) {
+			if (!SystemController.currentAuth.toString().equals(Auth.LIBRARIAN.toString())) {
 				LibrarySystemWindow.hideAllWindows();
 				BookWindow.INSTANCE.init();
 				Util.centerFrameOnDesktop(BookWindow.INSTANCE);
