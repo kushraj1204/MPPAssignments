@@ -185,7 +185,7 @@ public class SystemController implements ControllerInterface {
 			rs.setStatus(false);
 			rs.addFormFieldMessages("ISBN","Invalid ISBN Number");
 		}
-		if(b.getTitle().toString().length()>20) {
+		if(b.getTitle().toString().length()>200) {
 			rs.setStatus(false);
 			rs.addFormFieldMessages("title","The Title Of Book Is Too Long");
 		}
@@ -548,7 +548,7 @@ public class SystemController implements ControllerInterface {
 				if (en.getBookCopy().getCopyNum() == copyNo
 						&& en.getBookCopy().getBook().getIsbn().equals(b.getIsbn())) {
 					DataAccess da = new DataAccessFacade();
-					da.updateBookCopyAvailability(cr.getCheckoutEntries().get(i).getBookCopy(), true);
+					updateBookCopyAvailability(cr.getCheckoutEntries().get(i).getBookCopy(), true);
 					da.updateCheckoutEntry(cr, b.getIsbn(), copyNo);
 				}
 			}
