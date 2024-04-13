@@ -56,8 +56,8 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	private final String MAIN_LABEL = "Manage CheckOut";
 
 	// Buttons
-	private final String ADD_BUTN = "Add";
-	private final String EDIT_BUTN = "Edit";
+	private final String ADD_BUTN = "Checkout Book";
+	private final String EDIT_BUTN = "Return Book";
 	private final String DELETE_BUTN = "Delete";
 	private final String SEARCH_BUTN = "Search";
 	private final String BACK_TO_MAIN = "Back to Main";
@@ -108,8 +108,8 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 
 		// edit button
 		JButton editButton = new JButton(EDIT_BUTN);
-		// editButton.addActionListener(new EditButtonListener());
-		editButton.setEnabled(false);
+		 editButton.addActionListener(new ReturnButtonListener());
+//		editButton.setEnabled(false);
 
 		// delete button
 		JButton deleteButton = new JButton(DELETE_BUTN);
@@ -198,6 +198,18 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 		//tablecow.updateUI();
 		//repaint();
 	}
+	class ReturnButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent evt) {
+
+
+			Properties emptyCheckOutBook = new Properties();
+			AddReturnBook addReturnBook = new AddReturnBook(GuiControl.ADD_NEW, emptyCheckOutBook);
+			addReturnBook.setVisible(true);
+
+		}
+
+	}
+
 	class AddButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
 
