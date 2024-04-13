@@ -70,6 +70,8 @@ public class AddEditAuthor extends JFrame {
 		defineMainPanel();
 		getContentPane().add(mainPanela);
 
+		setSize(600,600);
+
 	}
 
 	private void initializeWindow() {
@@ -118,7 +120,7 @@ public class AddEditAuthor extends JFrame {
 		JPanel gridPanel = new JPanel();
 		gridPanel.setBackground(GuiControl.SCREEN_BACKGROUND);
 		middlea.add(gridPanel);
-		GridLayout gl = new GridLayout(16, 6);
+		GridLayout gl = new GridLayout(10, 6);
 		gl.setHgap(8);
 		gl.setVgap(8);
 		gridPanel.setLayout(gl);

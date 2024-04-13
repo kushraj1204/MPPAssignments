@@ -64,7 +64,7 @@ public class AddEditLibraryMember extends JFrame {
 		initializeWindow();
 		defineMainPanel();
 		getContentPane().add(mainPanellm);
-
+		setSize(600,600);
 	}
 
 	private void initializeWindow() {

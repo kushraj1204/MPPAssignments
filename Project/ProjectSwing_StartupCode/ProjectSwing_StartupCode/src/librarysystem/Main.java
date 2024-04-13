@@ -17,7 +17,7 @@ public class Main {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 
-			MajorWindow.INSTANCE.setTitle("Sample Library Application");
+			MajorWindow.INSTANCE.setTitle("Library Management System");
 			MajorWindow.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			ControllerInterface ci = new SystemController();
 
