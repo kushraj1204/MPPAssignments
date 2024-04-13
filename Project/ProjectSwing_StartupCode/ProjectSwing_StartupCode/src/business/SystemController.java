@@ -431,7 +431,7 @@ public class SystemController implements ControllerInterface {
 			return Response.getRsp("Books with given isbns not found", false);
 		}
 		if (availableBooks.isEmpty()) {
-			return Response.getRsp("Selected Books is not available currently", false);
+			return Response.getRsp("Books with given isbns are not available currently", false);
 		}
 		CheckoutRecord cr=CheckoutRecordFactory.getCheckoutRecord(lm,availableBooks);
 		String checkoutMsg = getCheckoutMessage(availableBooks,lm);
@@ -461,12 +461,32 @@ public class SystemController implements ControllerInterface {
 			DataAccess da = new DataAccessFacade();
 			da.checkoutBook(cr);
 			for (int i = 0; i < cr.getCheckoutEntries().size(); i++) {
-				da.updateBookCopyAvailability(cr.getCheckoutEntries().get(i).getBookCopy(), false);
+				updateBookCopyAvailability(cr.getCheckoutEntries().get(i).getBookCopy(), false);
 			}
 			return true;
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
 			return false;
+		}
+	}
+
+	public void updateBookCopyAvailability(BookCopy bookCopy,boolean availability) {
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, Book> books = da.readBooksMap();
+		for (Map.Entry<String, Book> entry : books.entrySet()) {
+			Book book = entry.getValue();
+			if(book.getIsbn().equals(bookCopy.getBook().getIsbn())){
+				for (int j = 0; j < book.getNumCopies(); j++) {
+					if(book.getCopies()[j].getCopyNum()==bookCopy.getCopyNum()){
+						BookCopy bCopy=book.getCopies()[j];
+						bCopy.changeAvailability();
+						book.getCopies()[j]=bCopy;
+						da.saveNewBook(book);
+						break;
+					}
+				}
+				break;
+			}
 		}
 	}
 
