@@ -124,7 +124,7 @@ public class AddEditAuthor extends JFrame {
 		gridPanel.setLayout(gl);
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
-		String labelName = "id Author";
+		String labelName = "Author Id";
 		makeLabel(gridPanel, labelName);
 		idAuthor = new JTextField(15);
 		idAuthor.setText(UUID.randomUUID().toString());
@@ -221,8 +221,8 @@ public class AddEditAuthor extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 
-			if (firstName.getText().length() > 0 && lastName.getText().length() > 0 && telephone.getText().length() > 0
-					&& bio.getText().length() > 0) {
+/*			if (firstName.getText().length() > 0 && lastName.getText().length() > 0 && telephone.getText().length() > 0
+					&& bio.getText().length() > 0) {*/
 
 				// Address a = new Address(street.getText(), city.getText(), state.getText(),
 				// zip.getText());
@@ -258,10 +258,10 @@ public class AddEditAuthor extends JFrame {
 					
 				}
 				
-			} else {
+			/*} else {
 				JOptionPane.showMessageDialog(AddEditAuthor.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);
-			}
+			}*/
 		}
 	}
 

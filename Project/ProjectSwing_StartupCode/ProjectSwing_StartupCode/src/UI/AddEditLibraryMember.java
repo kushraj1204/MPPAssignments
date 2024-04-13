@@ -213,10 +213,10 @@ public class AddEditLibraryMember extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 
-			if (idMemberField.getText().length() > 0 && firstName.getText().length() > 0
+/*			if (idMemberField.getText().length() > 0 && firstName.getText().length() > 0
 					&& lastName.getText().length() > 0 && telephone.getText().length() > 0
 					&& street.getText().length() > 0 && city.getText().length() > 0 && state.getText().length() > 0
-					&& zip.getText().length() > 0) {
+					&& zip.getText().length() > 0) {*/
 
 				Address a = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
 
@@ -244,10 +244,10 @@ public class AddEditLibraryMember extends JFrame {
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
-			} else {
+			/*} else {
 				JOptionPane.showMessageDialog(AddEditLibraryMember.this, "Invalid field on form!", "Error",
 						JOptionPane.ERROR_MESSAGE);
-			}
+			}*/
 		}
 	}
 

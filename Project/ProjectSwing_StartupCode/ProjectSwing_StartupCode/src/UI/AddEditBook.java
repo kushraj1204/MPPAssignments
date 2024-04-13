@@ -388,8 +388,7 @@ public class AddEditBook extends JFrame {
 		public void actionPerformed(ActionEvent evt) {
 
 			System.out.println("ROW COUNT" + modelauthorschoosed.getRowCount());
-			if (isbn.getText().length() > 0 && title.getText().length() > 0 && numberofcopies.getText().length() > 0
-					&& modelauthorschoosed.getRowCount() > 0) {
+			if ( numberofcopies.getText().length() > 0) {
 
 				// Address a = new Address(street.getText(), city.getText(), state.getText(),
 				// zip.getText());
@@ -432,7 +431,7 @@ public class AddEditBook extends JFrame {
 					}
 				}
 			} else {
-				JOptionPane.showMessageDialog(AddEditBook.this, "Invalid field on form!", "Error",
+				JOptionPane.showMessageDialog(AddEditBook.this, "Invalid value for number of copies!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
