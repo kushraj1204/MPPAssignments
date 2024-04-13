@@ -207,6 +207,7 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 		public void actionPerformed(ActionEvent evt) {
 
 			LibrarySystemWindow.hideAllWindows();
+			if(!MajorWindow.INSTANCE.isInitialized())
 			MajorWindow.INSTANCE.init();
 			Util.centerFrameOnDesktop(MajorWindow.INSTANCE);
 			MajorWindow.INSTANCE.setVisible(true);

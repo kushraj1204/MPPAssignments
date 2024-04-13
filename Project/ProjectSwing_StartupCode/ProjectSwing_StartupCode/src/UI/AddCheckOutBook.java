@@ -166,9 +166,11 @@ public class AddCheckOutBook extends JFrame {
 
 				Response resp = ci.checkoutBook(idlibraryMember.getText(), isbnBook.getText());
 				if (resp.isStatus()) {
+					CheckOutBookWindow.INSTANCE.refresh();
+
 					JOptionPane.showMessageDialog(AddCheckOutBook.this, resp.getMessage(), "Info",
 							JOptionPane.INFORMATION_MESSAGE);
-					CheckOutBookWindow.INSTANCE.refresh();
+
 					dispose();
 					Util.centerFrameOnDesktop(CheckOutBookWindow.INSTANCE);
 
