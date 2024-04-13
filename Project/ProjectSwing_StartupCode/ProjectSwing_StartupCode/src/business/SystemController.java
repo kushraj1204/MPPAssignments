@@ -193,7 +193,7 @@ public class SystemController implements ControllerInterface {
 			rs.setStatus(false);
 			rs.addFormFieldMessages("authors","Author Is Required While Creating Book");
 		}
-		if(b.getAuthors().size()<0) {
+		if(b.getAuthors().size()<=0) {
 			rs.setStatus(false);
 			rs.addFormFieldMessages("authors","Author Is Required While Creating Book");
 		}
