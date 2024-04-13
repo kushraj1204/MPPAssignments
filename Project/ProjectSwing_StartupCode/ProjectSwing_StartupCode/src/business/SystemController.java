@@ -440,6 +440,7 @@ public class SystemController implements ControllerInterface {
 			Book book = availableBooks.get(i);
 			BookCopy cp = book.getNextAvailableCopy();
 			LocalDate dueDate = LocalDate.now().plusDays(book.getMaxCheckoutLength());
+
 			checkOutEntries.add(new CheckoutEntry(cr, dueDate, cp));
 			checkoutMsg += "Book " + book.getTitle() + " with copyNo. " + cp.getCopyNum() + " issued to "
 					+ lm.getFirstName() + ". Due date is " + dueDate + ".\n";
