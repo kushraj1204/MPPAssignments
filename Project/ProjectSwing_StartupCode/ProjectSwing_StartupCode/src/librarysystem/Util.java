@@ -153,4 +153,8 @@ public class Util {
 	        System.out.println(concatenatedValues.toString());
 	        return concatenatedValues.toString();
 	    }
+
+	public static void main(String[] args) {
+		isValidZipCode("52557");
+	}
 }

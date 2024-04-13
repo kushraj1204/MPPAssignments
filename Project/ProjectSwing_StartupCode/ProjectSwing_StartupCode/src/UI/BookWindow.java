@@ -224,12 +224,12 @@ public class BookWindow extends JFrame implements LibWindow {
 			System.out.println("Selected Row" + selectedRow);
 
 			if (selectedRow >= 0) {
-				String[] fldNames = { "isbn" };
+				String[] fldNames = { "ISBN" };
 
 				Properties UserInfo = new Properties();
 
 				// index for isbn
-				UserInfo.setProperty("isbn", (String) modelbooks.getValueAt(selectedRow, 0));
+				UserInfo.setProperty("ISBN", (String) modelbooks.getValueAt(selectedRow, 0));
 
 
 
@@ -269,12 +269,12 @@ public class BookWindow extends JFrame implements LibWindow {
 
 			int selectedRow = tablebooks.getSelectedRow();
 			if (selectedRow >= 0) {
-				String[] fldNames = { "isbn" };
+				String[] fldNames = { "ISBN" };
 
 				Properties BookMember = new Properties();
 
 				// index for id User
-				BookMember.setProperty("isbn", (String) modelbooks.getValueAt(selectedRow, 0));
+				BookMember.setProperty("ISBN", (String) modelbooks.getValueAt(selectedRow, 0));
 
 				// AddEditLibraryMember editProd = new AddEditLibraryMember(GuiControl.EDIT,
 				// LibraryMember);

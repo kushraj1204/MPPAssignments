@@ -39,6 +39,7 @@ import business.SystemController;
 import dataaccess.Auth;
 import dataaccess.User;
 import librarysystem.GuiControl;
+import librarysystem.Util;
 
 public class AddEditBook extends JFrame {
 
@@ -68,11 +69,11 @@ public class AddEditBook extends JFrame {
 	CustomTableModel modelauthors, modelauthorschoosed;
 
 	// Columns
-	private final String IDAUTHOR = "id author";
-	private final String FIRSTNAME = "first name";
-	private final String LASTNAME = "last name";
-	private final String BIO = "bio";
-	private final String TELEPHONE = "telephone";
+	private final String IDAUTHOR = "Author Id";
+	private final String FIRSTNAME = "First name";
+	private final String LASTNAME = "Last name";
+	private final String BIO = "Bio";
+	private final String TELEPHONE = "Telephone";
 
 	// Title
 	private final String MAIN_LABEL = "Maintain Authors";
@@ -155,7 +156,7 @@ public class AddEditBook extends JFrame {
 		gridPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
-		String labelName = "isbn";
+		String labelName = "ISBN";
 		makeLabel(gridPanel, labelName);
 		isbn = new JTextField(15);
 		isbn.setText(fieldValues.getProperty(labelName));
@@ -193,15 +194,15 @@ public class AddEditBook extends JFrame {
 		}
 		gridPanel.add(maxcheckoutGroupField);
 
-		labelName = "nCopies";
+		labelName = "No of Copies";
 		makeLabel(gridPanel, labelName);
 		numberofcopies = new JNumberTextField(15);
 		gridPanel.add(numberofcopies);
 
-		if (fieldValues.getProperty("isbn") != null) {
+		if (fieldValues.getProperty("ISBN") != null) {
 			isbn.setEditable(false);
 			ControllerInterface ci = new SystemController();
-			Book lm = ci.getBookbyisbn(fieldValues.getProperty("isbn"));
+			Book lm = ci.getBookbyisbn(fieldValues.getProperty("ISBN"));
 			isbn.setText(lm.getIsbn());
 			author.setText(lm.getAuthors().get(0).getFirstName());
 			numberofcopies.setText("" + lm.getNumCopies());
@@ -420,8 +421,15 @@ public class AddEditBook extends JFrame {
 					
 				}
 				else {
-					JOptionPane.showMessageDialog(AddEditBook.this, resp.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
+					if(!resp.getFormFieldMessages().isEmpty()) {
+						String message=Util.getConcatnatedFieldMessages(resp.getFormFieldMessages());
+						JOptionPane.showMessageDialog(AddEditBook.this, message, resp.getMessage(), 
+								JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						JOptionPane.showMessageDialog(AddEditBook.this, resp.getMessage(), "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			} else {
 				JOptionPane.showMessageDialog(AddEditBook.this, "Invalid field on form!", "Error",
@@ -434,7 +442,6 @@ public class AddEditBook extends JFrame {
 		public void actionPerformed(ActionEvent evt) {
 
 			dispose();
-
 		}
 	}
 

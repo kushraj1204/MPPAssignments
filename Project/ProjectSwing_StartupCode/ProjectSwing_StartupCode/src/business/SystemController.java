@@ -183,7 +183,7 @@ public class SystemController implements ControllerInterface {
 		Response rs=Response.getRsp("", true);
 		if(!Util.isValidISBN(b.getIsbn())) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("isbn","Invalid ISBN Number");
+			rs.addFormFieldMessages("ISBN","Invalid ISBN Number");
 		}
 		if(b.getTitle().toString().length()>20) {
 			rs.setStatus(false);
@@ -256,6 +256,7 @@ public class SystemController implements ControllerInterface {
 			rs.addFormFieldMessages("address","Address cannot be null");
 		}
 		Address a=b.getAddress();
+		System.out.println(a.getZip());
 		if(!Util.isValidZipCode(a.getZip())) {
 			rs.setStatus(false);
 			rs.addFormFieldMessages("title","Invalid zip code format");

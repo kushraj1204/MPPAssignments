@@ -113,7 +113,7 @@ public class AddCopiesBook extends JFrame {
 		gridPanel.setLayout(gl);
 		gridPanel.setBorder(new WindowBorder(GuiControl.WINDOW_BORDER));
 
-		String labelName = "isbn";
+		String labelName = "ISBN";
 		makeLabel(gridPanel, labelName);
 		isbn = new JTextField(15);
 		gridPanel.add(isbn);

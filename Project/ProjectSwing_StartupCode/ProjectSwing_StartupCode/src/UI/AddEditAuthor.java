@@ -48,6 +48,11 @@ public class AddEditAuthor extends JFrame {
 	private JTextField telephone;
 	private JTextField bio;
 
+	private JTextField street;
+	private JTextField city;
+	private JTextField state;
+	private JNumberTextField zip;
+
 	/** value is "Add New" or "Edit" */
 	private String addOrEdit = GuiControl.ADD_NEW;
 
@@ -113,7 +118,7 @@ public class AddEditAuthor extends JFrame {
 		JPanel gridPanel = new JPanel();
 		gridPanel.setBackground(GuiControl.SCREEN_BACKGROUND);
 		middlea.add(gridPanel);
-		GridLayout gl = new GridLayout(8, 4);
+		GridLayout gl = new GridLayout(16, 6);
 		gl.setHgap(8);
 		gl.setVgap(8);
 		gridPanel.setLayout(gl);
@@ -146,15 +151,35 @@ public class AddEditAuthor extends JFrame {
 		// catalog group is different from the other fields
 		// because it plays a different role in MaintainCatalog
 		// so it is set differently
-		labelName = "bio";
+		labelName = "Bio";
 		makeLabel(gridPanel, labelName);
 		bio = new JTextField(15);
 		gridPanel.add(bio);
 
-		if (fieldValues.getProperty("isbn") != null) {
+		labelName = "Street";
+		makeLabel(gridPanel, labelName);
+		street = new JTextField(20);
+		gridPanel.add(street);
+
+		labelName = "City";
+		makeLabel(gridPanel, labelName);
+		city = new JTextField(20);
+		gridPanel.add(city);
+
+		labelName = "State";
+		makeLabel(gridPanel, labelName);
+		state = new JTextField(15);
+		gridPanel.add(state);
+
+		labelName = "Zip";
+		makeLabel(gridPanel, labelName);
+		zip = new JNumberTextField();
+		gridPanel.add(zip);
+
+		if (fieldValues.getProperty("ISBN") != null) {
 			// isbn.setEditable(false);
 			// ControllerInterface ci = new SystemController();
-			// Book lm = ci.getBookbyisbn(fieldValues.getProperty("isbn"));
+			// Book lm = ci.getBookbyisbn(fieldValues.getProperty("ISBN"));
 			// isbn.setText(lm.getIsbn());
 			// author.setText(lm.getAuthors().get(0).getFirstName());
 			// maxcheckout.setText("" + lm.getMaxCheckoutLength());
@@ -201,10 +226,10 @@ public class AddEditAuthor extends JFrame {
 
 				// Address a = new Address(street.getText(), city.getText(), state.getText(),
 				// zip.getText());
-				Address a = new Address("A", "b", "c", "d");
 				// LibraryMember lm = new LibraryMember(idMemberField.getText(),
 				// firstName.getText(), lastName.getText(),
 				// telephone.getText(), a);
+				Address a = new Address(street.getText(), city.getText(), state.getText(), zip.getText());
 				Author b = new Author(idAuthor.getText(), firstName.getText(), lastName.getText(), telephone.getText(),
 						a, bio.getText());
 				ArrayList<Author> authors = new ArrayList<Author>();
@@ -216,9 +241,9 @@ public class AddEditAuthor extends JFrame {
 				
 					JOptionPane.showMessageDialog(AddEditAuthor.this, resp.getMessage(), "Info",
 							JOptionPane.INFORMATION_MESSAGE);
-					BookWindow.INSTANCE.refresh();
+					AuthorWindow.INSTANCE.refresh();
 					dispose();
-					Util.centerFrameOnDesktop(BookWindow.INSTANCE);
+					Util.centerFrameOnDesktop(AuthorWindow.INSTANCE);
 				}
 				else {
 				if(!resp.getFormFieldMessages().isEmpty()) {
