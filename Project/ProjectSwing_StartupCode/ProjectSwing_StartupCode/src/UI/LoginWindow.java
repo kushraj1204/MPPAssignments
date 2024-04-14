@@ -102,7 +102,8 @@ public class LoginWindow extends JFrame implements LibWindow {
 		final String CURR_DIR = System.getProperty("user.dir");
 		final String SPLASH_IMAGE = CURR_DIR + "/src/librarysystem/logo.jpg";
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/librarysystem/book.png"))); // NOI18N
+//		jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/librarysystem/book.png"))); // NOI18N
+		jLabel1.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir") + "/resource/book.png")); // NOI18N
 		jLabel1.setText("Library Management System");
 		jLabel2.setText("Username");
 		jLabel3.setText("Password");

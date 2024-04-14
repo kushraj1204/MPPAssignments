@@ -59,7 +59,7 @@ public class GuiControl {
 	
 	//if you do not use a "src" folder for source code, change the line below to this:
 	//public static final String SPLASH_IMAGE = CURR_DIR+"\\src\\images\\logo.jpg";
-	public static final String SPLASH_IMAGE = CURR_DIR+"\\src\\lesson6\\lecture\\menus\\gui\\logo.jpg";
+	public static final String SPLASH_IMAGE = CURR_DIR+ "/resource/book.png";
 	static {
 		System.out.println(SPLASH_IMAGE);
 	}

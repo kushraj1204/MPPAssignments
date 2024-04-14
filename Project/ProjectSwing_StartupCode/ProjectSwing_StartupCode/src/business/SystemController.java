@@ -513,6 +513,7 @@ public class SystemController implements ControllerInterface {
 		if (copy == null) {
 			return Response.getRsp("Book with given copy number doesnt exist", false);
 		}
+		System.out.println(lm.getMemberId()+" "+b.getIsbn()+" "+copyNo);
 		CheckoutRecord cr = findCheckOutRecordBy(lm, b, copyNo);
 		if (cr == null) {
 			return Response.getRsp("Checkout with given params doesnt exist", false);

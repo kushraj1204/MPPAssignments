@@ -50,8 +50,8 @@ public class MajorWindow extends JFrame implements LibWindow {
 
 	private void setPathToImage() {
 		String currDirectory = System.getProperty("user.dir");
-		pathToImage = currDirectory + "/src/librarysystem/library.jpg";
-//		pathToImage = System.getProperty("user.dir") + "/resource/library-500.png";
+//		pathToImage = currDirectory + "/src/librarysystem/library.jpg";
+		pathToImage = System.getProperty("user.dir") + "/resource/library-500.png";
 	}
 
 	private void insertSplashImage() {

@@ -155,6 +155,6 @@ public class Util {
 	    }
 
 	public static void main(String[] args) {
-		isValidZipCode("52557");
+		System.out.println(isValidISBN("0060853980"));
 	}
 }
