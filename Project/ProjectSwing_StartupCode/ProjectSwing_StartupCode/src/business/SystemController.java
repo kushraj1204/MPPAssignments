@@ -84,7 +84,8 @@ public class SystemController implements ControllerInterface {
 				else
 					checkouts[cont][4] = "";
 				checkouts[cont][3] = "" + entry.getValue().getCheckoutEntries().get(i).getDueDate();
-				checkouts[cont][2] = entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle();
+				checkouts[cont][2] = entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle()
+						+ " Copy Number:" + entry.getValue().getCheckoutEntries().get(i).getBookCopy().getCopyNum();
 				checkouts[cont][1] = entry.getValue().getLibraryMember().getFirstName();
 				checkouts[cont][0] = entry.getValue().getId();
 				cont++;
@@ -156,127 +157,124 @@ public class SystemController implements ControllerInterface {
 		List<String> retval = new ArrayList<>();
 		retval.addAll(da.readBooksMap().keySet());
 		return retval;
-	}	
+	}
+
 	@Override
 	public Response saveBook(Book b) {
 		// TODO Auto-generated method stub
 		try {
-		Response rs=validateBookFields(b);	
-		if(!rs.isStatus()) {
-			return rs;
-		}
-		DataAccess da = new DataAccessFacade();
-		Book book=getBookbyisbn(b.getIsbn());
-		if(book!=null) {
-			return Response.getRsp("Book with given ISBN already exists. Add copies instead", false);
-		}
-		da.saveNewBook(b);
-		return Response.getRsp("Save book successfully", true);
-		}
-		catch(Exception e) {
+			Response rs = validateBookFields(b);
+			if (!rs.isStatus()) {
+				return rs;
+			}
+			DataAccess da = new DataAccessFacade();
+			Book book = getBookbyisbn(b.getIsbn());
+			if (book != null) {
+				return Response.getRsp("Book with given ISBN already exists. Add copies instead", false);
+			}
+			da.saveNewBook(b);
+			return Response.getRsp("Save book successfully", true);
+		} catch (Exception e) {
 			return Response.getRsp("Unable to save book", false);
 		}
 	}
 
 	private Response validateBookFields(Book b) {
-	// TODO Auto-generated method stub
-		Response rs=Response.getRsp("", true);
-		if(!Util.isValidISBN(b.getIsbn())) {
+		// TODO Auto-generated method stub
+		Response rs = Response.getRsp("", true);
+		if (!Util.isValidISBN(b.getIsbn())) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("ISBN","Invalid ISBN Number");
+			rs.addFormFieldMessages("ISBN", "Invalid ISBN Number");
 		}
-		if(b.getTitle().toString().length()>200) {
+		if (b.getTitle().toString().length() > 200) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("title","The Title Of Book Is Too Long");
+			rs.addFormFieldMessages("title", "The Title Of Book Is Too Long");
 		}
-		if(b.getAuthors()==null) {
+		if (b.getAuthors() == null) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("authors","Author Is Required While Creating Book");
+			rs.addFormFieldMessages("authors", "Author Is Required While Creating Book");
 		}
-		if(b.getAuthors().size()<=0) {
+		if (b.getAuthors().size() <= 0) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("authors","Author Is Required While Creating Book");
+			rs.addFormFieldMessages("authors", "Author Is Required While Creating Book");
 		}
-		if(!rs.isStatus()) {
+		if (!rs.isStatus()) {
 			rs.setMessage("Validation failed");
 		}
-		
-		
-	return rs;
-}
+
+		return rs;
+	}
 
 	@Override
 	public Response saveAuthor(Author b) {
 		// TODO Auto-generated method stub
-		Response rs=validateAuthorFields(b);
-		if(!rs.isStatus()) {
+		Response rs = validateAuthorFields(b);
+		if (!rs.isStatus()) {
 			return rs;
 		}
 		DataAccess da = new DataAccessFacade();
-		Author auth=findAuthorByPhone(b.getTelephone());
-		if(auth!=null && !auth.getidAuthor().equals(b.getidAuthor()) ) {
+		Author auth = findAuthorByPhone(b.getTelephone());
+		if (auth != null && !auth.getidAuthor().equals(b.getidAuthor())) {
 			return Response.getRsp("Author with given phone number already exists.", false);
 		}
 		try {
 			da.saveNewAuthor(b);
-		return Response.getRsp("Saved author successfully", true);
-		}
-		catch(Exception e) {
+			return Response.getRsp("Saved author successfully", true);
+		} catch (Exception e) {
 			return Response.getRsp("Unable to add author", false);
 		}
 	}
-	
 
 	private Response validateAuthorFields(Author b) {
-	// TODO Auto-generated method stub
-		Response rs=Response.getRsp("", true);
-		
-		if(b.getFirstName().toString().length()==0) {
+		// TODO Auto-generated method stub
+		Response rs = Response.getRsp("", true);
+
+		if (b.getFirstName().toString().length() == 0) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("firstName","Author Is Required Field");
+			rs.addFormFieldMessages("firstName", "Author Is Required Field");
 		}
-		if(b.getFirstName().toString().length()>50) {
+		if (b.getFirstName().toString().length() > 50) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("firstName","The Length Of Author First Name Has Been Exceeded");
+			rs.addFormFieldMessages("firstName", "The Length Of Author First Name Has Been Exceeded");
 		}
-		if(b.getLastName().toString().length()>50) {
+		if (b.getLastName().toString().length() > 50) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("lastName","The Length Of Author Last Name Has Been Exceeded");
+			rs.addFormFieldMessages("lastName", "The Length Of Author Last Name Has Been Exceeded");
 		}
-		if(!Util.isValidPhoneNumber(b.getTelephone())) {
+		if (!Util.isValidPhoneNumber(b.getTelephone())) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("telephone","The Phone Number format is invalid");
+			rs.addFormFieldMessages("telephone", "The Phone Number format is invalid");
 		}
-		if(b.getBio().toString().length()>500) {
+		if (b.getBio().toString().length() > 500) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("bio","Bio Too Long");
+			rs.addFormFieldMessages("bio", "Bio Too Long");
 		}
-		if(b.getAddress()==null) {
+		if (b.getAddress() == null) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("address","Address cannot be null");
+			rs.addFormFieldMessages("address", "Address cannot be null");
 		}
-		Address a=b.getAddress();
+		Address a = b.getAddress();
 		System.out.println(a.getZip());
-		if(!Util.isValidZipCode(a.getZip())) {
+		if (!Util.isValidZipCode(a.getZip())) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("title","Invalid zip code format");
+			rs.addFormFieldMessages("title", "Invalid zip code format");
 		}
-		if(!Util.isValidState(a.getState())) {
+		if (!Util.isValidState(a.getState())) {
 			rs.setStatus(false);
-			rs.addFormFieldMessages("state","Invalid State. Please use a 2 letter state representation");
+			rs.addFormFieldMessages("state", "Invalid State. Please use a 2 letter state representation");
 		}
-		if(!rs.isStatus()) {
+		if (!rs.isStatus()) {
 			rs.setMessage("Validation failed");
 		}
-	return rs;
-}
+		return rs;
+	}
 
 	private Author findAuthorByPhone(String telephone) {
 		// TODO Auto-generated method stub
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, Author> map = da.readAuthorMap();
-		for(Map.Entry<String,Author> entry:map.entrySet()) {
-			if(entry.getValue().getTelephone().equals(telephone)) {
+		for (Map.Entry<String, Author> entry : map.entrySet()) {
+			if (entry.getValue().getTelephone().equals(telephone)) {
 				return entry.getValue();
 			}
 		}
@@ -303,19 +301,18 @@ public class SystemController implements ControllerInterface {
 	public Response saveLibraryMember(LibraryMember lm) {
 		// TODO Auto-generated method stub
 		DataAccess da = new DataAccessFacade();
-		Response rs=validateMemberFields(lm);
-		if(!rs.isStatus()) {
+		Response rs = validateMemberFields(lm);
+		if (!rs.isStatus()) {
 			return rs;
 		}
-		LibraryMember lMem=findLibraryMemberByPhone(lm.getTelephone());
-			if(lMem!=null && !lMem.getMemberId().equals(lm.getMemberId()) ) {
+		LibraryMember lMem = findLibraryMemberByPhone(lm.getTelephone());
+		if (lMem != null && !lMem.getMemberId().equals(lm.getMemberId())) {
 			return Response.getRsp("Member with given phone already exists.", false);
 		}
 		try {
-		da.saveNewMember(lm);
-		return Response.getRsp("Saved member successfully", true);
-		}
-		catch(Exception e) {
+			da.saveNewMember(lm);
+			return Response.getRsp("Saved member successfully", true);
+		} catch (Exception e) {
 			return Response.getRsp("Unable to add member", false);
 		}
 	}
@@ -323,8 +320,8 @@ public class SystemController implements ControllerInterface {
 	private LibraryMember findLibraryMemberByPhone(String telephone) {
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, LibraryMember> map = da.readMemberMap();
-		for(Map.Entry<String,LibraryMember> entry:map.entrySet()) {
-			if(entry.getValue().getTelephone().equals(telephone)) {
+		for (Map.Entry<String, LibraryMember> entry : map.entrySet()) {
+			if (entry.getValue().getTelephone().equals(telephone)) {
 				return entry.getValue();
 			}
 		}
@@ -377,43 +374,43 @@ public class SystemController implements ControllerInterface {
 		DataAccess da = new DataAccessFacade();
 		// da.deleteBook(idbook);
 	}
-	
+
 	private Response validateMemberFields(LibraryMember b) {
 		// TODO Auto-generated method stub
-			Response rs=Response.getRsp("", true);
-			
-			if(b.getFirstName().toString().length()==0) {
-				rs.setStatus(false);
-				rs.addFormFieldMessages("firstName","First Name Is Required Field");
-			}
-			if(b.getFirstName().toString().length()>50) {
-				rs.setStatus(false);
-				rs.addFormFieldMessages("firstName","The Length Of First Name Has Been Exceeded");
-			}
-			if(b.getLastName().toString().length()>50) {
-				rs.setStatus(false);
-				rs.addFormFieldMessages("lastName","The Length Of Last Name Has Been Exceeded");
-			}
-			if(!Util.isValidPhoneNumber(b.getTelephone())) {
-				rs.setStatus(false);
-				rs.addFormFieldMessages("telephone","The Phone Number format is invalid");
-			}
-			if(b.getAddress()==null) {
-				rs.setStatus(false);
-				rs.addFormFieldMessages("address","Address cannot be null");
-			}
-			Address a=b.getAddress();
-			if(!Util.isValidZipCode(a.getZip())) {
-				rs.setStatus(false);
-				rs.addFormFieldMessages("title","Invalid zip code format");
-			}
-			if(!Util.isValidState(a.getState())) {
-				rs.setStatus(false);
-				rs.addFormFieldMessages("state","Invalid State. Please use a 2 letter state representation");
-			}
-			if(!rs.isStatus()) {
-				rs.setMessage("Validation failed");
-			}
+		Response rs = Response.getRsp("", true);
+
+		if (b.getFirstName().toString().length() == 0) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("firstName", "First Name Is Required Field");
+		}
+		if (b.getFirstName().toString().length() > 50) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("firstName", "The Length Of First Name Has Been Exceeded");
+		}
+		if (b.getLastName().toString().length() > 50) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("lastName", "The Length Of Last Name Has Been Exceeded");
+		}
+		if (!Util.isValidPhoneNumber(b.getTelephone())) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("telephone", "The Phone Number format is invalid");
+		}
+		if (b.getAddress() == null) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("address", "Address cannot be null");
+		}
+		Address a = b.getAddress();
+		if (!Util.isValidZipCode(a.getZip())) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("title", "Invalid zip code format");
+		}
+		if (!Util.isValidState(a.getState())) {
+			rs.setStatus(false);
+			rs.addFormFieldMessages("state", "Invalid State. Please use a 2 letter state representation");
+		}
+		if (!rs.isStatus()) {
+			rs.setMessage("Validation failed");
+		}
 		return rs;
 	}
 
@@ -433,8 +430,8 @@ public class SystemController implements ControllerInterface {
 		if (availableBooks.isEmpty()) {
 			return Response.getRsp("Books with given isbns are not available currently", false);
 		}
-		CheckoutRecord cr=CheckoutRecordFactory.getCheckoutRecord(lm,availableBooks);
-		String checkoutMsg = getCheckoutMessage(availableBooks,lm);
+		CheckoutRecord cr = CheckoutRecordFactory.getCheckoutRecord(lm, availableBooks);
+		String checkoutMsg = getCheckoutMessage(availableBooks, lm);
 		boolean checkoutStatus = checkoutBook(cr);
 		if (!checkoutStatus) {
 			return Response.getRsp("Failed to checkout book.Try again later", false);
@@ -443,8 +440,8 @@ public class SystemController implements ControllerInterface {
 		}
 	}
 
-	private String getCheckoutMessage(List<Book> availableBooks,LibraryMember lm) {
-		String checkoutMsg="";
+	private String getCheckoutMessage(List<Book> availableBooks, LibraryMember lm) {
+		String checkoutMsg = "";
 		for (int i = 0; i < availableBooks.size(); i++) {
 			Book book = availableBooks.get(i);
 			BookCopy cp = book.getNextAvailableCopy();
@@ -470,17 +467,17 @@ public class SystemController implements ControllerInterface {
 		}
 	}
 
-	public void updateBookCopyAvailability(BookCopy bookCopy,boolean availability) {
+	public void updateBookCopyAvailability(BookCopy bookCopy, boolean availability) {
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, Book> books = da.readBooksMap();
 		for (Map.Entry<String, Book> entry : books.entrySet()) {
 			Book book = entry.getValue();
-			if(book.getIsbn().equals(bookCopy.getBook().getIsbn())){
+			if (book.getIsbn().equals(bookCopy.getBook().getIsbn())) {
 				for (int j = 0; j < book.getNumCopies(); j++) {
-					if(book.getCopies()[j].getCopyNum()==bookCopy.getCopyNum()){
-						BookCopy bCopy=book.getCopies()[j];
+					if (book.getCopies()[j].getCopyNum() == bookCopy.getCopyNum()) {
+						BookCopy bCopy = book.getCopies()[j];
 						bCopy.changeAvailability();
-						book.getCopies()[j]=bCopy;
+						book.getCopies()[j] = bCopy;
 						da.saveNewBook(book);
 						break;
 					}
