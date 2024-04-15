@@ -49,6 +49,7 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	private final String ID = "Id";
 	private final String LIBRARYMEMBER = "Library member";
 	private final String BOOK = "Book(s)";
+	private final String COPYNO = "Copy No";
 	private final String DUEDATE = "Due Date";
 	private final String RETURNDATE = "Return Date";
 
@@ -63,12 +64,12 @@ public class CheckOutBookWindow extends JFrame implements LibWindow {
 	private final String BACK_TO_MAIN = "Back to Main";
 
 	// table config
-	private final String[] DEFAULT_COLUMN_HEADERS = { ID, LIBRARYMEMBER, BOOK, DUEDATE, RETURNDATE };
+	private final String[] DEFAULT_COLUMN_HEADERS = { ID, LIBRARYMEMBER, BOOK,COPYNO, DUEDATE, RETURNDATE };
 	private final int TABLE_WIDTH = GuiControl.SCREEN_WIDTH;
 	private final int DEFAULT_TABLE_HEIGHT = Math.round(0.75f * GuiControl.SCREEN_HEIGHT);
 
 	// these numbers specify relative widths of the columns -- they must add up to 1
-	private final float[] COL_WIDTH_PROPORTIONS = { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f };
+	private final float[] COL_WIDTH_PROPORTIONS = { 0.16f, 0.16f, 0.16f, 0.16f, 0.16f, 0.17f };
 
 	public void init() {
 		initializeWindow();

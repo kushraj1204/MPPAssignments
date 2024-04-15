@@ -1,5 +1,7 @@
 package librarysystem;
 
+import dataaccess.DataAccessFacade;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -137,7 +139,8 @@ public class Util {
 	                    int parsedKey = Integer.parseInt(key); // Parse the key to integer
 	                    maxKey = Math.max(maxKey, parsedKey); // Find the maximum key
 	                } catch (NumberFormatException e) {
-	                	maxKey=1;
+	                	maxKey=maxKey;
+						System.out.println(e.getLocalizedMessage());
 	                    // Ignore non-integer keys
 	                }
 	            }
@@ -173,6 +176,7 @@ public class Util {
 	    }
 
 	public static void main(String[] args) {
-		System.out.println(isValidISBN("0060853980"));
+		DataAccessFacade da=new DataAccessFacade();
+		System.out.println(getNextKey(da.readMemberMap()));
 	}
 }

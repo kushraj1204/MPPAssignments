@@ -75,17 +75,17 @@ public class SystemController implements ControllerInterface {
 			cont += entry.getValue().getCheckoutEntries().size();
 		}
 		System.out.println("contco" + cont);
-		String[][] checkouts = new String[cont][5];
+		String[][] checkouts = new String[cont][6];
 		cont = 0;
 		for (Map.Entry<String, CheckoutRecord> entry : map.entrySet()) {
 			for (int i = 0; i < entry.getValue().getCheckoutEntries().size(); i++) {
 				if (entry.getValue().getCheckoutEntries().get(i).getReturnDate() != null)
-					checkouts[cont][4] = "" + entry.getValue().getCheckoutEntries().get(i).getReturnDate();
+					checkouts[cont][5] = "" + entry.getValue().getCheckoutEntries().get(i).getReturnDate();
 				else
-					checkouts[cont][4] = "";
-				checkouts[cont][3] = "" + entry.getValue().getCheckoutEntries().get(i).getDueDate();
-				checkouts[cont][2] = entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle()
-						+ " Copy Number:" + entry.getValue().getCheckoutEntries().get(i).getBookCopy().getCopyNum();
+					checkouts[cont][5] = "";
+				checkouts[cont][4] = "" + entry.getValue().getCheckoutEntries().get(i).getDueDate();
+				checkouts[cont][3] = "" + entry.getValue().getCheckoutEntries().get(i).getBookCopy().getCopyNum();
+				checkouts[cont][2] = entry.getValue().getCheckoutEntries().get(i).getBookCopy().getBook().getTitle();
 				checkouts[cont][1] = entry.getValue().getLibraryMember().getFirstName();
 				checkouts[cont][0] = entry.getValue().getId();
 				cont++;
@@ -626,6 +626,16 @@ public class SystemController implements ControllerInterface {
 				availableBooks.add(b.get(i));
 		}
 		return availableBooks;
+	}
+
+	public String getNextLibraryMemberKey() {
+
+		DataAccess da=new DataAccessFacade();
+		HashMap<String, LibraryMember> mems = da.readMemberMap();
+		if (mems == null)
+			mems = new HashMap<String, LibraryMember>();
+		String memberId = "" + Util.getNextKey(mems);
+		return memberId;
 	}
 
 }

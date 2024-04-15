@@ -105,6 +105,7 @@ public class AddEditLibraryMember extends JFrame {
 
 	// table
 	public void defineMiddlePanel() {
+		SystemController sc=new SystemController();
 		middlelm = new JPanel();
 		middlelm.setBackground(GuiControl.FILLER_COLOR);
 		middlelm.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -123,7 +124,7 @@ public class AddEditLibraryMember extends JFrame {
 		if (fieldValues.getProperty(labelName) != null)
 			idMemberField.setText(fieldValues.getProperty(labelName));
 		else
-			idMemberField.setText(UUID.randomUUID().toString());
+			idMemberField.setText(sc.getNextLibraryMemberKey());
 
 		gridPanel.add(idMemberField);
 		idMemberField.setEditable(false);
