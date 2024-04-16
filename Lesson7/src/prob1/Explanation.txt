@@ -1,0 +1,29 @@
+Part B
+In Part B, the listsAreEqual gives false because the Employee class overrides the equals method incorrectly.
+This in turn causes the contains method inside the listsAreEqual method to malfunction(as it uses the equals method of Object and not Employee).
+This is mainly because the equals method overriding must have the signature as `public boolean equals(Object obj)` to function correctly.
+@Override
+public boolean equals(Object obj) {
+    Employee employee = (Employee) obj;
+    return salary == employee.salary && Objects.equals(name, employee.name);
+}
+
+
+Part C
+In part C, the listsAreEqual gives false. This is because the length of the 2 lists are different in the first place.
+The removeDuplicates function does not work as intended and adds all the elements in the returning list as well. This is because
+hashCode method as not been overridden in the Employee class and hence each Employee instance gets added to the hashmap even though
+it matches the equals method.
+
+
+Part D
+In part D, the listsAreEqual gives false. This is because the removeDuplicates function does not work correctly in removing the duplicates from the list.
+The line
+tracker.get(e).setVisited(true);
+causes the tracker value to change from visited false to true, subsequently causing the key to change as well. On further occurrence of the same entry,
+the containsKey method gives false because visited field is also checked for equality and hence duplicate entry gets its way into the list. Hence, the size of the 2
+lists are different, and we get false as the answer. To solve this, either we can remove check of `visited` field in Employee class or remove the else condition inside
+the check duplicate method.
+
+
+
