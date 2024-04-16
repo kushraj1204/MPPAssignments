@@ -1,0 +1,5 @@
+
+
+We have different size here. 
+The method remove duplicates are not eliminating duplicate data because of the hash of the object. 
+We are generating different haschode for the users. 
