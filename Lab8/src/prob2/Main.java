@@ -1,9 +1,6 @@
 package prob2;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author kush
@@ -34,19 +31,23 @@ public class Main {
         Collections.sort(pList, compPrice);
 
         //c
-        Main main=new Main();
-        main.sort(pList,SortMethod.BYPRICE);
+        Main main = new Main();
+        main.sort(pList, SortMethod.BYPRICE);
 
 
         //d
-        Comparator<Product> comparator=(o1,o2)->{
-            Integer result=o1.getTitle().compareTo(o2.getTitle());
-            return result==0?Integer.compare(o1.getModel(),o2.getModel()):result;
+        Comparator<Product> comparator = (o1, o2) -> {
+            Integer result = o1.getTitle().compareTo(o2.getTitle());
+            return result == 0 ? Integer.compare(o1.getModel(), o2.getModel()) : result;
         };
 
-        Collections.sort(pList,comparator);
-
-
+        HashSet<Integer> e = new HashSet<>();
+        e.add(1);
+        HashMap<Character, Integer> sm = new HashMap<>();
+        for (Integer c : sm.values()) {
+        }
+        int[] a = new int[]{};
+        Collections.sort(pList, comparator);
 
 
     }
