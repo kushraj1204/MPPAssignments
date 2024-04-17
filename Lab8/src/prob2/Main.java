@@ -1,6 +1,9 @@
 package prob2;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author kush
@@ -41,12 +44,6 @@ public class Main {
             return result == 0 ? Integer.compare(o1.getModel(), o2.getModel()) : result;
         };
 
-        HashSet<Integer> e = new HashSet<>();
-        e.add(1);
-        HashMap<Character, Integer> sm = new HashMap<>();
-        for (Integer c : sm.values()) {
-        }
-        int[] a = new int[]{};
         Collections.sort(pList, comparator);
 
 
