@@ -55,14 +55,15 @@ public class Dish {
 
     public static void main(String[] args) {
         boolean anyVegetarianAvailable = anyVegetarianAvailable();
-        System.out.println("Any Vegetarian Available:" + anyVegetarianAvailable);
+        System.out.println("Any Vegetarian Available: " + anyVegetarianAvailable);
         boolean healthyMenuAvailable = healthyMenuAvailable();
-        System.out.println("Healthy Menu Available:" + healthyMenuAvailable);
+        System.out.println("Healthy Menu Available: " + healthyMenuAvailable);
         boolean unhealthyMenuAvailable = unhealthyMenuAvailable();
-        System.out.println("Unhealthy Menu Available:" + unhealthyMenuAvailable);
+        System.out.println("Unhealthy Menu Available: " + unhealthyMenuAvailable);
         Optional<Dish> dishOpt = firstMeatItem();
-        System.out.println("Unhealthy Menu Available:" + unhealthyMenuAvailable);
+        System.out.println("First Meat item is: " + (dishOpt.isPresent() ? dishOpt.get().getName() : "None"));
         int totalCalories = calculateTotalCalories();
+        System.out.println("Total calories count is "+totalCalories);
 
     }
 
@@ -92,9 +93,10 @@ public class Dish {
     }
 
     private static int calculateTotalCalories() {
-        List<Integer> calories= menu.stream()
-                .map(x->x.getCalories())
-                .collect(Collectors.toList());
+        List<Integer> calories = menu.stream()
+                .map(x -> x.getCalories())
+                .collect(Collectors.toList())
+                ;
         return 0;
     }
 }
