@@ -23,17 +23,21 @@ public class Main {
 				|| i.getLastName().startsWith("U") || i.getLastName().startsWith("V") || i.getLastName().startsWith("X")
 				|| i.getLastName().startsWith("Y") || i.getLastName().startsWith("W")
 				|| i.getLastName().startsWith("Z")).sorted(Comparator.comparing(Employee::getFirstName))
-				.forEach(i -> System.out.print(i.getFirstName() + " " + i.getLastName() + ","));
+				.forEach(i -> System.out.println(i.getFirstName() + " " + i.getLastName() + ","));
 
-		list.stream().filter(i -> i.getSalary() > 100000).filter(i -> i.getLastName().charAt(0) == -1)
-				.sorted(Comparator.comparing(Employee::getFirstName))
-				.forEach(i -> System.out.print(i.getFirstName() + " " + i.getLastName() + ","));
-
-		//System.out.println(list);
+		list.stream().filter(i -> i.getSalary() > 100000).filter(i -> checkstartwith(i.getLastName()) == true)
+				.sorted((o1, o2) -> o1.getFirstName().compareTo(o2.getFirstName()))
+				.forEach(i -> System.out.println(i.getFirstName() + " " + i.getLastName() + ","));
 
 		List<Employee> list2 = LambdaLibrary.ORDER.apply(list);
 		System.out.println();
 		System.out.println(list2);
 	}
 
+	public static boolean checkstartwith(String a) {
+
+		return a.startsWith("N") || a.startsWith("O") || a.startsWith("P") || a.startsWith("Q") || a.startsWith("R")
+				|| a.startsWith("S") || a.startsWith("T") || a.startsWith("U") || a.startsWith("V") || a.startsWith("X")
+				|| a.startsWith("Y") || a.startsWith("W") || a.startsWith("Z");
+	}
 }

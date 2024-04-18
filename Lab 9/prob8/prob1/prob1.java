@@ -19,6 +19,7 @@ public class prob1 {
 		 * this stream to the console so that the output looks like this: Bill, Thomas,
 		 * Mary
 		 */
+
 		Stream<String> stringStream = Stream.of("Bill", "Thomas", "Mary");
 		stringStream.forEach((e) -> {
 			System.out.print(e + ",");
@@ -29,10 +30,11 @@ public class prob1 {
 		 * both the maximum and minimum values. Write compact code that efficiently
 		 * accomplishes this.
 		 */
-		Integer[] ac = { 22, 229, 44, 99, 55, 11, 110 };
 
-		System.out.print("Máx:" + Arrays.stream(ac).mapToInt(x -> x).max().getAsInt());
-		System.out.print("Min:" + Arrays.stream(ac).mapToInt(x -> x).min().getAsInt());
+		System.out.println();
+		Integer[] ac = { 22, 229, 44, 99, 55, 11, 110 };
+		System.out.println("Máx:" + Arrays.stream(ac).mapToInt(x -> x).max().getAsInt());
+		System.out.println("Min:" + Arrays.stream(ac).mapToInt(x -> x).min().getAsInt());
 
 		/*
 		 * 3. Implement a given method requirement using Lambdas and streams in a Java 8
@@ -40,12 +42,13 @@ public class prob1 {
 		 * counts the number of words in the input list words that have length equal to
 		 * len, that contain the character c, and that do not contain the character d.
 		 */
+
 		List<String> strlist = new ArrayList<String>();
 		strlist.add("Test");
 		strlist.add("Oklahoma");
 		strlist.add("Iowa");
 		String[] str = { "abcde" };
-		System.out.println(countWords(str, 'o', 'a', 5));
+		System.out.println("Count Words: " + countWords(str, 'a', 'o', 5));
 
 		/*
 		 * 4. Implement a method public static void printSquares(int num) which creates
@@ -54,6 +57,7 @@ public class prob1 {
 		 * 4, 9, 16. Note: You will need to come up with a function to be used in the
 		 * second argument of iterate.
 		 */
+
 		printSquares(10);
 
 		/*
@@ -64,6 +68,7 @@ public class prob1 {
 		 */
 
 		// support method for the main method -- for testing
+
 		Stream<String> stringStream2 = Stream.of("Bill", "Thomas", "Mary");
 		Stream<String> strreturn = streamSection(stringStream2, 1, 1);
 		strreturn.forEach(System.out::println);
@@ -75,19 +80,18 @@ public class prob1 {
 		 * Example: The union method should transform the list [{“A”, “B”}, {“D”}, {“1”,
 		 * “3”, “5”}] to the set {“A”, “B”, “D”, “1”, “3”, “5”}.
 		 */
+		
 		Set<String> setA = new HashSet<>(Arrays.asList("A", "B"));
 		Set<String> setB = new HashSet<>(Arrays.asList("D"));
 		Set<String> setC = new HashSet<>(Arrays.asList("1", "3", "5"));
 
-		//Set<String> union = (Set<String>) Stream.concat(setA.stream(), setB.stream());
-		Stream<String> union = Stream.concat(Stream.concat( setA.stream(), setB.stream()),setC.stream());
+		Stream<String> union = Stream.concat(Stream.concat(setA.stream(), setB.stream()), setC.stream());
 		union.forEach(System.out::println);
 	}
 
 	public static void printSquares(int num) {
 
 		Stream<Double> randoms = Stream.generate(Math::random);
-
 		Stream.iterate(1.0, i -> i + 1).map(i -> i * i).limit(num).forEach(System.out::println);
 
 	}
@@ -95,18 +99,12 @@ public class prob1 {
 	public static Stream<String> streamSection(Stream<String> stream, int m, int n) {
 		Stream<String> aa = stream.skip(m).limit(n);
 		return aa;
-		// Implement the code
-
 	}
 
 	public static long countWords(String[] str, char c, char d, int len) {
-		// System.out.println("Array Lenght" + Arrays.stream(str).filter(f -> f.length()
-		// == len)
-		// .filter(f -> f.contains("" + c)).filter(f -> !f.contains("d")).count());
-		// return Arrays.stream(str).filter(f->f.length()==len).count());
 
 		return Arrays.stream(str).filter(f -> f.length() == len).filter(f -> f.contains("" + c))
-				.filter(f -> !f.contains("d")).count();
+				.filter(f -> !f.contains("" + d)).count();
 	}
 
 }
