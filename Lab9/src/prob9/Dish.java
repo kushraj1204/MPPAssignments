@@ -80,10 +80,8 @@ public class Dish {
     }
 
     private static boolean unhealthyMenuAvailable() {
-        return menu.stream()
-                .filter(x -> x.getCalories() > 1000)
-                .findAny()
-                .isPresent();
+        return !menu.stream()
+                .allMatch(x -> x.getCalories() < 1000);
     }
 
     private static Optional<Dish> firstMeatItem() {
@@ -93,11 +91,11 @@ public class Dish {
     }
 
     private static int calculateTotalCalories() {
-        List<Integer> calories = menu.stream()
-                .map(x -> x.getCalories())
-                .collect(Collectors.toList())
+        int calories = menu.stream()
+                .map(Dish::getCalories)
+                .reduce(0, Integer::sum)
                 ;
-        return 0;
+        return calories;
     }
 }
 

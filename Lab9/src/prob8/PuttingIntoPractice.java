@@ -33,6 +33,8 @@ public class PuttingIntoPractice{
                 .sorted(Comparator.comparing(Transaction::getValue))
                 .collect(Collectors.toList());
 
+        System.out.println("All transactions from year 2011 and sorted by value");
+        txn2011.stream().forEach(x-> System.out.println(x.toString()));
         System.out.println("\n");
 
 
@@ -44,6 +46,8 @@ public class PuttingIntoPractice{
                 .map(Trader::getCity)
                 .distinct()
                 .collect(Collectors.toList());
+        System.out.println("All the unique cities where the traders work");
+        uniqueCities.stream().forEach(System.out::println);
 
         System.out.println("\n");
 
@@ -56,7 +60,8 @@ public class PuttingIntoPractice{
                 .distinct()
                 .sorted(Comparator.comparing(Trader::getName))
                 .collect(Collectors.toList());
-
+        System.out.println("All traders from Cambridge and sorted by name");
+        tradersFromCambride.stream().forEach(x-> System.out.println(x.toString()));
 
         System.out.println("\n");
         // Query 4: Return a string of all traders names sorted alphabetically.
@@ -68,6 +73,8 @@ public class PuttingIntoPractice{
                 .distinct()
                 .sorted()
                 .collect(Collectors.toList());
+        System.out.println("All traders names sorted alphabetically");
+        allTraders.stream().forEach(System.out::println);
 
         System.out.println("\n");
         // Query 5: Are there any trader based in Milan?
@@ -78,7 +85,7 @@ public class PuttingIntoPractice{
                 .filter(x->x.getCity().equalsIgnoreCase("Milan"))
                 .findAny()
                 .isPresent();
-
+        System.out.println("Any traders based in Milan? "+traderInMilan);
 
         System.out.println("\n");
         // Query 6: Update all transactions so that the traders from Milan are set to Cambridge.
@@ -92,6 +99,8 @@ public class PuttingIntoPractice{
                     return x;
                 })
                 .collect(Collectors.toList());
+        System.out.println("All transactions so that the traders from Milan are set to Cambridge");
+        updatedTxns.stream().forEach(x-> System.out.println(x.toString()));
 
 
         System.out.println("\n");
