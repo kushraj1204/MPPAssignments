@@ -1,6 +1,7 @@
 package prob2;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author kush
@@ -28,8 +29,14 @@ public class Driver {
             return null;
         }
         Comparator<T> comp = (x, y) -> x.compareTo(y);
-        Collections.sort(list,comp);
-        return list.get(1);
+        List<T> result = list.stream()
+                .sorted(comp)
+                .distinct()
+                .collect(Collectors.toList());
+        if (result.size() < 2) {
+            return null;
+        }
+        return result.get(1);
     }
 
 
